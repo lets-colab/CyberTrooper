@@ -48,7 +48,6 @@
       border-radius: 3px;
     }
 
-    /* ── GLOW CURSOR CANVAS ── */
     #cursor-canvas {
       position: fixed;
       inset: 0;
@@ -56,7 +55,6 @@
       z-index: 9999;
     }
 
-    /* ── NAV ── */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -145,7 +143,6 @@
 
     .btn-ghost-blue:hover { background: var(--blue-dim); color: #fff; }
 
-    /* ── HERO ── */
     #hero {
       position: relative;
       min-height: 100vh;
@@ -156,7 +153,6 @@
       padding: 120px 40px 80px;
     }
 
-    /* Gradient mesh background */
     .hero-mesh {
       position: absolute;
       inset: 0;
@@ -187,7 +183,6 @@
       to   { transform: rotate(360deg) scale(1); }
     }
 
-    /* Video placeholder */
     .hero-video {
       position: absolute;
       inset: 0;
@@ -270,7 +265,6 @@
       flex-wrap: wrap;
     }
 
-    /* ── SECTION BASE ── */
     .section {
       padding: var(--section-gap) clamp(20px, 6vw, 80px);
       max-width: 1280px;
@@ -298,7 +292,6 @@
       margin-bottom: clamp(36px, 5vw, 60px);
     }
 
-    /* scroll reveal */
     .reveal {
       opacity: 0;
       transform: translateY(24px);
@@ -310,7 +303,6 @@
       transform: none;
     }
 
-    /* ── TIERS ── */
     #tiers { border-top: 1px solid var(--border); }
 
     .tier-grid {
@@ -384,7 +376,6 @@
 
     .tier-locked svg { flex-shrink: 0; }
 
-    /* ── ELIGIBILITY ── */
     #eligibility { border-top: 1px solid var(--border); }
 
     .eligibility-list {
@@ -429,7 +420,6 @@
       color: var(--text);
     }
 
-    /* ── RATE REVEAL ── */
     #rate-reveal { border-top: 1px solid var(--border); }
 
     .rate-card {
@@ -476,12 +466,9 @@
       margin-bottom: 28px;
     }
 
-    /* ── SAMPLE POSTS ── */
     #sample-posts { border-top: 1px solid var(--border); }
 
-    .carousel-wrap {
-      position: relative;
-    }
+    .carousel-wrap { position: relative; }
 
     .carousel {
       display: flex;
@@ -544,7 +531,6 @@
       line-height: 1.65;
       color: var(--text);
       margin-bottom: 16px;
-      font-family: 'Inter', sans-serif;
     }
 
     .post-meta {
@@ -576,14 +562,11 @@
 
     .carousel-btn:hover { border-color: var(--blue); color: var(--blue); }
 
-    /* ── FAQ ── */
     #faq { border-top: 1px solid var(--border); }
 
     .faq-list { max-width: 720px; }
 
-    details {
-      border-bottom: 1px solid var(--border);
-    }
+    details { border-bottom: 1px solid var(--border); }
 
     summary {
       list-style: none;
@@ -601,9 +584,7 @@
     }
 
     summary::-webkit-details-marker { display: none; }
-
     summary:hover { color: var(--blue); }
-
     details[open] summary { color: var(--blue); }
 
     .faq-arrow {
@@ -622,12 +603,10 @@
       line-height: 1.7;
     }
 
-    /* ── APPLICATION FORM ── */
     #apply-form { border-top: 1px solid var(--border); }
 
     .form-container { max-width: 680px; }
 
-    /* Progress indicator */
     .form-progress {
       display: flex;
       align-items: center;
@@ -658,17 +637,8 @@
       flex-shrink: 0;
     }
 
-    .step-dot.active {
-      border-color: var(--blue);
-      background: var(--blue-dim);
-      color: var(--blue);
-    }
-
-    .step-dot.done {
-      border-color: var(--blue);
-      background: var(--blue);
-      color: #fff;
-    }
+    .step-dot.active { border-color: var(--blue); background: var(--blue-dim); color: var(--blue); }
+    .step-dot.done   { border-color: var(--blue); background: var(--blue); color: #fff; }
 
     .step-label {
       font-size: 12px;
@@ -686,7 +656,6 @@
       margin: 0 8px;
     }
 
-    /* Form steps */
     .form-step { display: none; }
     .form-step.active { display: flex; flex-direction: column; gap: 20px; }
 
@@ -799,7 +768,6 @@
     .form-status-msg.error   { color: #EF4444; }
     .form-status-msg.warning { color: var(--yellow); }
 
-    /* ── SUCCESS OVERLAY ── */
     #success-overlay {
       display: none;
       position: fixed;
@@ -824,11 +792,7 @@
       to   { opacity: 1; transform: none; }
     }
 
-    .success-icon {
-      width: 72px;
-      height: 72px;
-      margin: 0 auto 28px;
-    }
+    .success-icon { width: 72px; height: 72px; margin: 0 auto 28px; }
 
     .success-title {
       font-family: 'Space Grotesk', sans-serif;
@@ -875,7 +839,6 @@
 
     .btn-whatsapp:hover { opacity: 0.9; transform: translateY(-1px); }
 
-    /* ── OFFLINE BANNER ── */
     #offline-banner {
       display: none;
       position: fixed;
@@ -898,7 +861,6 @@
 
     #offline-banner.active { display: block; }
 
-    /* ── FOOTER ── */
     footer {
       border-top: 1px solid var(--border);
       padding: 48px clamp(20px, 6vw, 80px);
@@ -932,13 +894,8 @@
 
     .footer-links a:hover { color: var(--text-muted); }
 
-    .footer-copy {
-      font-size: 12px;
-      color: rgba(248,250,252,0.2);
-      width: 100%;
-    }
+    .footer-copy { font-size: 12px; color: rgba(248,250,252,0.2); width: 100%; }
 
-    /* ── REDUCED MOTION ── */
     @media (prefers-reduced-motion: reduce) {
       #cursor-canvas { display: none; }
       .hero-mesh::before { animation: none; }
@@ -948,7 +905,6 @@
       .tier-card { transition: none !important; }
     }
 
-    /* ── MOBILE ── */
     @media (max-width: 768px) {
       nav { padding: 14px 20px; }
       .nav-links { display: none; }
@@ -963,15 +919,12 @@
 </head>
 <body>
 
-  <!-- Glow cursor canvas -->
   <canvas id="cursor-canvas" aria-hidden="true"></canvas>
 
-  <!-- Offline banner -->
   <div id="offline-banner" role="alert" aria-live="assertive">
     Your application is saved locally and will submit automatically when you reconnect.
   </div>
 
-  <!-- Success overlay -->
   <div id="success-overlay" role="dialog" aria-modal="true" aria-labelledby="success-title">
     <div class="success-box">
       <svg class="success-icon" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -995,7 +948,6 @@
     </div>
   </div>
 
-  <!-- ── NAV ── -->
   <nav role="navigation" aria-label="Main navigation">
     <a href="#" class="nav-brand" aria-label="CYBERTROOPER home">
       <span class="nav-badge">CYBERTROOPER</span>
@@ -1009,7 +961,6 @@
     </ul>
   </nav>
 
-  <!-- ── HERO ── -->
   <section id="hero" aria-label="Hero">
     <div class="hero-mesh" aria-hidden="true"></div>
     <!-- DROP REAL CREATOR FOOTAGE HERE: replace src with your video URL -->
@@ -1032,7 +983,6 @@
     </div>
   </section>
 
-  <!-- ── TIERS ── -->
   <div id="tiers" class="section reveal" aria-labelledby="tiers-heading">
     <span class="section-label">Creator Tiers</span>
     <h2 class="section-heading" id="tiers-heading">FIND YOUR LEVEL</h2>
@@ -1070,7 +1020,6 @@
     </div>
   </div>
 
-  <!-- ── ELIGIBILITY ── -->
   <div id="eligibility" class="section reveal" aria-labelledby="elig-heading">
     <span class="section-label">Requirements</span>
     <h2 class="section-heading" id="elig-heading">DO YOU QUALIFY?</h2>
@@ -1118,7 +1067,6 @@
     </ul>
   </div>
 
-  <!-- ── RATE REVEAL ── -->
   <div id="rate-reveal" class="section reveal" aria-labelledby="rate-heading">
     <span class="section-label">Earnings</span>
     <h2 class="section-heading" id="rate-heading">WHAT WILL YOU EARN?</h2>
@@ -1138,7 +1086,6 @@
     </div>
   </div>
 
-  <!-- ── SAMPLE POSTS ── -->
   <div id="sample-posts" class="section reveal" aria-labelledby="posts-heading">
     <span class="section-label">What You'll Post</span>
     <h2 class="section-heading" id="posts-heading">WHAT YOU'LL BE POSTING</h2>
@@ -1147,47 +1094,29 @@
         <div class="post-card" role="listitem">
           <div class="post-card-header">
             <div class="post-avatar" aria-hidden="true">ST</div>
-            <div>
-              <div class="post-handle">@syafiqatrooper</div>
-            </div>
+            <div><div class="post-handle">@syafiqatrooper</div></div>
             <span class="post-platform">Threads</span>
           </div>
           <p class="post-text">Just tried the new matcha latte at Pavilion — genuinely the best one I've had since the last time I was in Japan. No cap. If you're in KLCC area this weekend, go. 🍵 #KLEats #Threads</p>
-          <div class="post-meta">
-            <span>412 likes</span>
-            <span>38 reposts</span>
-            <span>14h ago</span>
-          </div>
+          <div class="post-meta"><span>412 likes</span><span>38 reposts</span><span>14h ago</span></div>
         </div>
         <div class="post-card" role="listitem">
           <div class="post-card-header">
             <div class="post-avatar" style="background: linear-gradient(135deg, #3B82F6, #A855F7);" aria-hidden="true">NR</div>
-            <div>
-              <div class="post-handle">@nadiratrooper</div>
-            </div>
+            <div><div class="post-handle">@nadiratrooper</div></div>
             <span class="post-platform">Threads</span>
           </div>
           <p class="post-text">Finally found a skincare routine that actually works in KL humidity and doesn't cost half my salary. The cleanser is everything. Been using it 3 weeks, skin is genuinely better. 🧴 #KLBeauty #SkincareThreads</p>
-          <div class="post-meta">
-            <span>639 likes</span>
-            <span>55 reposts</span>
-            <span>2d ago</span>
-          </div>
+          <div class="post-meta"><span>639 likes</span><span>55 reposts</span><span>2d ago</span></div>
         </div>
         <div class="post-card" role="listitem">
           <div class="post-card-header">
             <div class="post-avatar" style="background: linear-gradient(135deg, #EC4899, #FACC15);" aria-hidden="true">ZK</div>
-            <div>
-              <div class="post-handle">@zultrooper</div>
-            </div>
+            <div><div class="post-handle">@zultrooper</div></div>
             <span class="post-platform">Threads</span>
           </div>
           <p class="post-text">When the brand brief says "be authentic" and the product actually delivers 😭 Shoutout to my boy for putting me onto this. You know who you are. #CYBERTROOPER #KLLifestyle</p>
-          <div class="post-meta">
-            <span>891 likes</span>
-            <span>102 reposts</span>
-            <span>5d ago</span>
-          </div>
+          <div class="post-meta"><span>891 likes</span><span>102 reposts</span><span>5d ago</span></div>
         </div>
       </div>
       <div class="carousel-controls">
@@ -1201,55 +1130,37 @@
     </div>
   </div>
 
-  <!-- ── FAQ ── -->
   <div id="faq" class="section reveal" aria-labelledby="faq-heading">
     <span class="section-label">FAQ</span>
     <h2 class="section-heading" id="faq-heading">YOUR QUESTIONS</h2>
     <div class="faq-list">
       <details>
-        <summary>
-          When do I get paid?
-          <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-        </summary>
+        <summary>When do I get paid? <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></summary>
         <p class="faq-body">Payments are processed monthly, 7 days after the billing cycle closes. You'll receive a breakdown of every post and its corresponding payment via WhatsApp and email.</p>
       </details>
       <details>
-        <summary>
-          How many posts per week is required?
-          <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-        </summary>
+        <summary>How many posts per week is required? <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></summary>
         <p class="faq-body">It depends on your tier. Basic Troopers post 3–5 times per week, Active Troopers 6–10, and Top Troopers 10 or more. You'll agree your tier and cadence during your onboarding call.</p>
       </details>
       <details>
-        <summary>
-          Do I need a certain follower count?
-          <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-        </summary>
+        <summary>Do I need a certain follower count? <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></summary>
         <p class="faq-body">No minimum follower count. We care about consistency and engagement quality, not vanity numbers. A small account that posts authentically every day is more valuable to us than a large account that posts once a month.</p>
       </details>
       <details>
-        <summary>
-          Can I do this alongside a full-time job?
-          <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-        </summary>
+        <summary>Can I do this alongside a full-time job? <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></summary>
         <p class="faq-body">Yes. Most Troopers post around their schedule — on the commute, during lunch, after work. There are no fixed posting windows, just a weekly cadence you agree to upfront.</p>
       </details>
       <details>
-        <summary>
-          What kind of content do I make?
-          <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-        </summary>
+        <summary>What kind of content do I make? <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></summary>
         <p class="faq-body">Authentic Threads posts about KL brands — food, beauty, lifestyle, tech, events. The brand gives you a brief with key messages and hashtags. The voice, the story, and the framing are yours. We never ask you to post something you don't believe in.</p>
       </details>
     </div>
   </div>
 
-  <!-- ── APPLICATION FORM ── -->
   <div id="apply-form" class="section" aria-labelledby="form-heading">
     <span class="section-label">Join the Network</span>
     <h2 class="section-heading" id="form-heading">APPLY NOW</h2>
     <div class="form-container">
-      <!-- Progress -->
       <div class="form-progress" aria-label="Application progress">
         <div class="step-indicator">
           <div class="step-dot active" id="dot-1" aria-current="step">1</div>
@@ -1267,7 +1178,6 @@
         </div>
       </div>
 
-      <!-- Step 1 -->
       <div class="form-step active" id="step-1">
         <div class="form-row">
           <div class="form-field">
@@ -1307,7 +1217,6 @@
         </div>
       </div>
 
-      <!-- Step 2 -->
       <div class="form-step" id="step-2">
         <div class="form-row">
           <div class="form-field">
@@ -1341,7 +1250,6 @@
         </div>
       </div>
 
-      <!-- Step 3 -->
       <div class="form-step" id="step-3">
         <div class="form-field">
           <label>Confirm Eligibility *</label>
@@ -1376,7 +1284,6 @@
     </div>
   </div>
 
-  <!-- ── FOOTER ── -->
   <footer role="contentinfo">
     <div>
       <div class="footer-brand">CYBERTROOPER</div>
@@ -1389,7 +1296,6 @@
     </ul>
   </footer>
 
-  <!-- Supabase CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 
   <script>
@@ -1403,7 +1309,6 @@
 
     const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // ── GLOW CURSOR ──
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!prefersReduced) {
       const cursorCanvas = document.getElementById('cursor-canvas');
@@ -1451,7 +1356,6 @@
       drawCursor();
     }
 
-    // ── TIER CARD TILT ──
     if (!prefersReduced) {
       document.querySelectorAll('.tier-card').forEach(card => {
         card.addEventListener('mousemove', function(e) {
@@ -1468,7 +1372,6 @@
       });
     }
 
-    // ── SCROLL REVEALS ──
     const revealObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -1480,7 +1383,6 @@
 
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-    // ── ELIGIBILITY CHECKMARK ANIMATION ──
     const eligObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -1500,7 +1402,6 @@
     const eligList = document.querySelector('.eligibility-list');
     if (eligList) eligObserver.observe(eligList);
 
-    // ── CAROUSEL ──
     const carousel = document.getElementById('posts-carousel');
     document.getElementById('carousel-next').addEventListener('click', () => {
       carousel.scrollBy({ left: 340, behavior: 'smooth' });
@@ -1509,7 +1410,6 @@
       carousel.scrollBy({ left: -340, behavior: 'smooth' });
     });
 
-    // ── MULTI-STEP FORM ──
     let currentStep = 1;
     const totalSteps = 3;
 
@@ -1523,8 +1423,8 @@
         dot.classList.remove('active', 'done');
         label.classList.remove('active');
 
-        if (i < n)      { dot.classList.add('done');   dot.innerHTML = '✓'; }
-        else if (i === n) { dot.classList.add('active');  dot.innerHTML = i; label.classList.add('active'); }
+        if (i < n)        { dot.classList.add('done');   dot.innerHTML = '✓'; }
+        else if (i === n) { dot.classList.add('active'); dot.innerHTML = i; label.classList.add('active'); }
         else              { dot.innerHTML = i; }
       }
       currentStep = n;
@@ -1578,20 +1478,15 @@
       return true;
     }
 
-    document.getElementById('next-1').addEventListener('click', () => {
-      if (validateStep1()) setStep(2);
-    });
-    document.getElementById('next-2').addEventListener('click', () => {
-      if (validateStep2()) setStep(3);
-    });
+    document.getElementById('next-1').addEventListener('click', () => { if (validateStep1()) setStep(2); });
+    document.getElementById('next-2').addEventListener('click', () => { if (validateStep2()) setStep(3); });
     document.getElementById('prev-2').addEventListener('click', () => setStep(1));
     document.getElementById('prev-3').addEventListener('click', () => setStep(2));
 
-    // ── FORM SUBMISSION ──
     document.getElementById('submit-btn').addEventListener('click', async () => {
       if (!validateStep3()) return;
 
-      const statusEl = document.getElementById('form-status');
+      const statusEl  = document.getElementById('form-status');
       const submitBtn = document.getElementById('submit-btn');
 
       submitBtn.disabled = true;
@@ -1607,11 +1502,11 @@
         threads_handle:     document.getElementById('f-handle').value.trim(),
         sample_post:        document.getElementById('f-sample').value.trim() || null,
         eligibility_answers: {
-          based_in_kv:       document.getElementById('elig-kv').checked,
-          eighteen_plus:     document.getElementById('elig-age').checked,
-          agrees_to_briefs:  document.getElementById('elig-brief').checked,
+          based_in_kv:          document.getElementById('elig-kv').checked,
+          eighteen_plus:        document.getElementById('elig-age').checked,
+          agrees_to_briefs:     document.getElementById('elig-brief').checked,
           follower_count_range: document.getElementById('f-followers').value || null,
-          post_frequency:    document.getElementById('f-freq').value || null,
+          post_frequency:       document.getElementById('f-freq').value || null,
         },
         source:             'become-a-trooper',
         application_status: 'pending',
@@ -1634,22 +1529,18 @@
         showSuccess(refId);
 
         // TODO: Notion sync
-        // Notion database is live: https://www.notion.so/7792a3f839cb4464ae30c42a03c1eb85
+        // Notion database: https://www.notion.so/7792a3f839cb4464ae30c42a03c1eb85
         // Database ID: 7792a3f8-39cb-4464-ae30-c42a03c1eb85
-        // To wire: deploy a Supabase Edge Function at supabase/functions/notion-sync/
-        // Grant your Notion integration access to the "Trooper Signups" database.
-        // The function receives { record_id: data.id }, fetches the row, POSTs to Notion API,
-        // then updates notion_page_id + notion_page_url on the Supabase row.
+        // Deploy Supabase Edge Function at supabase/functions/notion-sync/
+        // Grant Notion integration access to "Trooper Signups" database.
         // Call: await db.functions.invoke('notion-sync', { body: { record_id: data.id } })
 
       } catch (err) {
         console.error('Supabase submit error:', err);
-
         if (!navigator.onLine) {
-          // Queue locally
           queueLocally(payload, statusEl, submitBtn);
         } else {
-          statusEl.textContent = 'Something went wrong. Please try again or message us directly on WhatsApp.';
+          statusEl.textContent = 'Something went wrong. Please try again or message us on WhatsApp.';
           statusEl.className = 'form-status-msg error';
           submitBtn.disabled = false;
           submitBtn.textContent = 'SUBMIT APPLICATION';
@@ -1658,10 +1549,7 @@
     }
 
     function queueLocally(payload, statusEl, submitBtn) {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({ payload, queuedAt: Date.now() }));
-      } catch(e) { /* storage full — ignore */ }
-
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ payload, queuedAt: Date.now() })); } catch(e) {}
       document.getElementById('offline-banner').classList.add('active');
       statusEl.textContent = "We've saved your application locally — it'll submit automatically when you reconnect.";
       statusEl.className = 'form-status-msg warning';
@@ -1672,56 +1560,32 @@
     async function retryPendingSubmission() {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (!stored) return;
-
       document.getElementById('offline-banner').classList.remove('active');
-
       try {
         const { payload } = JSON.parse(stored);
-        const { data, error } = await db
-          .from('trooper_signups')
-          .insert([payload])
-          .select('reference_id')
-          .single();
-
+        const { data, error } = await db.from('trooper_signups').insert([payload]).select('reference_id').single();
         if (error) throw error;
-
         localStorage.removeItem(STORAGE_KEY);
-        const refId = (data && data.reference_id) ? data.reference_id : 'CT-2026-XXXXX';
-        showSuccess(refId);
-      } catch(e) {
-        console.warn('Retry failed:', e);
-      }
+        showSuccess((data && data.reference_id) ? data.reference_id : 'CT-2026-XXXXX');
+      } catch(e) { console.warn('Retry failed:', e); }
     }
 
     window.addEventListener('online', retryPendingSubmission);
-
-    // Try on load in case there's a pending item
-    if (localStorage.getItem(STORAGE_KEY) && navigator.onLine) {
-      retryPendingSubmission();
-    }
+    if (localStorage.getItem(STORAGE_KEY) && navigator.onLine) retryPendingSubmission();
 
     function showSuccess(refId) {
       const overlay = document.getElementById('success-overlay');
       document.getElementById('success-ref-display').textContent = 'Your ref: ' + refId;
-
       const waMsg = encodeURIComponent('Hi! My CYBERTROOPER application ref is ' + refId);
       document.getElementById('whatsapp-link').href = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + waMsg;
-
       overlay.classList.add('active');
       overlay.focus();
-
-      // Animate checkmark
       const tick = document.getElementById('check-tick');
-      if (tick) {
-        setTimeout(() => { tick.style.strokeDashoffset = '0'; }, 100);
-      }
+      if (tick) setTimeout(() => { tick.style.strokeDashoffset = '0'; }, 100);
     }
 
-    // Close success overlay on Escape
     document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') {
-        document.getElementById('success-overlay').classList.remove('active');
-      }
+      if (e.key === 'Escape') document.getElementById('success-overlay').classList.remove('active');
     });
 
   })();
