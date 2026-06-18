@@ -1113,7 +1113,7 @@
           <path class="check-path" d="M8 14 L12 18 L20 10" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
             stroke-dasharray="24" stroke-dashoffset="24"/>
         </svg>
-        <span class="elig-text">Ready to follow brand brief guidelines and post authentic KL-native content</span>
+        <span class="elig-text">Ready to follow brand brief guidelines and post authentic, non-misleading content</span>
       </li>
     </ul>
   </div>
@@ -1625,7 +1625,7 @@
         const { data, error } = await db
           .from('trooper_signups')
           .insert([payload])
-          .select('reference_id')
+          .select('id, reference_id')
           .single();
 
         if (error) throw error;
@@ -1633,14 +1633,11 @@
         const refId = (data && data.reference_id) ? data.reference_id : 'CT-2026-XXXXX';
         showSuccess(refId);
 
-        // TODO: Notion sync
-        // Notion database is live: https://www.notion.so/7792a3f839cb4464ae30c42a03c1eb85
-        // Database ID: 7792a3f8-39cb-4464-ae30-c42a03c1eb85
-        // To wire: deploy a Supabase Edge Function at supabase/functions/notion-sync/
-        // Grant your Notion integration access to the "Trooper Signups" database.
-        // The function receives { record_id: data.id }, fetches the row, POSTs to Notion API,
-        // then updates notion_page_id + notion_page_url on the Supabase row.
-        // Call: await db.functions.invoke('notion-sync', { body: { record_id: data.id } })
+        // Notion sync — fire and forget (non-blocking)
+        if (data && data.id) {
+          db.functions.invoke('notion-sync', { body: { record_id: data.id } })
+            .catch(err => console.warn('Notion sync failed (non-blocking):', err));
+        }
 
       } catch (err) {
         console.error('Supabase submit error:', err);
@@ -1680,13 +1677,20 @@
         const { data, error } = await db
           .from('trooper_signups')
           .insert([payload])
-          .select('reference_id')
+          .select('id, reference_id')
           .single();
 
         if (error) throw error;
 
         localStorage.removeItem(STORAGE_KEY);
         const refId = (data && data.reference_id) ? data.reference_id : 'CT-2026-XXXXX';
+
+        // Notion sync — fire and forget (non-blocking)
+        if (data && data.id) {
+          db.functions.invoke('notion-sync', { body: { record_id: data.id } })
+            .catch(err => console.warn('Notion sync failed (non-blocking):', err));
+        }
+
         showSuccess(refId);
       } catch(e) {
         console.warn('Retry failed:', e);
