@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Become a Trooper — CYBERTROOPER</title>
   <meta name="description" content="Join CYBERTROOPER — KL's first Threads creator network. Get paid to post authentic content for local brands. Apply now.">
   <meta property="og:title" content="Become a Trooper — CYBERTROOPER">
@@ -711,7 +711,7 @@
       border: 1px solid var(--border);
       color: var(--text);
       font-family: 'Inter', sans-serif;
-      font-size: 15px;
+      font-size: 16px;
       padding: 12px 16px;
       border-radius: 8px;
       transition: border-color 0.2s, box-shadow 0.2s;
@@ -948,16 +948,100 @@
       .tier-card { transition: none !important; }
     }
 
+    /* ── HAMBURGER NAV ── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 40px;
+      height: 40px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 6px;
+      z-index: 201;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+      transform-origin: center;
+    }
+
+    .nav-hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .nav-drawer {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(10,10,18,0.97);
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 32px;
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-drawer.open { display: flex; }
+
+    .nav-drawer .drawer-link {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+
+    .nav-drawer .drawer-link:hover { color: var(--blue); }
+
     /* ── MOBILE ── */
     @media (max-width: 768px) {
       nav { padding: 14px 20px; }
       .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
       #hero { padding: 100px 20px 60px; }
+      .hero-actions { flex-direction: column; align-items: stretch; }
+      .hero-actions .btn-blue,
+      .hero-actions .btn-ghost-blue { text-align: center; }
       .tier-grid { grid-template-columns: 1fr; }
       .form-row { grid-template-columns: 1fr; }
       .form-progress { gap: 0; }
       .step-label { display: none; }
       footer { flex-direction: column; align-items: flex-start; }
+      .rate-card { padding: 32px 24px; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-headline { font-size: clamp(44px, 13vw, 72px); }
+      .section-heading { font-size: clamp(28px, 7vw, 40px); }
+    }
+
+    @supports (padding: max(0px)) {
+      nav {
+        padding-left: max(20px, env(safe-area-inset-left));
+        padding-right: max(20px, env(safe-area-inset-right));
+      }
+      footer {
+        padding-left: max(20px, env(safe-area-inset-left));
+        padding-right: max(20px, env(safe-area-inset-right));
+        padding-bottom: max(40px, env(safe-area-inset-bottom));
+      }
+    }
+
+    @media (hover: none) and (pointer: coarse) {
+      #cursor-canvas { display: none; }
+      .tier-card { transform: none !important; transition: box-shadow 0.2s ease; }
     }
   </style>
 </head>
@@ -1007,7 +1091,19 @@
       <li><a href="index.html">Brand Site</a></li>
       <li><a href="#apply-form" class="btn-blue" style="font-size:13px;padding:9px 20px;">Apply Now</a></li>
     </ul>
+    <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="nav-drawer">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+
+  <!-- Mobile nav drawer -->
+  <div class="nav-drawer" id="nav-drawer" role="dialog" aria-label="Mobile navigation" aria-modal="true">
+    <a href="#tiers" class="drawer-link">Tiers</a>
+    <a href="#eligibility" class="drawer-link">Eligibility</a>
+    <a href="#faq" class="drawer-link">FAQ</a>
+    <a href="index.html" class="drawer-link">Brand Site</a>
+    <a href="#apply-form" class="btn-blue" style="font-size:16px;padding:12px 32px;">Apply Now</a>
+  </div>
 
   <!-- ── HERO ── -->
   <section id="hero" aria-label="Hero">
@@ -1729,6 +1825,43 @@
     });
 
   })();
+  </script>
+
+  <script>
+    // Hamburger menu toggle
+    const hamburger = document.getElementById('hamburger');
+    const navDrawer = document.getElementById('nav-drawer');
+
+    function openDrawer() {
+      navDrawer.classList.add('open');
+      hamburger.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+      navDrawer.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    hamburger.addEventListener('click', () => {
+      if (navDrawer.classList.contains('open')) closeDrawer();
+      else openDrawer();
+    });
+
+    navDrawer.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', closeDrawer);
+    });
+
+    document.addEventListener('click', (e) => {
+      if (navDrawer.classList.contains('open') && !navDrawer.contains(e.target) && e.target !== hamburger) {
+        closeDrawer();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeDrawer();
+    });
   </script>
 </body>
 </html>
