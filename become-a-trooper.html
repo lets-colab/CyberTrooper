@@ -1485,15 +1485,12 @@ footer {
 <!-- SUCCESS OVERLAY -->
 <div class="success-overlay" id="success-overlay" role="dialog" aria-label="Application submitted">
   <div class="success-box">
-    <div class="success-icon">🎯</div>
-    <h2>Application Received</h2>
-    <p>We review applications every Monday. You'll hear back within 48 hours.</p>
+    <div class="success-icon">✅</div>
+    <h2>You're In The Queue.</h2>
+    <p>Your application has been received and automatically logged. We review every Monday — you'll hear from us within 48 hours.</p>
     <span class="success-ref" id="success-ref">CT-2026-00000</span>
-    <p>In the meantime, drop us a message on WhatsApp if you have questions.</p>
-    <a href="https://wa.me/8801631326245" target="_blank" rel="noopener" class="success-wa" id="success-wa-link">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      Message Us on WhatsApp
-    </a>
+    <p style="font-size:0.82rem;color:rgba(159,200,168,0.5);margin-top:0.5rem;">Save this reference number. You're done — no further action needed.</p>
+    <button onclick="document.getElementById('success-overlay').classList.remove('visible');document.body.style.overflow='';" class="btn-blue" style="margin-top:0.5rem;border:none;cursor:pointer;">Close</button>
   </div>
 </div>
 
@@ -1708,23 +1705,20 @@ async function supabaseInsert(data) {
   return rows[0];
 }
 
-// Lightweight non-blocking Notion sync
+// Non-blocking Notion sync — fires after row is in DB
 function syncNotion(recordId) {
   fetch(`${SUPABASE_URL}/functions/v1/notion-sync`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'apikey': SUPABASE_ANON_KEY,
       'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
     },
     body: JSON.stringify({ record_id: recordId }),
-  }).catch(e => console.warn('Notion sync skipped:', e.message));
-}
-
-// ── Generate reference ID ──
-function genRef() {
-  const year = new Date().getFullYear();
-  const n = String(Math.floor(Math.random() * 99999) + 1).padStart(5, '0');
-  return `CT-${year}-${n}`;
+  })
+  .then(r => r.json())
+  .then(d => console.log('Notion sync:', d.success ? 'ok' : d.error))
+  .catch(e => console.warn('Notion sync skipped:', e.message));
 }
 
 // ── Hamburger / Drawer ──
@@ -1840,31 +1834,30 @@ document.getElementById('trooper-form').addEventListener('submit', async functio
     email:          fd.get('email'),
     area:           fd.get('area'),
     threads_handle: fd.get('threads_handle'),
-    follower_count: fd.get('follower_count'),
-    post_frequency: fd.get('post_frequency'),
+    follower_count: fd.get('follower_count'),   // text e.g. "Under 500"
+    post_frequency: fd.get('post_frequency'),   // text
     sample_post:    fd.get('sample_post'),
     payment_method: fd.get('payment_method') || null,
     source:         'become-a-trooper',
   };
 
-  let refId = genRef();
+  let refId = 'CT-' + new Date().getFullYear() + '-' + String(Date.now()).slice(-5);
 
   try {
     const row = await supabaseInsert(payload);
+    if (row && row.reference_id) {
+      refId = row.reference_id;   // use real DB-generated reference_id
+    }
     if (row && row.id) {
-      syncNotion(row.id);
+      syncNotion(row.id);         // fire-and-forget Notion sync
     }
   } catch (err) {
     console.warn('Offline — queuing submission:', err.message);
     saveToQueue(payload);
   }
 
-  // Show success overlay
+  // Show clean success overlay — no WhatsApp action needed from applicant
   document.getElementById('success-ref').textContent = refId;
-  const waMsg = encodeURIComponent(
-    `Hi! I just applied to be a CYBERTROOPER.\nRef: ${refId}\nName: ${payload.full_name}\nThreads: ${payload.threads_handle}`
-  );
-  document.getElementById('success-wa-link').href = `https://wa.me/${WHATSAPP_NUMBER}?text=${waMsg}`;
   document.getElementById('success-overlay').classList.add('visible');
   document.body.style.overflow = 'hidden';
 });
