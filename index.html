@@ -1,1000 +1,1373 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CYBERTROOPER — Your Brand. Their Voice. Real Reach.</title>
-  <meta name="description" content="CYBERTROOPER is KL's first Threads influencer network. Brief a brand campaign, we deploy real local voices. Measurable reach, authentic posts.">
-  <meta property="og:title" content="CYBERTROOPER — Your Brand. Their Voice. Real Reach.">
-  <meta property="og:description" content="KL's first Threads influencer network for brand marketing teams.">
-  <meta property="og:type" content="website">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --bg: #06060E;
-      --gold: #E8A83E;
-      --chrome: #C0C8D8;
-      --text: #F2F0EA;
-      --chrome-dim: rgba(192, 200, 216, 0.5);
-      --chrome-faint: rgba(192, 200, 216, 0.08);
-      --gold-dim: rgba(232, 168, 62, 0.15);
-      --section-gap: clamp(80px, 12vw, 160px);
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Outfit', sans-serif;
-      font-size: 16px;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    :focus-visible {
-      outline: 2px solid var(--gold);
-      outline-offset: 3px;
-      border-radius: 2px;
-    }
-
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20px 40px;
-      background: linear-gradient(to bottom, rgba(6,6,14,0.95) 0%, transparent 100%);
-    }
-
-    .nav-wordmark {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 22px;
-      letter-spacing: 0.08em;
-      color: var(--text);
-      text-decoration: none;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 32px;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      color: var(--chrome);
-      text-decoration: none;
-      text-transform: uppercase;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover { color: var(--text); }
-
-    .nav-cta {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      color: var(--bg) !important;
-      background: var(--gold);
-      padding: 8px 20px;
-      border-radius: 2px;
-      text-decoration: none;
-      transition: opacity 0.2s !important;
-    }
-
-    .nav-cta:hover { opacity: 0.85 !important; color: var(--bg) !important; }
-
-    #hero {
-      position: relative;
-      height: 100vh;
-      min-height: 600px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    #three-canvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      padding: 0 20px;
-      pointer-events: none;
-    }
-
-    .hero-eyebrow {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      color: var(--chrome-dim);
-      margin-bottom: 24px;
-      text-transform: uppercase;
-    }
-
-    .hero-headline {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(64px, 11vw, 128px);
-      line-height: 0.92;
-      letter-spacing: 0.02em;
-      color: var(--text);
-      margin-bottom: 32px;
-    }
-
-    .hero-headline .line-gold { color: var(--gold); }
-
-    .hero-sub {
-      font-family: 'DM Mono', monospace;
-      font-size: clamp(11px, 1.2vw, 13px);
-      letter-spacing: 0.14em;
-      color: var(--chrome);
-      margin-bottom: 48px;
-      text-transform: uppercase;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      align-items: center;
-      pointer-events: all;
-    }
-
-    .btn-gold {
-      display: inline-block;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 18px;
-      letter-spacing: 0.1em;
-      color: var(--bg);
-      background: var(--gold);
-      padding: 14px 40px;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      transition: opacity 0.2s, transform 0.15s;
-      border-radius: 2px;
-    }
-
-    .btn-gold:hover { opacity: 0.9; transform: translateY(-1px); }
-    .btn-gold:active { transform: translateY(0); }
-
-    .btn-ghost {
-      display: inline-block;
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      color: var(--chrome);
-      border: 1px solid rgba(192,200,216,0.3);
-      padding: 13px 28px;
-      text-decoration: none;
-      transition: border-color 0.2s, color 0.2s;
-      border-radius: 2px;
-      text-transform: uppercase;
-    }
-
-    .btn-ghost:hover { border-color: var(--chrome); color: var(--text); }
-
-    #static-fallback {
-      display: none;
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-    }
-
-    section {
-      padding: var(--section-gap) clamp(20px, 6vw, 80px);
-      max-width: 1280px;
-      margin: 0 auto;
-    }
-
-    .section-eyebrow {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.22em;
-      color: var(--chrome-dim);
-      text-transform: uppercase;
-      margin-bottom: 16px;
-      display: block;
-    }
-
-    .section-headline {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(40px, 6vw, 80px);
-      letter-spacing: 0.03em;
-      color: var(--text);
-      line-height: 0.95;
-      margin-bottom: clamp(40px, 6vw, 72px);
-    }
-
-    #how-it-works {
-      position: relative;
-      padding-top: var(--section-gap);
-    }
-
-    #how-canvas-wrap {
-      width: 100%;
-      height: 400px;
-      position: relative;
-      margin-bottom: 64px;
-      border-radius: 4px;
-      overflow: hidden;
-      background: transparent;
-    }
-
-    .how-steps {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 32px;
-    }
-
-    .how-step {
-      border-top: 1px solid rgba(192,200,216,0.15);
-      padding-top: 24px;
-    }
-
-    .how-step-num {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      color: var(--gold);
-      margin-bottom: 12px;
-      display: block;
-    }
-
-    .how-step-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 28px;
-      letter-spacing: 0.05em;
-      color: var(--text);
-      margin-bottom: 10px;
-    }
-
-    .how-step-body {
-      font-size: 14px;
-      color: var(--chrome);
-      line-height: 1.65;
-    }
-
-    #why-threads {
-      border-top: 1px solid rgba(192,200,216,0.08);
-    }
-
-    .stat-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background: rgba(192,200,216,0.08);
-      border: 1px solid rgba(192,200,216,0.08);
-    }
-
-    .stat-card {
-      background: var(--bg);
-      padding: 40px 32px;
-    }
-
-    .stat-value {
-      font-family: 'DM Mono', monospace;
-      font-size: clamp(28px, 3.5vw, 48px);
-      color: var(--text);
-      letter-spacing: -0.02em;
-      display: block;
-      margin-bottom: 10px;
-      font-weight: 500;
-    }
-
-    .stat-label {
-      font-family: 'Outfit', sans-serif;
-      font-size: 13px;
-      color: var(--chrome);
-      line-height: 1.5;
-    }
-
-    #social-proof {
-      border-top: 1px solid rgba(192,200,216,0.08);
-    }
-
-    .proof-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-
-    .proof-card {
-      background: var(--chrome-faint);
-      border: 1px solid rgba(192,200,216,0.1);
-      padding: 36px 28px;
-      border-radius: 2px;
-    }
-
-    .proof-quote {
-      font-size: 15px;
-      line-height: 1.7;
-      color: var(--text);
-      margin-bottom: 24px;
-      font-style: italic;
-    }
-
-    .proof-quote::before { content: '\201C'; }
-    .proof-quote::after  { content: '\201D'; }
-
-    .proof-author {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      color: var(--chrome-dim);
-      text-transform: uppercase;
-    }
-
-    #pricing {
-      border-top: 1px solid rgba(192,200,216,0.08);
-    }
-
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: rgba(192,200,216,0.08);
-      border: 1px solid rgba(192,200,216,0.08);
-    }
-
-    .pricing-card {
-      background: var(--bg);
-      padding: 48px 36px;
-      position: relative;
-    }
-
-    .pricing-card.featured {
-      border: 1px solid var(--gold);
-      margin: -1px;
-      z-index: 1;
-    }
-
-    .pricing-badge {
-      font-family: 'DM Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 0.18em;
-      color: var(--bg);
-      background: var(--gold);
-      padding: 4px 10px;
-      display: inline-block;
-      margin-bottom: 20px;
-      text-transform: uppercase;
-    }
-
-    .pricing-tier {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 36px;
-      letter-spacing: 0.06em;
-      color: var(--text);
-      margin-bottom: 8px;
-    }
-
-    .pricing-price {
-      font-family: 'DM Mono', monospace;
-      font-size: 22px;
-      color: var(--gold);
-      margin-bottom: 32px;
-      font-weight: 500;
-    }
-
-    .pricing-features {
-      list-style: none;
-      margin-bottom: 40px;
-    }
-
-    .pricing-features li {
-      font-size: 14px;
-      color: var(--chrome);
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(192,200,216,0.07);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .pricing-features li::before {
-      content: '';
-      width: 4px;
-      height: 4px;
-      background: var(--gold);
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    #contact {
-      border-top: 1px solid rgba(192,200,216,0.08);
-      max-width: 640px;
-    }
-
-    .contact-form {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-
-    .form-field {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .form-field label {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.16em;
-      color: var(--chrome-dim);
-      text-transform: uppercase;
-    }
-
-    .form-field input,
-    .form-field select,
-    .form-field textarea {
-      background: rgba(192,200,216,0.05);
-      border: 1px solid rgba(192,200,216,0.15);
-      color: var(--text);
-      font-family: 'Outfit', sans-serif;
-      font-size: 14px;
-      padding: 12px 16px;
-      border-radius: 2px;
-      transition: border-color 0.2s;
-      outline: none;
-    }
-
-    .form-field input:focus,
-    .form-field select:focus,
-    .form-field textarea:focus {
-      border-color: rgba(232,168,62,0.5);
-    }
-
-    .form-field select option { background: #0f0f1a; color: var(--text); }
-
-    .form-status {
-      font-family: 'DM Mono', monospace;
-      font-size: 12px;
-      letter-spacing: 0.1em;
-      min-height: 20px;
-    }
-
-    .form-status.success { color: #4ade80; }
-    .form-status.error   { color: #f87171; }
-
-    footer {
-      border-top: 1px solid rgba(192,200,216,0.08);
-      padding: 60px clamp(20px, 6vw, 80px);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 24px;
-    }
-
-    .footer-left {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .footer-wordmark {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 20px;
-      letter-spacing: 0.08em;
-      color: var(--chrome-dim);
-    }
-
-    .footer-copy {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      color: rgba(192,200,216,0.3);
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 28px;
-      list-style: none;
-    }
-
-    .footer-links a {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      color: rgba(192,200,216,0.4);
-      text-decoration: none;
-      text-transform: uppercase;
-      transition: color 0.2s;
-    }
-
-    .footer-links a:hover { color: var(--chrome); }
-
-    @media (prefers-reduced-motion: reduce) {
-      #three-canvas { display: none; }
-      #static-fallback { display: block; }
-      * { transition-duration: 0ms !important; animation-duration: 0ms !important; }
-    }
-
-    @media (max-width: 768px) {
-      nav { padding: 16px 20px; }
-      .nav-links { display: none; }
-      .how-steps { grid-template-columns: 1fr; }
-      .stat-grid { grid-template-columns: 1fr 1fr; }
-      .proof-grid { grid-template-columns: 1fr; }
-      .pricing-grid { grid-template-columns: 1fr; }
-      .pricing-card.featured { margin: 0; }
-      .form-row { grid-template-columns: 1fr; }
-      footer { flex-direction: column; align-items: flex-start; }
-    }
-
-    @media (max-width: 480px) {
-      .stat-grid { grid-template-columns: 1fr; }
-      .hero-actions { flex-direction: column; }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>CYBERTROOPER — KL's First Threads Creator Network</title>
+<meta name="description" content="We deploy real KL locals to post about your brand authentically on Threads. No bots. No scripts. Real people, real accounts, real engagement." />
+<meta property="og:title" content="CYBERTROOPER — KL's First Threads Creator Network" />
+<meta property="og:description" content="We deploy real KL locals to post about your brand on Threads. Real people. Real engagement. Monthly reports." />
+<meta property="og:type" content="website" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2306060E'/%3E%3Ctext x='3' y='24' font-family='Arial Black,sans-serif' font-weight='900' font-size='18' fill='%23E8A83E'%3ECT%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+/* ── CSS HOUDINI — animated border property ── */
+@property --border-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #06060E;
+  --gold: #E8A83E;
+  --chrome: #C0C8D8;
+  --text: #F2F0EA;
+  --gold-dim: rgba(232,168,62,0.12);
+  --gold-glow: rgba(232,168,62,0.22);
+  --border: rgba(192,200,216,0.1);
+  --section-pad: clamp(5rem,12vw,9rem) clamp(1.25rem,6vw,4.5rem);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 300;
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+
+/* Noise grain overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.038;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Fine grid overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(192,200,216,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(192,200,216,0.025) 1px, transparent 1px);
+  background-size: 56px 56px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem clamp(1.25rem,5vw,4rem);
+  padding-top: max(1rem, env(safe-area-inset-top));
+  background: rgba(6,6,14,0.1);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  border-bottom: 1px solid transparent;
+  transition: background 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease;
+}
+nav.scrolled {
+  background: rgba(6,6,14,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom-color: var(--border);
+}
+
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.8rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--chrome);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--text); }
+
+.nav-pill {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--gold);
+  border: none;
+  padding: 0.45rem 1.1rem;
+  border-radius: 999px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.2s;
+  display: inline-block;
+}
+.nav-pill:hover { opacity: 0.85; }
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 101;
+}
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: transform 0.25s, opacity 0.25s;
+}
+.hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile drawer */
+.nav-drawer {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: rgba(6,6,14,0.97);
+  padding: 5.5rem 2rem 2rem;
+  flex-direction: column;
+  gap: 0;
+}
+.nav-drawer.open { display: flex; }
+.nav-drawer a {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.4rem;
+  letter-spacing: 0.05em;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 0;
+  transition: color 0.2s;
+  display: block;
+}
+.nav-drawer a:hover { color: var(--gold); }
+.nav-drawer .drawer-cta {
+  display: inline-block;
+  margin-top: 1.5rem;
+  color: var(--bg);
+  background: var(--gold);
+  padding: 0.8rem 1.8rem;
+  border-radius: 999px;
+  font-size: 1.5rem;
+  border: none;
+}
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+}
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--section-pad);
+  padding-top: calc(clamp(4rem,10vw,7rem) + 80px);
+  overflow: hidden;
+  z-index: 1;
+}
+
+.hero-glow {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(1000px, 160vw);
+  height: min(700px, 130vw);
+  background: radial-gradient(ellipse at center,
+    rgba(232,168,62,0.16) 0%,
+    rgba(232,168,62,0.05) 45%,
+    transparent 72%);
+  border-radius: 50%;
+  animation: glowPulse 7s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.65; transform: translate(-50%,-50%) scale(1); }
+  50%       { opacity: 1;    transform: translate(-50%,-50%) scale(1.07); }
+}
+
+.hero-content { position: relative; z-index: 1; max-width: 920px; }
+
+/* ── WORD REVEAL ── */
+.word-wrap {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  line-height: 0.92;
+}
+.word {
+  display: inline-block;
+  transform: translateY(110%);
+  opacity: 0;
+  animation: wordReveal 0.9s cubic-bezier(0.16,1,0.3,1) forwards;
+  animation-delay: var(--wd, 0s);
+}
+@keyframes wordReveal {
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* ── SCROLL HINT ── */
+.scroll-hint {
+  position: absolute;
+  bottom: 2.8rem;
+  left: clamp(1.25rem,6vw,4.5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.55rem;
+  z-index: 2;
+  pointer-events: none;
+}
+.scroll-hint span {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(192,200,216,0.4);
+  writing-mode: horizontal-tb;
+}
+.scroll-line {
+  width: 1px;
+  height: 44px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  transform-origin: top;
+  animation: scrollDrop 2s ease-in-out infinite;
+}
+@keyframes scrollDrop {
+  0%   { transform: scaleY(0); opacity: 1; }
+  50%  { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(1); opacity: 0; }
+}
+
+/* ── SOCIAL PROOF BAR ── */
+.proof-bar {
+  position: relative;
+  z-index: 1;
+  background: rgba(232,168,62,0.04);
+  border-top: 1px solid rgba(232,168,62,0.12);
+  border-bottom: 1px solid rgba(232,168,62,0.12);
+  padding: 0.95rem clamp(1.25rem,6vw,4.5rem);
+  overflow: hidden;
+}
+.proof-bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(232,168,62,0.04), transparent);
+  animation: proofShimmer 4s ease-in-out infinite;
+}
+@keyframes proofShimmer {
+  0%, 100% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+}
+.proof-inner {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.proof-item {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  color: rgba(192,200,216,0.65);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.proof-item strong {
+  color: var(--gold);
+  font-weight: 500;
+}
+.proof-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+  opacity: 0.5;
+}
+
+/* ── CUSTOM CURSOR ── */
+#ct-cursor {
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 10000;
+  mix-blend-mode: normal;
+}
+.cursor-ring {
+  position: absolute;
+  width: 36px; height: 36px;
+  border: 1.5px solid rgba(232,168,62,0.5);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.12s ease, width 0.2s ease, height 0.2s ease, border-color 0.2s;
+}
+.cursor-dot {
+  position: absolute;
+  width: 5px; height: 5px;
+  background: var(--gold);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.05s linear;
+}
+body.cursor-hover .cursor-ring {
+  width: 52px; height: 52px;
+  border-color: rgba(232,168,62,0.8);
+}
+
+/* ── ANIMATED BORDER — featured tier card ── */
+.tier-card.featured {
+  --border-angle: 0deg;
+  background:
+    linear-gradient(rgba(6,6,14,0.95), rgba(6,6,14,0.9)) padding-box,
+    conic-gradient(from var(--border-angle),
+      rgba(232,168,62,0) 0deg,
+      var(--gold) 60deg,
+      rgba(232,168,62,0) 120deg,
+      rgba(232,168,62,0) 240deg,
+      var(--gold) 300deg,
+      rgba(232,168,62,0) 360deg
+    ) border-box;
+  border: 1.5px solid transparent;
+  animation: spinBorder 4s linear infinite;
+  box-shadow: 0 0 48px rgba(232,168,62,0.12), 0 0 2px rgba(232,168,62,0.08);
+}
+@keyframes spinBorder {
+  to { --border-angle: 360deg; }
+}
+
+/* ── NUMBER COUNTER ── */
+.stat-num[data-target] { display: block; }
+
+.eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(0.62rem, 1.1vw, 0.78rem);
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+  opacity: 0.9;
+}
+
+.hero h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(72px, 14vw, 180px);
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  margin-bottom: 1.8rem;
+}
+
+.hero-sub {
+  font-size: clamp(1rem, 1.7vw, 1.2rem);
+  font-weight: 300;
+  color: var(--chrome);
+  max-width: 560px;
+  margin-bottom: 2.8rem;
+  line-height: 1.75;
+}
+
+.cta-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-gold {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.76rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--gold);
+  border: none;
+  padding: 0.9rem 2.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.2s, transform 0.15s;
+  display: inline-block;
+}
+.btn-gold:hover { opacity: 0.85; transform: translateY(-1px); }
+
+.btn-ghost {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.76rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid rgba(242,240,234,0.28);
+  padding: 0.9rem 2.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color 0.2s, transform 0.15s;
+  display: inline-block;
+}
+.btn-ghost:hover { border-color: var(--text); transform: translateY(-1px); }
+
+/* ── SECTIONS ── */
+section { padding: var(--section-pad); position: relative; z-index: 1; }
+.section-inner { max-width: 1100px; margin: 0 auto; }
+
+.section-heading {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.8rem, 6.5vw, 5.5rem);
+  letter-spacing: 0.03em;
+  line-height: 1;
+  color: var(--text);
+  margin-bottom: 2.5rem;
+}
+
+/* ── HOW IT WORKS ── */
+#how {
+  background: rgba(255,255,255,0.012);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.steps { display: flex; flex-direction: column; }
+
+.step {
+  display: flex;
+  gap: 2rem;
+  padding: 2.5rem 0 2.5rem 2rem;
+  border-bottom: 1px solid var(--border);
+  border-left: 3px solid var(--gold);
+  align-items: flex-start;
+}
+.step:last-child { border-bottom: none; }
+
+.step-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  min-width: 2rem;
+  padding-top: 0.25rem;
+}
+
+.step-body h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.65rem;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.step-body p {
+  font-size: 1rem;
+  color: var(--chrome);
+  max-width: 580px;
+  line-height: 1.75;
+}
+
+/* ── WHY THREADS ── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+/* stat-card styles defined below in Glassmorphism 2.0 block */
+
+.stat-card-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  display: block;
+  margin-bottom: 0.5rem;
+  line-height: 1;
+}
+
+.stat-card p {
+  font-size: clamp(0.92rem, 1.5vw, 1.05rem);
+  line-height: 1.65;
+  color: var(--chrome);
+}
+
+@media (max-width: 600px) {
+  .stat-grid { grid-template-columns: 1fr; }
+}
+
+/* ── TIERS ── */
+#tiers { border-top: 1px solid var(--border); }
+
+.tiers-sub {
+  font-size: 1rem;
+  color: var(--chrome);
+  max-width: 520px;
+  margin-bottom: 3rem;
+  margin-top: -1.5rem;
+  line-height: 1.75;
+}
+
+.tiers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+}
+
+/* tier-card styles defined below in 3D Tilt block */
+
+.tier-card.featured {
+  border-color: var(--gold);
+  background: rgba(232,168,62,0.05);
+  box-shadow: 0 0 48px rgba(232,168,62,0.1);
+}
+
+.tier-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--gold);
+  padding: 0.28rem 0.65rem;
+  border-radius: 999px;
+  display: inline-block;
+  align-self: flex-start;
+}
+
+.tier-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.4rem;
+  letter-spacing: 0.05em;
+  color: var(--text);
+  line-height: 1;
+}
+
+.tier-count {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+.tier-desc {
+  font-size: 0.95rem;
+  color: var(--chrome);
+  line-height: 1.65;
+  flex: 1;
+}
+
+.tier-rate {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: rgba(192,200,216,0.4);
+  text-transform: uppercase;
+  border-top: 1px solid var(--border);
+  padding-top: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .tiers-grid { grid-template-columns: 1fr; max-width: 480px; }
+}
+
+/* ── CONTACT ── */
+#contact { border-top: 1px solid var(--border); }
+
+.contact-sub {
+  font-size: 1rem;
+  color: var(--chrome);
+  margin-bottom: 2.5rem;
+  margin-top: -1.5rem;
+  line-height: 1.75;
+}
+
+form { display: grid; gap: 1rem; max-width: 640px; }
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.field { display: flex; flex-direction: column; gap: 0.4rem; }
+
+.field label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--chrome);
+}
+
+.field input,
+.field select,
+.field textarea {
+  font-size: 16px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 300;
+  color: var(--text);
+  background: rgba(255,255,255,0.035);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C0C8D8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-color: rgba(255,255,255,0.035);
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+.field input::placeholder,
+.field textarea::placeholder { color: rgba(192,200,216,0.3); }
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus { border-color: var(--gold); }
+
+.field option { background: #0f0f1e; color: var(--text); }
+
+textarea { resize: vertical; min-height: 130px; }
+
+.form-success {
+  display: none;
+  background: rgba(232,168,62,0.07);
+  border: 1px solid rgba(232,168,62,0.4);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+.form-success.visible { display: block; }
+.form-success p {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 2.5rem clamp(1.25rem,5vw,4rem);
+  padding-bottom: max(2.5rem, calc(2.5rem + env(safe-area-inset-bottom)));
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+
+.footer-brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  display: block;
+  text-decoration: none;
+  margin-bottom: 0.25rem;
+}
+
+.footer-by {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  color: rgba(192,200,216,0.4);
+  text-transform: uppercase;
+}
+
+.footer-right { display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem; }
+
+.footer-right a {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--chrome);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-right a:hover { color: var(--gold); }
+
+.footer-copy {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  color: rgba(192,200,216,0.28);
+  text-transform: uppercase;
+}
+
+/* ── SCROLL PROGRESS BAR ── */
+#scroll-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: var(--gold);
+  z-index: 1001;
+  width: 0%;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 10px rgba(232,168,62,0.55), 0 0 3px rgba(232,168,62,0.9);
+  pointer-events: none;
+}
+
+/* ── HERO CANVAS ── */
+#hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── GLASSMORPHISM 2.0 stat cards ── */
+.stat-card {
+  background: rgba(6,6,14,0.45);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(192,200,216,0.13);
+  border-radius: 12px;
+  padding: 2rem 1.8rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+.stat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.032;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+.stat-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(232,168,62,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+.stat-card:hover {
+  border-color: rgba(232,168,62,0.32);
+  box-shadow: 0 0 40px rgba(232,168,62,0.08), 0 8px 32px rgba(0,0,0,0.4);
+  transform: translateY(-3px);
+}
+
+/* ── 3D TILT CARDS ── */
+.tier-card {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2.2rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+  position: relative;
+  overflow: hidden;
+}
+.tier-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 60%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.tier-card:hover::before { opacity: 1; }
+
+/* ── SCROLL REVEAL ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.75s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── REDUCED MOTION ── */
+@media (prefers-reduced-motion: reduce) {
+  .hero-glow { animation: none; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+/* ── TOUCH ── */
+@media (hover: none) {
+  .btn-gold:hover,
+  .btn-ghost:hover { transform: none; }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .hero h1 { font-size: clamp(64px, 18vw, 120px); }
+  footer { flex-direction: column; }
+  .footer-right { align-items: flex-start; }
+  .form-row { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .cta-group { flex-direction: column; }
+  .btn-gold, .btn-ghost { text-align: center; }
+}
+</style>
 </head>
 <body>
 
-  <nav role="navigation" aria-label="Main navigation">
-    <a href="#" class="nav-wordmark" aria-label="CYBERTROOPER home">CYBERTROOPER</a>
-    <ul class="nav-links">
-      <li><a href="#how-it-works">How It Works</a></li>
-      <li><a href="#why-threads">Why Threads</a></li>
-      <li><a href="#pricing">Pricing</a></li>
-      <li><a href="become-a-trooper.html">Become a Trooper</a></li>
-      <li><a href="#contact" class="nav-cta">Brief Us</a></li>
-    </ul>
-  </nav>
+<!-- SCROLL PROGRESS -->
+<div id="scroll-bar" aria-hidden="true"></div>
+<!-- CUSTOM CURSOR -->
+<div id="ct-cursor" aria-hidden="true">
+  <div class="cursor-ring"></div>
+  <div class="cursor-dot"></div>
+</div>
 
-  <section id="hero" aria-label="Hero">
-    <canvas id="three-canvas" aria-hidden="true"></canvas>
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">CYBERTROOPER</a>
+  <ul class="nav-links">
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#tiers">Tiers</a></li>
+    <li><a href="#contact">Brief Us</a></li>
+    <li><a href="become-a-trooper.html" class="nav-pill">Become a Trooper</a></li>
+  </ul>
+  <button class="hamburger" aria-label="Open menu" aria-expanded="false" id="hamburger">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
 
-    <div id="static-fallback" aria-hidden="true">
-      <svg width="100%" height="100%" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="400" cy="300" r="40" fill="none" stroke="#C0C8D8" stroke-width="1.5" opacity="0.6"/>
-        <circle cx="400" cy="300" r="22" fill="#C0C8D8" opacity="0.15"/>
-        <circle cx="400" cy="300" r="10" fill="#C0C8D8" opacity="0.5"/>
-        <circle cx="160" cy="140" r="5" fill="#C0C8D8" opacity="0.25"/>
-        <circle cx="620" cy="100" r="4" fill="#C0C8D8" opacity="0.2"/>
-        <circle cx="100" cy="350" r="6" fill="#C0C8D8" opacity="0.2"/>
-        <circle cx="680" cy="420" r="5" fill="#C0C8D8" opacity="0.25"/>
-        <circle cx="260" cy="480" r="4" fill="#C0C8D8" opacity="0.2"/>
-        <circle cx="550" cy="500" r="6" fill="#C0C8D8" opacity="0.2"/>
-        <line x1="400" y1="300" x2="160" y2="140" stroke="#C0C8D8" stroke-width="0.5" opacity="0.1"/>
-        <line x1="400" y1="300" x2="620" y2="100" stroke="#C0C8D8" stroke-width="0.5" opacity="0.1"/>
-        <line x1="400" y1="300" x2="100" y2="350" stroke="#C0C8D8" stroke-width="0.5" opacity="0.1"/>
-        <line x1="400" y1="300" x2="680" y2="420" stroke="#C0C8D8" stroke-width="0.5" opacity="0.1"/>
-        <line x1="400" y1="300" x2="260" y2="480" stroke="#C0C8D8" stroke-width="0.5" opacity="0.1"/>
-        <line x1="400" y1="300" x2="550" y2="500" stroke="#C0C8D8" stroke-width="0.5" opacity="0.1"/>
-      </svg>
+<!-- MOBILE DRAWER -->
+<div class="nav-drawer" id="drawer" role="dialog" aria-label="Navigation menu">
+  <a href="#how">How It Works</a>
+  <a href="#tiers">Tiers</a>
+  <a href="#contact">Brief Us</a>
+  <a href="become-a-trooper.html" class="drawer-cta">Become a Trooper</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <canvas id="hero-canvas" aria-hidden="true"></canvas>
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="hero-content">
+    <p class="eyebrow">[KL's First Threads Creator Network]</p>
+    <h1 id="hero-h1">YOUR BRAND.<br>THEIR VOICE.<br>REAL REACH.</h1>
+    <p class="hero-sub">We deploy real KL locals to post about your brand authentically on Threads. No bots. No scripts. Real people, real accounts, real engagement.</p>
+    <div class="cta-group">
+      <a href="#contact" class="btn-gold">BRIEF US</a>
+      <a href="#how" class="btn-ghost">HOW IT WORKS</a>
     </div>
+  </div>
+  <div class="scroll-hint" aria-hidden="true">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
 
-    <div class="hero-content">
-      <p class="hero-eyebrow">[KL'S FIRST THREADS INFLUENCER NETWORK]</p>
-      <h1 class="hero-headline">
-        YOUR BRAND.<br>
-        THEIR <span class="line-gold">VOICE.</span><br>
-        REAL REACH.
-      </h1>
-      <p class="hero-sub">Brief once. Deploy everywhere. Measure what matters.</p>
-      <div class="hero-actions">
-        <a href="#contact" class="btn-gold">BRIEF US</a>
-        <a href="#how-it-works" class="btn-ghost">SEE HOW IT WORKS</a>
-      </div>
-    </div>
-  </section>
+<!-- SOCIAL PROOF BAR -->
+<div class="proof-bar" aria-label="Live stats">
+  <div class="proof-inner">
+    <div class="proof-item"><span class="proof-dot"></span> <strong>40+</strong> Troopers active across KL</div>
+    <div class="proof-item"><span class="proof-dot"></span> <strong>3</strong> brand campaigns running now</div>
+    <div class="proof-item"><span class="proof-dot"></span> Applications reviewed every <strong>Monday</strong></div>
+    <div class="proof-item"><span class="proof-dot"></span> <strong>100%</strong> authentic — zero bot accounts</div>
+  </div>
+</div>
 
-  <section id="how-it-works" aria-labelledby="hiw-heading">
-    <span class="section-eyebrow">[SIGNAL ARCHITECTURE]</span>
-    <h2 class="section-headline" id="hiw-heading">HOW IT WORKS</h2>
-    <div id="how-canvas-wrap" aria-hidden="true"></div>
-    <div class="how-steps">
-      <div class="how-step">
-        <span class="how-step-num">01 — BRIEF</span>
-        <div class="how-step-title">BRAND BRIEFS</div>
-        <p class="how-step-body">You send us your campaign objective, tone, and target audience. We translate it into a brief our Trooper network can execute authentically.</p>
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="section-inner">
+    <p class="eyebrow">[Signal Architecture]</p>
+    <h2 class="section-heading">HOW IT WORKS</h2>
+    <div class="steps">
+      <div class="step reveal">
+        <span class="step-num">01</span>
+        <div class="step-body">
+          <h3>BRIEF</h3>
+          <p>You send us your campaign objective, tone, and target audience. We translate it into talking points our Trooper network can execute authentically.</p>
+        </div>
       </div>
-      <div class="how-step">
-        <span class="how-step-num">02 — DEPLOY</span>
-        <div class="how-step-title">TROOPERS POST</div>
-        <p class="how-step-body">Our vetted KL-based Threads creators post in their own voice — real accounts, real engagement, real context. Not bots. Not reposts.</p>
+      <div class="step reveal" style="transition-delay:0.12s">
+        <span class="step-num">02</span>
+        <div class="step-body">
+          <h3>DEPLOY</h3>
+          <p>We activate the right Troopers for your brand — matched by location, vibe, and audience. They post in their own voice. No copy-pasting. No disclaimers.</p>
+        </div>
       </div>
-      <div class="how-step">
-        <span class="how-step-num">03 — MEASURE</span>
-        <div class="how-step-title">YOU TRACK</div>
-        <p class="how-step-body">Every campaign comes with a results report: reach, engagement rate, sentiment, and a breakdown by Trooper tier. You own the data.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="why-threads" aria-labelledby="wt-heading">
-    <span class="section-eyebrow">[THE WINDOW]</span>
-    <h2 class="section-headline" id="wt-heading">WHY THREADS NOW</h2>
-    <div class="stat-grid" role="list">
-      <div class="stat-card" role="listitem">
-        <span class="stat-value">400M+</span>
-        <span class="stat-label">Active monthly users globally — and growing faster than any other text platform.</span>
-      </div>
-      <div class="stat-card" role="listitem">
-        <span class="stat-value">4–8%</span>
-        <span class="stat-label">Average engagement rate per post. Instagram averages 1–3%. This gap won't last.</span>
-      </div>
-      <div class="stat-card" role="listitem">
-        <span class="stat-value">Pre-saturation</span>
-        <span class="stat-label">First-mover window is open now. Sponsored content density is still low on Threads.</span>
-      </div>
-      <div class="stat-card" role="listitem">
-        <span class="stat-value">KL-native</span>
-        <span class="stat-label">Our Trooper network is 100% Klang Valley based — the local credibility that regional accounts can't fake.</span>
+      <div class="step reveal" style="transition-delay:0.24s">
+        <span class="step-num">03</span>
+        <div class="step-body">
+          <h3>REPORT</h3>
+          <p>At the end of each month, you receive a campaign report: posts delivered, top-performing content, and engagement highlights.</p>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section id="social-proof" aria-labelledby="sp-heading">
-    <span class="section-eyebrow">[FIELD REPORTS]</span>
-    <h2 class="section-headline" id="sp-heading">WHAT BRANDS SAY</h2>
-    <div class="proof-grid">
-      <div class="proof-card">
-        <p class="proof-quote">We ran our Ramadan launch through CYBERTROOPER. Sixteen posts in five days, all sounding like actual KL people — because they were. Engagement outperformed our IG campaign by a factor of three.</p>
-        <span class="proof-author">Head of Digital — Pavilion Retail Group</span>
+<!-- WHY THREADS -->
+<section id="why">
+  <div class="section-inner">
+    <p class="eyebrow">[Signal Advantage]</p>
+    <h2 class="section-heading">WHY THREADS</h2>
+    <div class="stat-grid">
+      <div class="stat-card reveal">
+        <span class="stat-card-label stat-num" data-target="100" data-suffix="M+">100M+</span>
+        <p>Users globally — growing fastest in Southeast Asia.</p>
       </div>
-      <div class="proof-card">
-        <p class="proof-quote">The brief-to-live time was under 48 hours. For a brand activation tied to a trending moment, that speed is everything. The Troopers nailed the tone without us having to rewrite a single post.</p>
-        <span class="proof-author">Brand Manager — AEON Malaysia</span>
+      <div class="stat-card reveal" style="transition-delay:0.1s">
+        <span class="stat-card-label">Text-First</span>
+        <p>Format rewards authentic voice over polished ads. Real words cut through.</p>
       </div>
-      <div class="proof-card">
-        <p class="proof-quote">Other agencies give you influencers with KL in their bio. CYBERTROOPER gives you people who actually grew up here. That local authenticity shows in every comment thread.</p>
-        <span class="proof-author">Marketing Director — MyTOWN Shopping Centre</span>
+      <div class="stat-card reveal" style="transition-delay:0.2s">
+        <span class="stat-card-label">KL's Crowd</span>
+        <p>Early-adopters and tastemakers — the audience brands actually want to reach.</p>
+      </div>
+      <div class="stat-card reveal" style="transition-delay:0.3s">
+        <span class="stat-card-label stat-num" data-target="5" data-suffix="×" data-prefix="3–">3–5×</span>
+        <p>Real posts from real people outperform sponsored content on engagement.</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section id="pricing" aria-labelledby="pricing-heading">
-    <span class="section-eyebrow">[ENGAGEMENT TIERS]</span>
-    <h2 class="section-headline" id="pricing-heading">CHOOSE YOUR SIGNAL RANGE</h2>
-    <div class="pricing-grid" role="list">
-      <div class="pricing-card" role="listitem">
-        <div class="pricing-tier">STARTER</div>
-        <div class="pricing-price">RM 2,500 / mo</div>
-        <ul class="pricing-features" aria-label="Starter tier features">
-          <li>5 Troopers per campaign</li>
-          <li>3 posts per Trooper</li>
-          <li>1 active campaign at a time</li>
-          <li>Standard results report</li>
-          <li>48-hour brief turnaround</li>
-        </ul>
-        <a href="#contact" class="btn-gold" style="width:100%;text-align:center;display:block;">BRIEF US</a>
+<!-- TIERS -->
+<section id="tiers">
+  <div class="section-inner">
+    <p class="eyebrow">[Campaign Tiers]</p>
+    <h2 class="section-heading">PICK YOUR SCALE</h2>
+    <p class="tiers-sub">Rates revealed after your brief. Every tier includes monthly content strategy, trooper activation, and a campaign report.</p>
+    <div class="tiers-grid">
+      <div class="tier-card reveal">
+        <span class="tier-name">SEED</span>
+        <span class="tier-count">5 Troopers / month</span>
+        <p class="tier-desc">Best for testing the network and niche targeting. Start small, learn fast.</p>
+        <span class="tier-rate">Rate on application</span>
+        <a href="#contact" class="btn-gold" style="text-align:center;margin-top:0.5rem;">BRIEF US</a>
       </div>
-      <div class="pricing-card featured" role="listitem" aria-label="Growth tier — most popular">
-        <span class="pricing-badge">MOST POPULAR</span>
-        <div class="pricing-tier">GROWTH</div>
-        <div class="pricing-price">RM 5,500 / mo</div>
-        <ul class="pricing-features" aria-label="Growth tier features">
-          <li>15 Troopers per campaign</li>
-          <li>5 posts per Trooper</li>
-          <li>2 active campaigns at a time</li>
-          <li>Detailed analytics dashboard</li>
-          <li>24-hour brief turnaround</li>
-          <li>Dedicated campaign manager</li>
-        </ul>
-        <a href="#contact" class="btn-gold" style="width:100%;text-align:center;display:block;">BRIEF US</a>
+      <div class="tier-card featured reveal" style="transition-delay:0.12s">
+        <span class="tier-badge">Most Popular</span>
+        <span class="tier-name">GROWTH</span>
+        <span class="tier-count">15 Troopers / month</span>
+        <p class="tier-desc">Best for building consistent share-of-voice across KL's Threads community.</p>
+        <span class="tier-rate">Rate on application</span>
+        <a href="#contact" class="btn-gold" style="text-align:center;margin-top:0.5rem;">BRIEF US</a>
       </div>
-      <div class="pricing-card" role="listitem">
-        <div class="pricing-tier">SCALE</div>
-        <div class="pricing-price">Custom</div>
-        <ul class="pricing-features" aria-label="Scale tier features">
-          <li>40+ Troopers per campaign</li>
-          <li>Unlimited posts</li>
-          <li>Multiple simultaneous campaigns</li>
-          <li>Full-service campaign strategy</li>
-          <li>API access to data</li>
-          <li>Quarterly planning sessions</li>
-        </ul>
-        <a href="#contact" class="btn-gold" style="width:100%;text-align:center;display:block;">BRIEF US</a>
+      <div class="tier-card reveal" style="transition-delay:0.24s">
+        <span class="tier-name">ELITE</span>
+        <span class="tier-count">30 Troopers / month</span>
+        <p class="tier-desc">Best for maximum reach and product launches. Full-network activation.</p>
+        <span class="tier-rate">Rate on application</span>
+        <a href="#contact" class="btn-gold" style="text-align:center;margin-top:0.5rem;">BRIEF US</a>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section id="contact" aria-labelledby="contact-heading" style="max-width:680px; margin: 0 auto;">
-    <span class="section-eyebrow">[BRIEF US]</span>
-    <h2 class="section-headline" id="contact-heading">START YOUR CAMPAIGN</h2>
-    <form class="contact-form" id="brief-form" novalidate>
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <p class="eyebrow">[Open Transmission]</p>
+    <h2 class="section-heading">BRIEF US</h2>
+    <p class="contact-sub">Tell us about your brand. We'll come back within 48 hours.</p>
+    <form id="brief-form" novalidate>
       <div class="form-row">
-        <div class="form-field">
-          <label for="brief-name">Your Name</label>
-          <input type="text" id="brief-name" name="name" required placeholder="Jane Tan" autocomplete="name">
+        <div class="field">
+          <label for="brand-name">Brand Name</label>
+          <input type="text" id="brand-name" name="brand_name" placeholder="Your brand" required />
         </div>
-        <div class="form-field">
-          <label for="brief-brand">Brand / Company</label>
-          <input type="text" id="brief-brand" name="brand" required placeholder="Your brand name">
+        <div class="field">
+          <label for="your-name">Your Name</label>
+          <input type="text" id="your-name" name="your_name" placeholder="First Last" required />
         </div>
       </div>
-      <div class="form-field">
-        <label for="brief-email">Work Email</label>
-        <input type="email" id="brief-email" name="email" required placeholder="you@yourbrand.com" autocomplete="email">
+      <div class="form-row">
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="you@brand.com" required />
+        </div>
+        <div class="field">
+          <label for="whatsapp">WhatsApp</label>
+          <input type="tel" id="whatsapp" name="whatsapp" placeholder="+60 12 345 6789" required />
+        </div>
       </div>
-      <div class="form-field">
-        <label for="brief-budget">Monthly Budget</label>
-        <select id="brief-budget" name="budget" required>
-          <option value="" disabled selected>Select range</option>
-          <option value="rm2500">RM 2,500 (Starter)</option>
-          <option value="rm5500">RM 5,500 (Growth)</option>
-          <option value="custom">Custom (Scale)</option>
+      <div class="field">
+        <label for="tier">Tier Interest</label>
+        <select id="tier" name="tier">
+          <option value="">Select a tier</option>
+          <option value="Seed">Seed — 5 Troopers/month</option>
+          <option value="Growth">Growth — 15 Troopers/month</option>
+          <option value="Elite">Elite — 30 Troopers/month</option>
+          <option value="Not sure">Not sure yet</option>
         </select>
       </div>
-      <div aria-live="polite" aria-atomic="true">
-        <p class="form-status" id="brief-status"></p>
+      <div class="field">
+        <label for="brief">Campaign Brief</label>
+        <textarea id="brief" name="brief" rows="5" placeholder="Tell us your campaign objective, target audience, and any tone or brand guidelines we should know."></textarea>
       </div>
-      <button type="submit" class="btn-gold" style="align-self:flex-start;">SEND BRIEF</button>
+      <button type="submit" class="btn-gold" style="width:100%;padding:1rem 2rem;font-size:0.82rem;letter-spacing:0.18em;">SEND BRIEF</button>
     </form>
-  </section>
-
-  <footer role="contentinfo">
-    <div class="footer-left">
-      <svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true">
-        <circle cx="18" cy="18" r="2" fill="#C0C8D8" opacity="0.6"/>
-        <circle cx="18" cy="18" r="7" fill="none" stroke="#C0C8D8" stroke-width="0.75" opacity="0.3"/>
-        <circle cx="18" cy="18" r="13" fill="none" stroke="#C0C8D8" stroke-width="0.5" opacity="0.2"/>
-        <path d="M18 5 A13 13 0 0 1 31 18" fill="none" stroke="#E8A83E" stroke-width="1" opacity="0.5"/>
-      </svg>
-      <div>
-        <div class="footer-wordmark">CYBERTROOPER</div>
-        <div class="footer-copy">© 2026 CYBERTROOPER by 3Sixty Marketing</div>
-      </div>
+    <div class="form-success" id="form-success">
+      <p>✦ &nbsp;Brief received — we'll be in touch within 48 hours. Check your WhatsApp.</p>
     </div>
-    <ul class="footer-links">
-      <li><a href="become-a-trooper.html">Become a Trooper</a></li>
-      <li><a href="#">Privacy</a></li>
-      <li><a href="#">Terms</a></li>
-    </ul>
-  </footer>
+  </div>
+</section>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <a href="/" class="footer-brand">CYBERTROOPER</a>
+    <span class="footer-by">by 3Sixty Marketing</span>
+  </div>
+  <div class="footer-right">
+    <a href="become-a-trooper.html">Are you a creator? Join the network →</a>
+    <span class="footer-copy">© 2026 CYBERTROOPER</span>
+  </div>
+</footer>
 
-  <script>
-  (function() {
-    'use strict';
+<script>
+// ── Nav scroll state ──
+const navEl = document.querySelector('nav');
+window.addEventListener('scroll', () => {
+  navEl.classList.toggle('scrolled', window.scrollY > 60);
+  const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
+  scrollBar.style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
 
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// ── Custom cursor (desktop only) ──
+(function() {
+  const isTouchDevice = window.matchMedia('(hover: none)').matches;
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cursor = document.getElementById('ct-cursor');
+  if (!cursor || isTouchDevice || prefersReduced) { if(cursor) cursor.style.display='none'; return; }
+  const ring = cursor.querySelector('.cursor-ring');
+  const dot  = cursor.querySelector('.cursor-dot');
+  let rx = 0, ry = 0, dx = 0, dy = 0;
+  let raf;
+  document.addEventListener('mousemove', e => { dx = e.clientX; dy = e.clientY; });
+  function moveCursor() {
+    rx += (dx - rx) * 0.14;
+    ry += (dy - ry) * 0.14;
+    ring.style.transform = `translate(calc(${rx}px - 50%), calc(${ry}px - 50%))`;
+    dot.style.transform  = `translate(calc(${dx}px - 50%), calc(${dy}px - 50%))`;
+    raf = requestAnimationFrame(moveCursor);
+  }
+  moveCursor();
+  document.querySelectorAll('a, button, .tier-card, .stat-card').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+  });
+  document.addEventListener('mouseleave', () => { if(raf) cancelAnimationFrame(raf); });
+  document.addEventListener('mouseenter', () => moveCursor());
+})();
 
-    const briefForm = document.getElementById('brief-form');
-    const briefStatus = document.getElementById('brief-status');
+// ── Hero word reveal ──
+(function() {
+  const h1 = document.getElementById('hero-h1');
+  if (!h1) return;
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
+  const lines = h1.innerHTML.split('<br>');
+  let wordIdx = 0;
+  h1.innerHTML = lines.map(line =>
+    line.trim().split(/\s+/).map(word => {
+      const delay = 0.3 + wordIdx++ * 0.1;
+      return `<span class="word-wrap"><span class="word" style="--wd:${delay}s">${word}</span></span>`;
+    }).join(' ')
+  ).join('<br>');
+})();
 
-    briefForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const name = briefForm.querySelector('#brief-name').value.trim();
-      const email = briefForm.querySelector('#brief-email').value.trim();
-      const brand = briefForm.querySelector('#brief-brand').value.trim();
-      const budget = briefForm.querySelector('#brief-budget').value;
+// ── Hamburger / Drawer ──
+const hamburger = document.getElementById('hamburger');
+const drawer = document.getElementById('drawer');
 
-      if (!name || !email || !brand || !budget) {
-        briefStatus.textContent = 'Please fill in all fields.';
-        briefStatus.className = 'form-status error';
-        return;
-      }
+function openDrawer() {
+  drawer.classList.add('open');
+  hamburger.setAttribute('aria-expanded', 'true');
+  document.body.style.overflow = 'hidden';
+}
+function closeDrawer() {
+  drawer.classList.remove('open');
+  hamburger.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+}
+hamburger.addEventListener('click', () => drawer.classList.contains('open') ? closeDrawer() : openDrawer());
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+drawer.addEventListener('click', e => { if (e.target === drawer) closeDrawer(); });
+drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => closeDrawer()));
 
-      briefStatus.textContent = 'WE\'LL BE IN TOUCH WITHIN 24 HOURS. WATCH YOUR INBOX.';
-      briefStatus.className = 'form-status success';
-      briefForm.reset();
-    });
+// ── Scroll progress bar ──
+const scrollBar = document.getElementById('scroll-bar');
 
-    if (prefersReduced || !window.WebGLRenderingContext) {
-      document.getElementById('three-canvas').style.display = 'none';
-      document.getElementById('static-fallback').style.display = 'block';
-      return;
+// ── Scroll reveal (IntersectionObserver) ──
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
     }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-    let scene, camera, renderer, centralMesh, satelliteGroup, animationId;
-    let clock;
-    const SATELLITE_COUNT = 64;
-    const satellites = [];
-    const targetPositions = [];
-    const homePositions = [];
+// ── Number counter animation ──
+function animateCounter(el) {
+  const target = parseInt(el.dataset.target, 10);
+  const suffix = el.dataset.suffix || '';
+  const prefix = el.dataset.prefix || '';
+  if (!target) return;
+  const duration = 1800;
+  const start = performance.now();
+  function tick(now) {
+    const p = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = prefix + Math.floor(eased * target) + suffix;
+    if (p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
 
-    function initThree() {
-      try {
-        const canvas = document.getElementById('three-canvas');
-        renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        renderer.setClearColor(0x000000, 0);
-        renderer.setSize(window.innerWidth, window.innerHeight);
+const counterObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      animateCounter(e.target);
+      counterObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.stat-num[data-target]').forEach(el => counterObserver.observe(el));
 
-        scene = new THREE.Scene();
-        clock = new THREE.Clock();
+// ── Particle constellation (desktop only, respects reduced-motion) ──
+const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const canvas = document.getElementById('hero-canvas');
 
-        camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 0, 18);
+if (canvas && !prefersReduced) {
+  const ctx = canvas.getContext('2d');
+  let W, H, particles, mouse = { x: 0, y: 0 }, raf;
 
-        scene.add(new THREE.AmbientLight(0xffffff, 0.4));
-        const dirLight = new THREE.DirectionalLight(0xC0C8D8, 1.2);
-        dirLight.position.set(5, 8, 10);
-        scene.add(dirLight);
-        const goldLight = new THREE.PointLight(0xE8A83E, 0.6, 30);
-        goldLight.position.set(-4, 2, 6);
-        scene.add(goldLight);
+  function resize() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
 
-        const centralGeo = new THREE.SphereGeometry(1.2, 64, 64);
-        const centralMat = new THREE.MeshPhongMaterial({
-          color: 0xC0C8D8,
-          specular: 0xffffff,
-          shininess: 180,
-          transparent: true,
-          opacity: 0.9,
-        });
-        centralMesh = new THREE.Mesh(centralGeo, centralMat);
-        scene.add(centralMesh);
+  function initParticles() {
+    const NUM = W > 768 ? 90 : 50;
+    particles = Array.from({ length: NUM }, (_, i) => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.28,
+      vy: (Math.random() - 0.5) * 0.28,
+      r: i === 0 ? 4 : Math.random() * 1.6 + 0.5,
+      gold: i < 3,
+    }));
+  }
 
-        const ringGeo = new THREE.RingGeometry(1.4, 1.6, 64);
-        const ringMat = new THREE.MeshBasicMaterial({ color: 0xE8A83E, side: THREE.DoubleSide, transparent: true, opacity: 0.4 });
-        const ring = new THREE.Mesh(ringGeo, ringMat);
-        centralMesh.add(ring);
+  function drawFrame() {
+    ctx.clearRect(0, 0, W, H);
+    const MAX_D = W > 768 ? 150 : 100;
 
-        satelliteGroup = new THREE.Group();
-        scene.add(satelliteGroup);
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      // mouse attract
+      const mdx = mouse.x - p.x, mdy = mouse.y - p.y;
+      const md = Math.hypot(mdx, mdy);
+      if (md < 250 && md > 0) {
+        p.vx += (mdx / md) * 0.006;
+        p.vy += (mdy / md) * 0.006;
+      }
+      // damping
+      p.vx *= 0.995; p.vy *= 0.995;
+      p.x += p.vx; p.y += p.vy;
+      // wrap
+      if (p.x < -5) p.x = W + 5;
+      if (p.x > W + 5) p.x = -5;
+      if (p.y < -5) p.y = H + 5;
+      if (p.y > H + 5) p.y = -5;
 
-        const satGeo = new THREE.SphereGeometry(0.12, 16, 16);
+      // draw dot
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.gold ? 'rgba(232,168,62,0.85)' : 'rgba(192,200,216,0.55)';
+      ctx.fill();
 
-        for (let i = 0; i < SATELLITE_COUNT; i++) {
-          const phi   = Math.acos((Math.random() * 2) - 1);
-          const theta = Math.random() * Math.PI * 2;
-          const r     = 5 + Math.random() * 6;
-
-          const x = r * Math.sin(phi) * Math.cos(theta);
-          const y = r * Math.sin(phi) * Math.sin(theta);
-          const z = r * Math.cos(phi) * 0.6;
-
-          homePositions.push(new THREE.Vector3(x, y, z));
-
-          const brightness = 0.15 + Math.random() * 0.25;
-          const satMat = new THREE.MeshPhongMaterial({
-            color: new THREE.Color(brightness, brightness + 0.05, brightness + 0.1),
-            transparent: true,
-            opacity: 0,
-          });
-          const sat = new THREE.Mesh(satGeo, satMat);
-          sat.position.set(0, 0, 0);
-          satelliteGroup.add(sat);
-          satellites.push(sat);
-          targetPositions.push(homePositions[i].clone());
+      // draw connections
+      for (let j = i + 1; j < particles.length; j++) {
+        const q = particles[j];
+        const dx = p.x - q.x, dy = p.y - q.y;
+        const d = Math.hypot(dx, dy);
+        if (d < MAX_D) {
+          const alpha = (1 - d / MAX_D) * 0.2;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(q.x, q.y);
+          const isGoldLine = p.gold || q.gold;
+          ctx.strokeStyle = isGoldLine
+            ? `rgba(232,168,62,${alpha * 1.4})`
+            : `rgba(192,200,216,${alpha})`;
+          ctx.lineWidth = isGoldLine ? 1.1 : 0.7;
+          ctx.stroke();
         }
-
-        animateLaunch();
-        window.addEventListener('resize', onResize);
-        renderLoop();
-        setupScrollTrigger();
-
-      } catch(err) {
-        console.warn('Three.js init failed:', err);
-        document.getElementById('three-canvas').style.display = 'none';
-        document.getElementById('static-fallback').style.display = 'block';
       }
     }
+    raf = requestAnimationFrame(drawFrame);
+  }
 
-    function animateLaunch() {
-      gsap.from(camera.position, { z: 40, duration: 3.5, ease: 'power3.out' });
-      gsap.from(centralMesh.material, { opacity: 0, duration: 1.2, ease: 'power2.out' });
+  canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - r.left;
+    mouse.y = e.clientY - r.top;
+  });
 
-      satellites.forEach((sat, i) => {
-        const delay = 0.6 + (i / SATELLITE_COUNT) * 1.8;
-        gsap.to(sat.material, { opacity: 0.6 + Math.random() * 0.3, duration: 0.4, delay, ease: 'power2.out' });
-        gsap.to(sat.position, {
-          x: homePositions[i].x,
-          y: homePositions[i].y,
-          z: homePositions[i].z,
-          duration: 1.6,
-          delay,
-          ease: 'expo.out'
-        });
-      });
-    }
+  function start() {
+    resize();
+    initParticles();
+    if (raf) cancelAnimationFrame(raf);
+    drawFrame();
+  }
 
-    function setupScrollTrigger() {
-      if (!window.ScrollTrigger) return;
-      gsap.registerPlugin(ScrollTrigger);
-      ScrollTrigger.create({
-        trigger: '#how-it-works',
-        start: 'top 60%',
-        onEnter: () => morphToLinear(),
-        onLeaveBack: () => morphToRadial(),
-      });
-    }
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => { resize(); initParticles(); }, 200);
+  });
 
-    function morphToLinear() {
-      const clusters = [
-        new THREE.Vector3(-7, 0, 0),
-        new THREE.Vector3(0, 0, 0),
-        new THREE.Vector3(7, 0, 0),
-      ];
-      const perCluster = Math.floor(SATELLITE_COUNT / 3);
+  // Only run when hero is visible (pause when scrolled away)
+  const heroSection = canvas.closest('section');
+  const heroObserver = new IntersectionObserver(([e]) => {
+    if (e.isIntersecting) { start(); }
+    else if (raf) { cancelAnimationFrame(raf); raf = null; }
+  }, { threshold: 0.01 });
+  heroObserver.observe(heroSection);
+}
 
-      satellites.forEach((sat, i) => {
-        const clusterIdx = Math.min(Math.floor(i / perCluster), 2);
-        const base = clusters[clusterIdx];
-        const spread = 1.8;
-        gsap.to(sat.position, {
-          x: base.x + (Math.random() - 0.5) * spread,
-          y: base.y + (Math.random() - 0.5) * spread,
-          z: base.z + (Math.random() - 0.5) * spread * 0.3,
-          duration: 1.4,
-          ease: 'power3.inOut',
-          delay: Math.random() * 0.3
-        });
-      });
+// ── 3D Tilt on cards (desktop only) ──
+if (!prefersReduced && window.matchMedia('(hover: hover)').matches) {
+  document.querySelectorAll('.tier-card, .stat-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width  - 0.5;
+      const y = (e.clientY - rect.top)  / rect.height - 0.5;
+      const depth = card.classList.contains('tier-card') ? 12 : 8;
+      card.style.transform = `perspective(900px) rotateX(${-y * depth}deg) rotateY(${x * depth}deg) translateZ(8px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
 
-      gsap.to(camera.position, { z: 22, duration: 1.4, ease: 'power2.inOut' });
-      gsap.to(centralMesh.position, { y: 3, duration: 1.4, ease: 'power2.inOut' });
-    }
+  // ── Magnetic buttons ──
+  document.querySelectorAll('.btn-gold').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+      const rect = btn.getBoundingClientRect();
+      const x = (e.clientX - rect.left - rect.width  / 2) * 0.28;
+      const y = (e.clientY - rect.top  - rect.height / 2) * 0.28;
+      btn.style.transform = `translate(${x}px, ${y}px) scale(1.03)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = '';
+    });
+  });
+}
 
-    function morphToRadial() {
-      satellites.forEach((sat, i) => {
-        gsap.to(sat.position, {
-          x: homePositions[i].x,
-          y: homePositions[i].y,
-          z: homePositions[i].z,
-          duration: 1.2,
-          ease: 'power2.inOut',
-          delay: Math.random() * 0.2
-        });
-      });
-      gsap.to(camera.position, { z: 18, duration: 1.2, ease: 'power2.inOut' });
-      gsap.to(centralMesh.position, { y: 0, duration: 1.2, ease: 'power2.inOut' });
-    }
+// ── Brief form → WhatsApp ──
+document.getElementById('brief-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const fd = new FormData(this);
+  const brand = fd.get('brand_name') || '';
+  const name  = fd.get('your_name')  || '';
+  const email = fd.get('email')      || '';
+  const wa    = fd.get('whatsapp')   || '';
+  const tier  = fd.get('tier')       || 'Not specified';
+  const brief = fd.get('brief')      || '';
 
-    function renderLoop() {
-      animationId = requestAnimationFrame(renderLoop);
-      const t = clock.getElapsedTime();
+  const msg = [
+    '🎯 NEW CYBERTROOPER BRIEF',
+    '',
+    'Brand: '         + brand,
+    'Contact Name: '  + name,
+    'Email: '         + email,
+    'WhatsApp: '      + wa,
+    'Tier Interest: ' + tier,
+    '',
+    'Campaign Brief:',
+    brief,
+  ].join('\n');
 
-      if (centralMesh) {
-        centralMesh.rotation.y = t * 0.12;
-        centralMesh.rotation.x = Math.sin(t * 0.07) * 0.08;
-      }
-
-      satellites.forEach((sat, i) => {
-        sat.position.y += Math.sin(t * 0.5 + i) * 0.0004;
-      });
-
-      renderer.render(scene, camera);
-    }
-
-    function onResize() {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    }
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initThree);
-    } else {
-      initThree();
-    }
-
-  })();
-  </script>
+  window.open('https://wa.me/8801631326245?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+  document.getElementById('form-success').classList.add('visible');
+  this.style.display = 'none';
+});
+</script>
 </body>
 </html>
