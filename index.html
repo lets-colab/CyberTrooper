@@ -1,1191 +1,877 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>CYBERTROOPER — Your Brand. Their Voice. Real Reach.</title>
-  <meta name="description" content="CYBERTROOPER is KL's first Threads influencer network. Brief a brand campaign, we deploy real local voices. Measurable reach, authentic posts.">
-  <meta property="og:title" content="CYBERTROOPER — Your Brand. Their Voice. Real Reach.">
-  <meta property="og:description" content="KL's first Threads influencer network for brand marketing teams.">
-  <meta property="og:type" content="website">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --bg: #06060E;
-      --gold: #E8A83E;
-      --chrome: #C0C8D8;
-      --text: #F2F0EA;
-      --chrome-dim: rgba(192, 200, 216, 0.5);
-      --chrome-faint: rgba(192, 200, 216, 0.08);
-      --gold-dim: rgba(232, 168, 62, 0.15);
-      --section-gap: clamp(80px, 12vw, 160px);
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Outfit', sans-serif;
-      font-size: 16px;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    /* ── FOCUS ── */
-    :focus-visible {
-      outline: 2px solid var(--gold);
-      outline-offset: 3px;
-      border-radius: 2px;
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20px 40px;
-      background: linear-gradient(to bottom, rgba(6,6,14,0.95) 0%, transparent 100%);
-    }
-
-    .nav-wordmark {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 22px;
-      letter-spacing: 0.08em;
-      color: var(--text);
-      text-decoration: none;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 32px;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      color: var(--chrome);
-      text-decoration: none;
-      text-transform: uppercase;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover { color: var(--text); }
-
-    .nav-cta {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      color: var(--bg) !important;
-      background: var(--gold);
-      padding: 8px 20px;
-      border-radius: 2px;
-      text-decoration: none;
-      transition: opacity 0.2s !important;
-    }
-
-    .nav-cta:hover { opacity: 0.85 !important; color: var(--bg) !important; }
-
-    /* ── HAMBURGER ── */
-    .nav-hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 4px;
-      z-index: 201;
-    }
-
-    .nav-hamburger span {
-      display: block;
-      width: 24px;
-      height: 2px;
-      background: var(--chrome);
-      transition: transform 0.3s, opacity 0.3s;
-      transform-origin: center;
-    }
-
-    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
-    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-    /* Mobile nav drawer */
-    .nav-drawer {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(6,6,14,0.98);
-      z-index: 199;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 36px;
-    }
-
-    .nav-drawer.open { display: flex; }
-
-    .nav-drawer a {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 36px;
-      letter-spacing: 0.08em;
-      color: var(--chrome);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .nav-drawer a:hover { color: var(--text); }
-    .nav-drawer .nav-cta {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 20px;
-      color: var(--bg) !important;
-      background: var(--gold);
-      padding: 14px 48px;
-      border-radius: 2px;
-    }
-
-    /* ── HERO ── */
-    #hero {
-      position: relative;
-      height: 100vh;
-      min-height: 600px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    #three-canvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      padding: 0 20px;
-      pointer-events: none;
-    }
-
-    .hero-eyebrow {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      color: var(--chrome-dim);
-      margin-bottom: 24px;
-      text-transform: uppercase;
-    }
-
-    .hero-headline {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(64px, 11vw, 128px);
-      line-height: 0.92;
-      letter-spacing: 0.02em;
-      color: var(--text);
-      margin-bottom: 32px;
-    }
-
-    .hero-headline .line-gold { color: var(--gold); }
-
-    .hero-sub {
-      font-family: 'DM Mono', monospace;
-      font-size: clamp(11px, 1.2vw, 13px);
-      letter-spacing: 0.14em;
-      color: var(--chrome);
-      margin-bottom: 48px;
-      text-transform: uppercase;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      align-items: center;
-      pointer-events: all;
-    }
-
-    .btn-gold {
-      display: inline-block;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 18px;
-      letter-spacing: 0.1em;
-      color: var(--bg);
-      background: var(--gold);
-      padding: 14px 40px;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      transition: opacity 0.2s, transform 0.15s;
-      border-radius: 2px;
-    }
-
-    .btn-gold:hover { opacity: 0.9; transform: translateY(-1px); }
-    .btn-gold:active { transform: translateY(0); }
-
-    .btn-ghost {
-      display: inline-block;
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      color: var(--chrome);
-      border: 1px solid rgba(192,200,216,0.3);
-      padding: 13px 28px;
-      text-decoration: none;
-      transition: border-color 0.2s, color 0.2s;
-      border-radius: 2px;
-      text-transform: uppercase;
-    }
-
-    .btn-ghost:hover { border-color: var(--chrome); color: var(--text); }
-
-    /* Static fallback SVG when WebGL unavailable */
-    #static-fallback {
-      display: none;
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-    }
-
-    /* ── SECTION BASE ── */
-    section {
-      padding: var(--section-gap) clamp(20px, 6vw, 80px);
-      max-width: 1280px;
-      margin: 0 auto;
-    }
-
-    .section-eyebrow {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.22em;
-      color: var(--chrome-dim);
-      text-transform: uppercase;
-      margin-bottom: 16px;
-      display: block;
-    }
-
-    .section-headline {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(40px, 6vw, 80px);
-      letter-spacing: 0.03em;
-      color: var(--text);
-      line-height: 0.95;
-      margin-bottom: clamp(40px, 6vw, 72px);
-    }
-
-    /* ── HOW IT WORKS ── */
-    #how-it-works {
-      position: relative;
-      padding-top: var(--section-gap);
-    }
-
-    #how-canvas-wrap {
-      width: 100%;
-      height: 400px;
-      position: relative;
-      margin-bottom: 64px;
-      border-radius: 4px;
-      overflow: hidden;
-      background: transparent;
-    }
-
-    .how-steps {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 32px;
-    }
-
-    .how-step {
-      border-top: 1px solid rgba(192,200,216,0.15);
-      padding-top: 24px;
-    }
-
-    .how-step-num {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      color: var(--gold);
-      margin-bottom: 12px;
-      display: block;
-    }
-
-    .how-step-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 28px;
-      letter-spacing: 0.05em;
-      color: var(--text);
-      margin-bottom: 10px;
-    }
-
-    .how-step-body {
-      font-size: 14px;
-      color: var(--chrome);
-      line-height: 1.65;
-    }
-
-    /* ── WHY THREADS ── */
-    #why-threads {
-      border-top: 1px solid rgba(192,200,216,0.08);
-    }
-
-    .stat-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background: rgba(192,200,216,0.08);
-      border: 1px solid rgba(192,200,216,0.08);
-    }
-
-    .stat-card {
-      background: var(--bg);
-      padding: 40px 32px;
-    }
-
-    .stat-value {
-      font-family: 'DM Mono', monospace;
-      font-size: clamp(28px, 3.5vw, 48px);
-      color: var(--text);
-      letter-spacing: -0.02em;
-      display: block;
-      margin-bottom: 10px;
-      font-weight: 500;
-    }
-
-    .stat-label {
-      font-family: 'Outfit', sans-serif;
-      font-size: 13px;
-      color: var(--chrome);
-      line-height: 1.5;
-    }
-
-    /* ── SOCIAL PROOF ── */
-    #social-proof {
-      border-top: 1px solid rgba(192,200,216,0.08);
-    }
-
-    .proof-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-
-    .proof-card {
-      background: var(--chrome-faint);
-      border: 1px solid rgba(192,200,216,0.1);
-      padding: 36px 28px;
-      border-radius: 2px;
-    }
-
-    .proof-quote {
-      font-size: 15px;
-      line-height: 1.7;
-      color: var(--text);
-      margin-bottom: 24px;
-      font-style: italic;
-    }
-
-    .proof-quote::before { content: '\201C'; }
-    .proof-quote::after  { content: '\201D'; }
-
-    .proof-author {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      color: var(--chrome-dim);
-      text-transform: uppercase;
-    }
-
-    /* ── PRICING ── */
-    #pricing {
-      border-top: 1px solid rgba(192,200,216,0.08);
-    }
-
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: rgba(192,200,216,0.08);
-      border: 1px solid rgba(192,200,216,0.08);
-    }
-
-    .pricing-card {
-      background: var(--bg);
-      padding: 48px 36px;
-      position: relative;
-    }
-
-    .pricing-card.featured {
-      border: 1px solid var(--gold);
-      margin: -1px;
-      z-index: 1;
-    }
-
-    .pricing-badge {
-      font-family: 'DM Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 0.18em;
-      color: var(--bg);
-      background: var(--gold);
-      padding: 4px 10px;
-      display: inline-block;
-      margin-bottom: 20px;
-      text-transform: uppercase;
-    }
-
-    .pricing-tier {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 36px;
-      letter-spacing: 0.06em;
-      color: var(--text);
-      margin-bottom: 8px;
-    }
-
-    .pricing-price {
-      font-family: 'DM Mono', monospace;
-      font-size: 22px;
-      color: var(--gold);
-      margin-bottom: 32px;
-      font-weight: 500;
-    }
-
-    .pricing-features {
-      list-style: none;
-      margin-bottom: 40px;
-    }
-
-    .pricing-features li {
-      font-size: 14px;
-      color: var(--chrome);
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(192,200,216,0.07);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .pricing-features li::before {
-      content: '';
-      width: 4px;
-      height: 4px;
-      background: var(--gold);
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    /* ── CONTACT ── */
-    #contact {
-      border-top: 1px solid rgba(192,200,216,0.08);
-      max-width: 640px;
-    }
-
-    .contact-form {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-
-    .form-field {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .form-field label {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.16em;
-      color: var(--chrome-dim);
-      text-transform: uppercase;
-    }
-
-    .form-field input,
-    .form-field select,
-    .form-field textarea {
-      background: rgba(192,200,216,0.05);
-      border: 1px solid rgba(192,200,216,0.15);
-      color: var(--text);
-      font-family: 'Outfit', sans-serif;
-      font-size: 16px; /* prevents iOS Safari auto-zoom */
-      padding: 12px 16px;
-      border-radius: 2px;
-      transition: border-color 0.2s;
-      outline: none;
-    }
-
-    .form-field input:focus,
-    .form-field select:focus,
-    .form-field textarea:focus {
-      border-color: rgba(232,168,62,0.5);
-    }
-
-    .form-field select option { background: #0f0f1a; color: var(--text); }
-
-    .form-status {
-      font-family: 'DM Mono', monospace;
-      font-size: 12px;
-      letter-spacing: 0.1em;
-      min-height: 20px;
-    }
-
-    .form-status.success { color: #4ade80; }
-    .form-status.error   { color: #f87171; }
-
-    /* ── FOOTER ── */
-    footer {
-      border-top: 1px solid rgba(192,200,216,0.08);
-      padding: 60px clamp(20px, 6vw, 80px);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 24px;
-    }
-
-    .footer-left {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .footer-wordmark {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 20px;
-      letter-spacing: 0.08em;
-      color: var(--chrome-dim);
-    }
-
-    .footer-copy {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      color: rgba(192,200,216,0.3);
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 28px;
-      list-style: none;
-    }
-
-    .footer-links a {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      color: rgba(192,200,216,0.4);
-      text-decoration: none;
-      text-transform: uppercase;
-      transition: color 0.2s;
-    }
-
-    .footer-links a:hover { color: var(--chrome); }
-
-    /* ── REDUCED MOTION ── */
-    @media (prefers-reduced-motion: reduce) {
-      #three-canvas { display: none; }
-      #static-fallback { display: block; }
-      * { transition-duration: 0ms !important; animation-duration: 0ms !important; }
-    }
-
-    /* ── MOBILE ── */
-    @media (max-width: 768px) {
-      nav { padding: 16px 20px; }
-      .nav-links { display: none; }
-      .nav-hamburger { display: flex; }
-
-      #how-canvas-wrap { height: 260px; margin-bottom: 40px; }
-      .how-steps { grid-template-columns: 1fr; }
-      .stat-grid { grid-template-columns: 1fr 1fr; }
-      .proof-grid { grid-template-columns: 1fr; }
-      .pricing-grid { grid-template-columns: 1fr; }
-      .pricing-card.featured { margin: 0; }
-      .form-row { grid-template-columns: 1fr; }
-
-      footer {
-        flex-direction: column;
-        align-items: flex-start;
-        text-align: left;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .stat-grid { grid-template-columns: 1fr; }
-      .hero-actions { flex-direction: column; align-items: stretch; }
-      .btn-gold, .btn-ghost { text-align: center; }
-      .hero-headline { font-size: clamp(52px, 14vw, 80px); }
-      #how-canvas-wrap { height: 200px; }
-    }
-
-    /* Safe area padding for notched phones */
-    @supports (padding: max(0px)) {
-      nav { padding-left: max(20px, env(safe-area-inset-left)); padding-right: max(20px, env(safe-area-inset-right)); }
-      footer { padding-left: max(20px, env(safe-area-inset-left)); padding-right: max(20px, env(safe-area-inset-right)); padding-bottom: max(40px, env(safe-area-inset-bottom)); }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>CYBERTROOPER — KL's First Threads Creator Network</title>
+<meta name="description" content="We deploy real KL locals to post about your brand authentically on Threads. No bots. No scripts. Real people, real accounts, real engagement." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #06060E;
+  --gold: #E8A83E;
+  --chrome: #C0C8D8;
+  --text: #F2F0EA;
+  --gold-dim: rgba(232,168,62,0.12);
+  --gold-glow: rgba(232,168,62,0.22);
+  --border: rgba(192,200,216,0.1);
+  --section-pad: clamp(5rem,12vw,9rem) clamp(1.25rem,6vw,4.5rem);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 300;
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+
+/* Fine grid overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(192,200,216,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(192,200,216,0.025) 1px, transparent 1px);
+  background-size: 56px 56px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem clamp(1.25rem,5vw,4rem);
+  padding-top: max(1rem, env(safe-area-inset-top));
+  background: rgba(6,6,14,0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.8rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--chrome);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--text); }
+
+.nav-pill {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--gold);
+  border: none;
+  padding: 0.45rem 1.1rem;
+  border-radius: 999px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.2s;
+  display: inline-block;
+}
+.nav-pill:hover { opacity: 0.85; }
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 101;
+}
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: transform 0.25s, opacity 0.25s;
+}
+.hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile drawer */
+.nav-drawer {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: rgba(6,6,14,0.97);
+  padding: 5.5rem 2rem 2rem;
+  flex-direction: column;
+  gap: 0;
+}
+.nav-drawer.open { display: flex; }
+.nav-drawer a {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.4rem;
+  letter-spacing: 0.05em;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 0;
+  transition: color 0.2s;
+  display: block;
+}
+.nav-drawer a:hover { color: var(--gold); }
+.nav-drawer .drawer-cta {
+  display: inline-block;
+  margin-top: 1.5rem;
+  color: var(--bg);
+  background: var(--gold);
+  padding: 0.8rem 1.8rem;
+  border-radius: 999px;
+  font-size: 1.5rem;
+  border: none;
+}
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+}
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--section-pad);
+  padding-top: calc(clamp(4rem,10vw,7rem) + 80px);
+  overflow: hidden;
+  z-index: 1;
+}
+
+.hero-glow {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(1000px, 160vw);
+  height: min(700px, 130vw);
+  background: radial-gradient(ellipse at center,
+    rgba(232,168,62,0.16) 0%,
+    rgba(232,168,62,0.05) 45%,
+    transparent 72%);
+  border-radius: 50%;
+  animation: glowPulse 7s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.65; transform: translate(-50%,-50%) scale(1); }
+  50%       { opacity: 1;    transform: translate(-50%,-50%) scale(1.07); }
+}
+
+.hero-content { position: relative; z-index: 1; max-width: 920px; }
+
+.eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(0.62rem, 1.1vw, 0.78rem);
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+  opacity: 0.9;
+}
+
+.hero h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(72px, 14vw, 180px);
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  margin-bottom: 1.8rem;
+}
+
+.hero-sub {
+  font-size: clamp(1rem, 1.7vw, 1.2rem);
+  font-weight: 300;
+  color: var(--chrome);
+  max-width: 560px;
+  margin-bottom: 2.8rem;
+  line-height: 1.75;
+}
+
+.cta-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-gold {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.76rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--gold);
+  border: none;
+  padding: 0.9rem 2.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.2s, transform 0.15s;
+  display: inline-block;
+}
+.btn-gold:hover { opacity: 0.85; transform: translateY(-1px); }
+
+.btn-ghost {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.76rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid rgba(242,240,234,0.28);
+  padding: 0.9rem 2.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color 0.2s, transform 0.15s;
+  display: inline-block;
+}
+.btn-ghost:hover { border-color: var(--text); transform: translateY(-1px); }
+
+/* ── SECTIONS ── */
+section { padding: var(--section-pad); position: relative; z-index: 1; }
+.section-inner { max-width: 1100px; margin: 0 auto; }
+
+.section-heading {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.8rem, 6.5vw, 5.5rem);
+  letter-spacing: 0.03em;
+  line-height: 1;
+  color: var(--text);
+  margin-bottom: 2.5rem;
+}
+
+/* ── HOW IT WORKS ── */
+#how {
+  background: rgba(255,255,255,0.012);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.steps { display: flex; flex-direction: column; }
+
+.step {
+  display: flex;
+  gap: 2rem;
+  padding: 2.5rem 0 2.5rem 2rem;
+  border-bottom: 1px solid var(--border);
+  border-left: 3px solid var(--gold);
+  align-items: flex-start;
+}
+.step:last-child { border-bottom: none; }
+
+.step-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  min-width: 2rem;
+  padding-top: 0.25rem;
+}
+
+.step-body h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.65rem;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.step-body p {
+  font-size: 1rem;
+  color: var(--chrome);
+  max-width: 580px;
+  line-height: 1.75;
+}
+
+/* ── WHY THREADS ── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.stat-card {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 2rem 1.8rem;
+  transition: border-color 0.25s, background 0.25s;
+}
+.stat-card:hover {
+  border-color: rgba(232,168,62,0.28);
+  background: rgba(232,168,62,0.04);
+}
+
+.stat-card-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  display: block;
+  margin-bottom: 0.5rem;
+  line-height: 1;
+}
+
+.stat-card p {
+  font-size: clamp(0.92rem, 1.5vw, 1.05rem);
+  line-height: 1.65;
+  color: var(--chrome);
+}
+
+@media (max-width: 600px) {
+  .stat-grid { grid-template-columns: 1fr; }
+}
+
+/* ── TIERS ── */
+#tiers { border-top: 1px solid var(--border); }
+
+.tiers-sub {
+  font-size: 1rem;
+  color: var(--chrome);
+  max-width: 520px;
+  margin-bottom: 3rem;
+  margin-top: -1.5rem;
+  line-height: 1.75;
+}
+
+.tiers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+}
+
+.tier-card {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 2.2rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.tier-card.featured {
+  border-color: var(--gold);
+  background: rgba(232,168,62,0.05);
+  box-shadow: 0 0 48px rgba(232,168,62,0.1);
+}
+
+.tier-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--gold);
+  padding: 0.28rem 0.65rem;
+  border-radius: 999px;
+  display: inline-block;
+  align-self: flex-start;
+}
+
+.tier-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.4rem;
+  letter-spacing: 0.05em;
+  color: var(--text);
+  line-height: 1;
+}
+
+.tier-count {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+.tier-desc {
+  font-size: 0.95rem;
+  color: var(--chrome);
+  line-height: 1.65;
+  flex: 1;
+}
+
+.tier-rate {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: rgba(192,200,216,0.4);
+  text-transform: uppercase;
+  border-top: 1px solid var(--border);
+  padding-top: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .tiers-grid { grid-template-columns: 1fr; max-width: 480px; }
+}
+
+/* ── CONTACT ── */
+#contact { border-top: 1px solid var(--border); }
+
+.contact-sub {
+  font-size: 1rem;
+  color: var(--chrome);
+  margin-bottom: 2.5rem;
+  margin-top: -1.5rem;
+  line-height: 1.75;
+}
+
+form { display: grid; gap: 1rem; max-width: 640px; }
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.field { display: flex; flex-direction: column; gap: 0.4rem; }
+
+.field label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--chrome);
+}
+
+.field input,
+.field select,
+.field textarea {
+  font-size: 16px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 300;
+  color: var(--text);
+  background: rgba(255,255,255,0.035);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C0C8D8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-color: rgba(255,255,255,0.035);
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+.field input::placeholder,
+.field textarea::placeholder { color: rgba(192,200,216,0.3); }
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus { border-color: var(--gold); }
+
+.field option { background: #0f0f1e; color: var(--text); }
+
+textarea { resize: vertical; min-height: 130px; }
+
+.form-success {
+  display: none;
+  background: rgba(232,168,62,0.07);
+  border: 1px solid rgba(232,168,62,0.4);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+.form-success.visible { display: block; }
+.form-success p {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 2.5rem clamp(1.25rem,5vw,4rem);
+  padding-bottom: max(2.5rem, calc(2.5rem + env(safe-area-inset-bottom)));
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+
+.footer-brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  display: block;
+  text-decoration: none;
+  margin-bottom: 0.25rem;
+}
+
+.footer-by {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  color: rgba(192,200,216,0.4);
+  text-transform: uppercase;
+}
+
+.footer-right { display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem; }
+
+.footer-right a {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--chrome);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-right a:hover { color: var(--gold); }
+
+.footer-copy {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  color: rgba(192,200,216,0.28);
+  text-transform: uppercase;
+}
+
+/* ── REDUCED MOTION ── */
+@media (prefers-reduced-motion: reduce) {
+  .hero-glow { animation: none; }
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+/* ── TOUCH ── */
+@media (hover: none) {
+  .btn-gold:hover,
+  .btn-ghost:hover { transform: none; }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .hero h1 { font-size: clamp(64px, 18vw, 120px); }
+  footer { flex-direction: column; }
+  .footer-right { align-items: flex-start; }
+  .form-row { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .cta-group { flex-direction: column; }
+  .btn-gold, .btn-ghost { text-align: center; }
+}
+</style>
 </head>
 <body>
 
-  <!-- ── NAV ── -->
-  <nav role="navigation" aria-label="Main navigation">
-    <a href="#" class="nav-wordmark" aria-label="CYBERTROOPER home">CYBERTROOPER</a>
-    <ul class="nav-links">
-      <li><a href="#how-it-works">How It Works</a></li>
-      <li><a href="#why-threads">Why Threads</a></li>
-      <li><a href="#pricing">Pricing</a></li>
-      <li><a href="become-a-trooper.html">Become a Trooper</a></li>
-      <li><a href="#contact" class="nav-cta">Brief Us</a></li>
-    </ul>
-    <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="nav-drawer">
-      <span></span><span></span><span></span>
-    </button>
-  </nav>
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">CYBERTROOPER</a>
+  <ul class="nav-links">
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#tiers">Tiers</a></li>
+    <li><a href="#contact">Brief Us</a></li>
+    <li><a href="become-a-trooper.html" class="nav-pill">Become a Trooper</a></li>
+  </ul>
+  <button class="hamburger" aria-label="Open menu" aria-expanded="false" id="hamburger">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
 
-  <!-- Mobile nav drawer -->
-  <div class="nav-drawer" id="nav-drawer" role="dialog" aria-label="Mobile navigation" aria-modal="true">
-    <a href="#how-it-works" class="drawer-link">How It Works</a>
-    <a href="#why-threads" class="drawer-link">Why Threads</a>
-    <a href="#pricing" class="drawer-link">Pricing</a>
-    <a href="become-a-trooper.html" class="drawer-link">Become a Trooper</a>
-    <a href="#contact" class="nav-cta">BRIEF US</a>
+<!-- MOBILE DRAWER -->
+<div class="nav-drawer" id="drawer" role="dialog" aria-label="Navigation menu">
+  <a href="#how">How It Works</a>
+  <a href="#tiers">Tiers</a>
+  <a href="#contact">Brief Us</a>
+  <a href="become-a-trooper.html" class="drawer-cta">Become a Trooper</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="hero-content">
+    <p class="eyebrow">[KL's First Threads Creator Network]</p>
+    <h1>YOUR BRAND.<br>THEIR VOICE.<br>REAL REACH.</h1>
+    <p class="hero-sub">We deploy real KL locals to post about your brand authentically on Threads. No bots. No scripts. Real people, real accounts, real engagement.</p>
+    <div class="cta-group">
+      <a href="#contact" class="btn-gold">BRIEF US</a>
+      <a href="#how" class="btn-ghost">HOW IT WORKS</a>
+    </div>
   </div>
+</section>
 
-  <!-- ── HERO ── -->
-  <section id="hero" aria-label="Hero">
-    <canvas id="three-canvas" aria-hidden="true"></canvas>
-
-    <!-- Static SVG fallback (shown when WebGL unavailable or reduced-motion) -->
-    <div id="static-fallback" aria-hidden="true">
-      <svg width="100%" height="100%" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="400" cy="300" r="40" fill="none" stroke="#C0C8D8" stroke-width="1.5" opacity="0.6"/>
-        <circle cx="400" cy="300" r="22" fill="#C0C8D8" opacity="0.15"/>
-        <circle cx="400" cy="300" r="10" fill="#C0C8D8" opacity="0.5"/>
-        <circle cx="160" cy="140" r="5" fill="#C0C8D8" opacity="0.25"/>
-        <circle cx="620" cy="100" r="4" fill="#C0C8D8" opacity="0.2"/>
-        <circle cx="100" cy="350" r="6" fill="#C0C8D8" opacity="0.2"/>
-        <circle cx="680" cy="420" r="5" fill="#C0C8D8" opacity="0.25"/>
-        <circle cx="260" cy="480" r="4" fill="#C0C8D8" opacity="0.2"/>
-        <circle cx="550" cy="500" r="6" fill="#C0C8D8" opacity="0.2"/>
-        <line x1="400" y1="300" x2="160" y2="140" stroke="#C0C8D8" stroke-width="0.5" opacity="0.1"/>
-        <line x1="400" y1="300" x2="620" y2="100" stroke="#C0C8D8" stroke-width="0.5" opacity="0.1"/>
-        <line x1="400" y1="300" x2="100" y2="350" stroke="#C0C8D8" stroke-width="0.5" opacity="0.1"/>
-        <line x1="400" y1="300" x2="680" y2="420" stroke="#C0C8D8" stroke-width="0.5" opacity="0.1"/>
-        <line x1="400" y1="300" x2="260" y2="480" stroke="#C0C8D8" stroke-width="0.5" opacity="0.1"/>
-        <line x1="400" y1="300" x2="550" y2="500" stroke="#C0C8D8" stroke-width="0.5" opacity="0.1"/>
-      </svg>
-    </div>
-
-    <div class="hero-content">
-      <p class="hero-eyebrow">[KL'S FIRST THREADS INFLUENCER NETWORK]</p>
-      <h1 class="hero-headline">
-        YOUR BRAND.<br>
-        THEIR <span class="line-gold">VOICE.</span><br>
-        REAL REACH.
-      </h1>
-      <p class="hero-sub">Brief once. Deploy everywhere. Measure what matters.</p>
-      <div class="hero-actions">
-        <a href="#contact" class="btn-gold">BRIEF US</a>
-        <a href="#how-it-works" class="btn-ghost">SEE HOW IT WORKS</a>
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="section-inner">
+    <p class="eyebrow">[Signal Architecture]</p>
+    <h2 class="section-heading">HOW IT WORKS</h2>
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">01</span>
+        <div class="step-body">
+          <h3>BRIEF</h3>
+          <p>You send us your campaign objective, tone, and target audience. We translate it into talking points our Trooper network can execute authentically.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">02</span>
+        <div class="step-body">
+          <h3>DEPLOY</h3>
+          <p>We activate the right Troopers for your brand — matched by location, vibe, and audience. They post in their own voice. No copy-pasting. No disclaimers.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">03</span>
+        <div class="step-body">
+          <h3>REPORT</h3>
+          <p>At the end of each month, you receive a campaign report: posts delivered, top-performing content, and engagement highlights.</p>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ── HOW IT WORKS ── -->
-  <section id="how-it-works" aria-labelledby="hiw-heading">
-    <span class="section-eyebrow">[SIGNAL ARCHITECTURE]</span>
-    <h2 class="section-headline" id="hiw-heading">HOW IT WORKS</h2>
-    <div id="how-canvas-wrap" aria-hidden="true"></div>
-    <div class="how-steps">
-      <div class="how-step">
-        <span class="how-step-num">01 — BRIEF</span>
-        <div class="how-step-title">BRAND BRIEFS</div>
-        <p class="how-step-body">You send us your campaign objective, tone, and target audience. We translate it into a brief our Trooper network can execute authentically.</p>
+<!-- WHY THREADS -->
+<section id="why">
+  <div class="section-inner">
+    <p class="eyebrow">[Signal Advantage]</p>
+    <h2 class="section-heading">WHY THREADS</h2>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <span class="stat-card-label">100M+</span>
+        <p>Users globally — growing fastest in Southeast Asia.</p>
       </div>
-      <div class="how-step">
-        <span class="how-step-num">02 — DEPLOY</span>
-        <div class="how-step-title">TROOPERS POST</div>
-        <p class="how-step-body">Our vetted KL-based Threads creators post in their own voice — real accounts, real engagement, real context. Not bots. Not reposts.</p>
+      <div class="stat-card">
+        <span class="stat-card-label">Text-First</span>
+        <p>Format rewards authentic voice over polished ads. Real words cut through.</p>
       </div>
-      <div class="how-step">
-        <span class="how-step-num">03 — MEASURE</span>
-        <div class="how-step-title">YOU TRACK</div>
-        <p class="how-step-body">Every campaign comes with a results report: reach, engagement rate, sentiment, and a breakdown by Trooper tier. You own the data.</p>
+      <div class="stat-card">
+        <span class="stat-card-label">KL's Crowd</span>
+        <p>Early-adopters and tastemakers — the audience brands actually want to reach.</p>
+      </div>
+      <div class="stat-card">
+        <span class="stat-card-label">3–5×</span>
+        <p>Real posts from real people outperform sponsored content on engagement.</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ── WHY THREADS ── -->
-  <section id="why-threads" aria-labelledby="wt-heading">
-    <span class="section-eyebrow">[THE WINDOW]</span>
-    <h2 class="section-headline" id="wt-heading">WHY THREADS NOW</h2>
-    <div class="stat-grid" role="list">
-      <div class="stat-card" role="listitem">
-        <span class="stat-value">400M+</span>
-        <span class="stat-label">Active monthly users globally — and growing faster than any other text platform.</span>
+<!-- TIERS -->
+<section id="tiers">
+  <div class="section-inner">
+    <p class="eyebrow">[Campaign Tiers]</p>
+    <h2 class="section-heading">PICK YOUR SCALE</h2>
+    <p class="tiers-sub">Rates revealed after your brief. Every tier includes monthly content strategy, trooper activation, and a campaign report.</p>
+    <div class="tiers-grid">
+      <div class="tier-card">
+        <span class="tier-name">SEED</span>
+        <span class="tier-count">5 Troopers / month</span>
+        <p class="tier-desc">Best for testing the network and niche targeting. Start small, learn fast.</p>
+        <span class="tier-rate">Rate on application</span>
+        <a href="#contact" class="btn-gold" style="text-align:center;margin-top:0.5rem;">BRIEF US</a>
       </div>
-      <div class="stat-card" role="listitem">
-        <span class="stat-value">4–8%</span>
-        <span class="stat-label">Average engagement rate per post. Instagram averages 1–3%. This gap won't last.</span>
+      <div class="tier-card featured">
+        <span class="tier-badge">Most Popular</span>
+        <span class="tier-name">GROWTH</span>
+        <span class="tier-count">15 Troopers / month</span>
+        <p class="tier-desc">Best for building consistent share-of-voice across KL's Threads community.</p>
+        <span class="tier-rate">Rate on application</span>
+        <a href="#contact" class="btn-gold" style="text-align:center;margin-top:0.5rem;">BRIEF US</a>
       </div>
-      <div class="stat-card" role="listitem">
-        <span class="stat-value">Pre-saturation</span>
-        <span class="stat-label">First-mover window is open now. Sponsored content density is still low on Threads.</span>
-      </div>
-      <div class="stat-card" role="listitem">
-        <span class="stat-value">KL-native</span>
-        <span class="stat-label">Our Trooper network is 100% Klang Valley based — the local credibility that regional accounts can't fake.</span>
+      <div class="tier-card">
+        <span class="tier-name">ELITE</span>
+        <span class="tier-count">30 Troopers / month</span>
+        <p class="tier-desc">Best for maximum reach and product launches. Full-network activation.</p>
+        <span class="tier-rate">Rate on application</span>
+        <a href="#contact" class="btn-gold" style="text-align:center;margin-top:0.5rem;">BRIEF US</a>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ── SOCIAL PROOF ── -->
-  <section id="social-proof" aria-labelledby="sp-heading">
-    <span class="section-eyebrow">[FIELD REPORTS]</span>
-    <h2 class="section-headline" id="sp-heading">WHAT BRANDS SAY</h2>
-    <div class="proof-grid">
-      <div class="proof-card">
-        <p class="proof-quote">We ran our Ramadan launch through CYBERTROOPER. Sixteen posts in five days, all sounding like actual KL people — because they were. Engagement outperformed our IG campaign by a factor of three.</p>
-        <span class="proof-author">Head of Digital — Pavilion Retail Group</span>
-      </div>
-      <div class="proof-card">
-        <p class="proof-quote">The brief-to-live time was under 48 hours. For a brand activation tied to a trending moment, that speed is everything. The Troopers nailed the tone without us having to rewrite a single post.</p>
-        <span class="proof-author">Brand Manager — AEON Malaysia</span>
-      </div>
-      <div class="proof-card">
-        <p class="proof-quote">Other agencies give you influencers with KL in their bio. CYBERTROOPER gives you people who actually grew up here. That local authenticity shows in every comment thread.</p>
-        <span class="proof-author">Marketing Director — MyTOWN Shopping Centre</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── PRICING ── -->
-  <section id="pricing" aria-labelledby="pricing-heading">
-    <span class="section-eyebrow">[ENGAGEMENT TIERS]</span>
-    <h2 class="section-headline" id="pricing-heading">CHOOSE YOUR SIGNAL RANGE</h2>
-    <div class="pricing-grid" role="list">
-      <div class="pricing-card" role="listitem">
-        <div class="pricing-tier">STARTER</div>
-        <div class="pricing-price">RM 2,500 / mo</div>
-        <ul class="pricing-features" aria-label="Starter tier features">
-          <li>5 Troopers per campaign</li>
-          <li>3 posts per Trooper</li>
-          <li>1 active campaign at a time</li>
-          <li>Standard results report</li>
-          <li>48-hour brief turnaround</li>
-        </ul>
-        <a href="#contact" class="btn-gold" style="width:100%;text-align:center;display:block;">BRIEF US</a>
-      </div>
-      <div class="pricing-card featured" role="listitem" aria-label="Growth tier — most popular">
-        <span class="pricing-badge">MOST POPULAR</span>
-        <div class="pricing-tier">GROWTH</div>
-        <div class="pricing-price">RM 5,500 / mo</div>
-        <ul class="pricing-features" aria-label="Growth tier features">
-          <li>15 Troopers per campaign</li>
-          <li>5 posts per Trooper</li>
-          <li>2 active campaigns at a time</li>
-          <li>Detailed analytics dashboard</li>
-          <li>24-hour brief turnaround</li>
-          <li>Dedicated campaign manager</li>
-        </ul>
-        <a href="#contact" class="btn-gold" style="width:100%;text-align:center;display:block;">BRIEF US</a>
-      </div>
-      <div class="pricing-card" role="listitem">
-        <div class="pricing-tier">SCALE</div>
-        <div class="pricing-price">Custom</div>
-        <ul class="pricing-features" aria-label="Scale tier features">
-          <li>40+ Troopers per campaign</li>
-          <li>Unlimited posts</li>
-          <li>Multiple simultaneous campaigns</li>
-          <li>Full-service campaign strategy</li>
-          <li>API access to data</li>
-          <li>Quarterly planning sessions</li>
-        </ul>
-        <a href="#contact" class="btn-gold" style="width:100%;text-align:center;display:block;">BRIEF US</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── CONTACT ── -->
-  <section id="contact" aria-labelledby="contact-heading" style="max-width:680px; margin: 0 auto;">
-    <span class="section-eyebrow">[BRIEF US]</span>
-    <h2 class="section-headline" id="contact-heading">START YOUR CAMPAIGN</h2>
-    <form class="contact-form" id="brief-form" novalidate>
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <p class="eyebrow">[Open Transmission]</p>
+    <h2 class="section-heading">BRIEF US</h2>
+    <p class="contact-sub">Tell us about your brand. We'll come back within 48 hours.</p>
+    <form id="brief-form" novalidate>
       <div class="form-row">
-        <div class="form-field">
-          <label for="brief-name">Your Name</label>
-          <input type="text" id="brief-name" name="name" required placeholder="Jane Tan" autocomplete="name">
+        <div class="field">
+          <label for="brand-name">Brand Name</label>
+          <input type="text" id="brand-name" name="brand_name" placeholder="Your brand" required />
         </div>
-        <div class="form-field">
-          <label for="brief-brand">Brand / Company</label>
-          <input type="text" id="brief-brand" name="brand" required placeholder="Your brand name">
+        <div class="field">
+          <label for="your-name">Your Name</label>
+          <input type="text" id="your-name" name="your_name" placeholder="First Last" required />
         </div>
       </div>
-      <div class="form-field">
-        <label for="brief-email">Work Email</label>
-        <input type="email" id="brief-email" name="email" required placeholder="you@yourbrand.com" autocomplete="email">
+      <div class="form-row">
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="you@brand.com" required />
+        </div>
+        <div class="field">
+          <label for="whatsapp">WhatsApp</label>
+          <input type="tel" id="whatsapp" name="whatsapp" placeholder="+60 12 345 6789" required />
+        </div>
       </div>
-      <div class="form-field">
-        <label for="brief-budget">Monthly Budget</label>
-        <select id="brief-budget" name="budget" required>
-          <option value="" disabled selected>Select range</option>
-          <option value="rm2500">RM 2,500 (Starter)</option>
-          <option value="rm5500">RM 5,500 (Growth)</option>
-          <option value="custom">Custom (Scale)</option>
+      <div class="field">
+        <label for="tier">Tier Interest</label>
+        <select id="tier" name="tier">
+          <option value="">Select a tier</option>
+          <option value="Seed">Seed — 5 Troopers/month</option>
+          <option value="Growth">Growth — 15 Troopers/month</option>
+          <option value="Elite">Elite — 30 Troopers/month</option>
+          <option value="Not sure">Not sure yet</option>
         </select>
       </div>
-      <div aria-live="polite" aria-atomic="true">
-        <p class="form-status" id="brief-status"></p>
+      <div class="field">
+        <label for="brief">Campaign Brief</label>
+        <textarea id="brief" name="brief" rows="5" placeholder="Tell us your campaign objective, target audience, and any tone or brand guidelines we should know."></textarea>
       </div>
-      <button type="submit" class="btn-gold" style="align-self:flex-start;">SEND BRIEF</button>
+      <button type="submit" class="btn-gold" style="width:100%;padding:1rem 2rem;font-size:0.82rem;letter-spacing:0.18em;">SEND BRIEF</button>
     </form>
-  </section>
-
-  <!-- ── FOOTER ── -->
-  <footer role="contentinfo">
-    <div class="footer-left">
-      <svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true">
-        <circle cx="18" cy="18" r="2" fill="#C0C8D8" opacity="0.6"/>
-        <circle cx="18" cy="18" r="7" fill="none" stroke="#C0C8D8" stroke-width="0.75" opacity="0.3"/>
-        <circle cx="18" cy="18" r="13" fill="none" stroke="#C0C8D8" stroke-width="0.5" opacity="0.2"/>
-        <path d="M18 5 A13 13 0 0 1 31 18" fill="none" stroke="#E8A83E" stroke-width="1" opacity="0.5"/>
-      </svg>
-      <div>
-        <div class="footer-wordmark">CYBERTROOPER</div>
-        <div class="footer-copy">© 2026 CYBERTROOPER by 3Sixty Marketing</div>
-      </div>
+    <div class="form-success" id="form-success">
+      <p>✦ &nbsp;Brief received — we'll be in touch within 48 hours. Check your WhatsApp.</p>
     </div>
-    <ul class="footer-links">
-      <li><a href="become-a-trooper.html">Become a Trooper</a></li>
-      <li><a href="#">Privacy</a></li>
-      <li><a href="#">Terms</a></li>
-    </ul>
-  </footer>
+  </div>
+</section>
 
-  <!-- ── THREE.JS CDN ── -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <a href="/" class="footer-brand">CYBERTROOPER</a>
+    <span class="footer-by">by 3Sixty Marketing</span>
+  </div>
+  <div class="footer-right">
+    <a href="become-a-trooper.html">Are you a creator? Join the network →</a>
+    <span class="footer-copy">© 2026 CYBERTROOPER</span>
+  </div>
+</footer>
 
-  <script>
-  (function() {
-    'use strict';
+<script>
+// ── Hamburger / Drawer ──
+const hamburger = document.getElementById('hamburger');
+const drawer = document.getElementById('drawer');
 
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function openDrawer() {
+  drawer.classList.add('open');
+  hamburger.setAttribute('aria-expanded', 'true');
+  document.body.style.overflow = 'hidden';
+}
+function closeDrawer() {
+  drawer.classList.remove('open');
+  hamburger.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+}
 
-    // ── CONTACT FORM (no backend needed — visual confirmation) ──
-    const briefForm = document.getElementById('brief-form');
-    const briefStatus = document.getElementById('brief-status');
+hamburger.addEventListener('click', () => {
+  drawer.classList.contains('open') ? closeDrawer() : openDrawer();
+});
 
-    briefForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const name = briefForm.querySelector('#brief-name').value.trim();
-      const email = briefForm.querySelector('#brief-email').value.trim();
-      const brand = briefForm.querySelector('#brief-brand').value.trim();
-      const budget = briefForm.querySelector('#brief-budget').value;
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
 
-      if (!name || !email || !brand || !budget) {
-        briefStatus.textContent = 'Please fill in all fields.';
-        briefStatus.className = 'form-status error';
-        return;
-      }
+// Close on backdrop click (clicking the dark area, not a link)
+drawer.addEventListener('click', e => {
+  if (e.target === drawer) closeDrawer();
+});
 
-      briefStatus.textContent = 'WE\'LL BE IN TOUCH WITHIN 24 HOURS. WATCH YOUR INBOX.';
-      briefStatus.className = 'form-status success';
-      briefForm.reset();
-    });
+// Close on any nav link click
+drawer.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => closeDrawer());
+});
 
-    // ── THREE.JS SCENE ──
-    if (prefersReduced || !window.WebGLRenderingContext) {
-      document.getElementById('three-canvas').style.display = 'none';
-      document.getElementById('static-fallback').style.display = 'block';
-      return;
-    }
+// ── Brief form → WhatsApp ──
+document.getElementById('brief-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const fd = new FormData(this);
+  const brand  = fd.get('brand_name')  || '';
+  const name   = fd.get('your_name')   || '';
+  const email  = fd.get('email')       || '';
+  const wa     = fd.get('whatsapp')    || '';
+  const tier   = fd.get('tier')        || 'Not specified';
+  const brief  = fd.get('brief')       || '';
 
-    let scene, camera, renderer, centralMesh, satelliteGroup, animationId;
-    let clock;
-    const SATELLITE_COUNT = 64;
-    const satellites = [];
-    const targetPositions = [];
-    const homePositions = [];
+  const msg = [
+    '🎯 NEW CYBERTROOPER BRIEF',
+    '',
+    'Brand: '          + brand,
+    'Contact Name: '   + name,
+    'Email: '          + email,
+    'WhatsApp: '       + wa,
+    'Tier Interest: '  + tier,
+    '',
+    'Campaign Brief:',
+    brief,
+  ].join('\n');
 
-    function initThree() {
-      try {
-        const canvas = document.getElementById('three-canvas');
-        renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        renderer.setClearColor(0x000000, 0);
-        renderer.setSize(window.innerWidth, window.innerHeight);
+  const waURL = 'https://wa.me/8801631326245?text=' + encodeURIComponent(msg);
+  window.open(waURL, '_blank', 'noopener');
 
-        scene = new THREE.Scene();
-        clock = new THREE.Clock();
-
-        camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 0, 18);
-
-        // Ambient + directional light
-        scene.add(new THREE.AmbientLight(0xffffff, 0.4));
-        const dirLight = new THREE.DirectionalLight(0xC0C8D8, 1.2);
-        dirLight.position.set(5, 8, 10);
-        scene.add(dirLight);
-        const goldLight = new THREE.PointLight(0xE8A83E, 0.6, 30);
-        goldLight.position.set(-4, 2, 6);
-        scene.add(goldLight);
-
-        // Central node — chrome sphere
-        const centralGeo = new THREE.SphereGeometry(1.2, 64, 64);
-        const centralMat = new THREE.MeshPhongMaterial({
-          color: 0xC0C8D8,
-          specular: 0xffffff,
-          shininess: 180,
-          transparent: true,
-          opacity: 0.9,
-        });
-        centralMesh = new THREE.Mesh(centralGeo, centralMat);
-        scene.add(centralMesh);
-
-        // Pulse ring
-        const ringGeo = new THREE.RingGeometry(1.4, 1.6, 64);
-        const ringMat = new THREE.MeshBasicMaterial({ color: 0xE8A83E, side: THREE.DoubleSide, transparent: true, opacity: 0.4 });
-        const ring = new THREE.Mesh(ringGeo, ringMat);
-        centralMesh.add(ring);
-
-        // Satellite nodes
-        satelliteGroup = new THREE.Group();
-        scene.add(satelliteGroup);
-
-        const satGeo = new THREE.SphereGeometry(0.12, 16, 16);
-
-        for (let i = 0; i < SATELLITE_COUNT; i++) {
-          // Scatter in a sphere shell, biased toward a hemisphere
-          const phi   = Math.acos((Math.random() * 2) - 1);
-          const theta = Math.random() * Math.PI * 2;
-          const r     = 5 + Math.random() * 6;
-
-          const x = r * Math.sin(phi) * Math.cos(theta);
-          const y = r * Math.sin(phi) * Math.sin(theta);
-          const z = r * Math.cos(phi) * 0.6; // flatten z slightly
-
-          homePositions.push(new THREE.Vector3(x, y, z));
-
-          const brightness = 0.15 + Math.random() * 0.25;
-          const satMat = new THREE.MeshPhongMaterial({
-            color: new THREE.Color(brightness, brightness + 0.05, brightness + 0.1),
-            transparent: true,
-            opacity: 0,
-          });
-          const sat = new THREE.Mesh(satGeo, satMat);
-          sat.position.set(0, 0, 0); // start at center
-          satelliteGroup.add(sat);
-          satellites.push(sat);
-          targetPositions.push(homePositions[i].clone());
-        }
-
-        // Animate launch
-        animateLaunch();
-
-        // Resize handler
-        window.addEventListener('resize', onResize);
-
-        // Start render loop
-        renderLoop();
-
-        // GSAP ScrollTrigger for How It Works
-        setupScrollTrigger();
-
-      } catch(err) {
-        console.warn('Three.js init failed:', err);
-        document.getElementById('three-canvas').style.display = 'none';
-        document.getElementById('static-fallback').style.display = 'block';
-      }
-    }
-
-    function animateLaunch() {
-      // Camera dolly in from far
-      gsap.from(camera.position, {
-        z: 40,
-        duration: 3.5,
-        ease: 'power3.out'
-      });
-
-      // Central node fade in
-      gsap.from(centralMesh.material, {
-        opacity: 0,
-        duration: 1.2,
-        ease: 'power2.out'
-      });
-
-      // Satellites fly out
-      satellites.forEach((sat, i) => {
-        const delay = 0.6 + (i / SATELLITE_COUNT) * 1.8;
-        gsap.to(sat.material, {
-          opacity: 0.6 + Math.random() * 0.3,
-          duration: 0.4,
-          delay,
-          ease: 'power2.out'
-        });
-        gsap.to(sat.position, {
-          x: homePositions[i].x,
-          y: homePositions[i].y,
-          z: homePositions[i].z,
-          duration: 1.6,
-          delay,
-          ease: 'expo.out'
-        });
-      });
-    }
-
-    function setupScrollTrigger() {
-      if (!window.ScrollTrigger) return;
-      gsap.registerPlugin(ScrollTrigger);
-
-      const howWrap = document.getElementById('how-canvas-wrap');
-      if (!howWrap) return;
-
-      // Move canvas into How It Works section on scroll
-      ScrollTrigger.create({
-        trigger: '#how-it-works',
-        start: 'top 60%',
-        onEnter: () => morphToLinear(),
-        onLeaveBack: () => morphToRadial(),
-      });
-    }
-
-    // Morph satellites into 3 clusters (left / center / right)
-    function morphToLinear() {
-      const clusters = [
-        new THREE.Vector3(-7, 0, 0),
-        new THREE.Vector3(0, 0, 0),
-        new THREE.Vector3(7, 0, 0),
-      ];
-      const perCluster = Math.floor(SATELLITE_COUNT / 3);
-
-      satellites.forEach((sat, i) => {
-        const clusterIdx = Math.min(Math.floor(i / perCluster), 2);
-        const base = clusters[clusterIdx];
-        const spread = 1.8;
-        gsap.to(sat.position, {
-          x: base.x + (Math.random() - 0.5) * spread,
-          y: base.y + (Math.random() - 0.5) * spread,
-          z: base.z + (Math.random() - 0.5) * spread * 0.3,
-          duration: 1.4,
-          ease: 'power3.inOut',
-          delay: Math.random() * 0.3
-        });
-      });
-
-      gsap.to(camera.position, { z: 22, duration: 1.4, ease: 'power2.inOut' });
-      gsap.to(centralMesh.position, { y: 3, duration: 1.4, ease: 'power2.inOut' });
-    }
-
-    function morphToRadial() {
-      satellites.forEach((sat, i) => {
-        gsap.to(sat.position, {
-          x: homePositions[i].x,
-          y: homePositions[i].y,
-          z: homePositions[i].z,
-          duration: 1.2,
-          ease: 'power2.inOut',
-          delay: Math.random() * 0.2
-        });
-      });
-      gsap.to(camera.position, { z: 18, duration: 1.2, ease: 'power2.inOut' });
-      gsap.to(centralMesh.position, { y: 0, duration: 1.2, ease: 'power2.inOut' });
-    }
-
-    function renderLoop() {
-      animationId = requestAnimationFrame(renderLoop);
-      const t = clock.getElapsedTime();
-
-      // Gentle central rotation
-      if (centralMesh) {
-        centralMesh.rotation.y = t * 0.12;
-        centralMesh.rotation.x = Math.sin(t * 0.07) * 0.08;
-      }
-
-      // Subtle satellite drift
-      satellites.forEach((sat, i) => {
-        sat.position.y += Math.sin(t * 0.5 + i) * 0.0004;
-      });
-
-      renderer.render(scene, camera);
-    }
-
-    function onResize() {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    }
-
-    // Init
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initThree);
-    } else {
-      initThree();
-    }
-
-  })();
-  </script>
-
-  <script>
-    // Hamburger menu toggle
-    const hamburger = document.getElementById('hamburger');
-    const navDrawer = document.getElementById('nav-drawer');
-
-    function openDrawer() {
-      navDrawer.classList.add('open');
-      hamburger.setAttribute('aria-expanded', 'true');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeDrawer() {
-      navDrawer.classList.remove('open');
-      hamburger.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
-    }
-
-    hamburger.addEventListener('click', () => {
-      if (navDrawer.classList.contains('open')) closeDrawer();
-      else openDrawer();
-    });
-
-    // Close drawer when a link is clicked
-    navDrawer.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', closeDrawer);
-    });
-
-    // Close on backdrop click (outside drawer)
-    document.addEventListener('click', (e) => {
-      if (navDrawer.classList.contains('open') && !navDrawer.contains(e.target) && e.target !== hamburger) {
-        closeDrawer();
-      }
-    });
-
-    // Close on Escape key
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeDrawer();
-    });
-  </script>
+  document.getElementById('form-success').classList.add('visible');
+  this.style.display = 'none';
+});
+</script>
 </body>
 </html>
