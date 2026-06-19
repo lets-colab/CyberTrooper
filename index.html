@@ -5,10 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>CYBERTROOPER — KL's First Threads Creator Network</title>
 <meta name="description" content="We deploy real KL locals to post about your brand authentically on Threads. No bots. No scripts. Real people, real accounts, real engagement." />
+<meta property="og:title" content="CYBERTROOPER — KL's First Threads Creator Network" />
+<meta property="og:description" content="We deploy real KL locals to post about your brand on Threads. Real people. Real engagement. Monthly reports." />
+<meta property="og:type" content="website" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2306060E'/%3E%3Ctext x='3' y='24' font-family='Arial Black,sans-serif' font-weight='900' font-size='18' fill='%23E8A83E'%3ECT%3C/text%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
 <style>
+/* ── CSS HOUDINI — animated border property ── */
+@property --border-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
@@ -31,6 +42,17 @@ body {
   font-weight: 300;
   line-height: 1.65;
   overflow-x: hidden;
+}
+
+/* Noise grain overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.038;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 /* Fine grid overlay */
@@ -56,10 +78,17 @@ nav {
   justify-content: space-between;
   padding: 1rem clamp(1.25rem,5vw,4rem);
   padding-top: max(1rem, env(safe-area-inset-top));
-  background: rgba(6,6,14,0.88);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--border);
+  background: rgba(6,6,14,0.1);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  border-bottom: 1px solid transparent;
+  transition: background 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease;
+}
+nav.scrolled {
+  background: rgba(6,6,14,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom-color: var(--border);
 }
 
 .nav-logo {
@@ -205,6 +234,160 @@ nav {
 }
 
 .hero-content { position: relative; z-index: 1; max-width: 920px; }
+
+/* ── WORD REVEAL ── */
+.word-wrap {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  line-height: 0.92;
+}
+.word {
+  display: inline-block;
+  transform: translateY(110%);
+  opacity: 0;
+  animation: wordReveal 0.9s cubic-bezier(0.16,1,0.3,1) forwards;
+  animation-delay: var(--wd, 0s);
+}
+@keyframes wordReveal {
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* ── SCROLL HINT ── */
+.scroll-hint {
+  position: absolute;
+  bottom: 2.8rem;
+  left: clamp(1.25rem,6vw,4.5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.55rem;
+  z-index: 2;
+  pointer-events: none;
+}
+.scroll-hint span {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(192,200,216,0.4);
+  writing-mode: horizontal-tb;
+}
+.scroll-line {
+  width: 1px;
+  height: 44px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  transform-origin: top;
+  animation: scrollDrop 2s ease-in-out infinite;
+}
+@keyframes scrollDrop {
+  0%   { transform: scaleY(0); opacity: 1; }
+  50%  { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(1); opacity: 0; }
+}
+
+/* ── SOCIAL PROOF BAR ── */
+.proof-bar {
+  position: relative;
+  z-index: 1;
+  background: rgba(232,168,62,0.04);
+  border-top: 1px solid rgba(232,168,62,0.12);
+  border-bottom: 1px solid rgba(232,168,62,0.12);
+  padding: 0.95rem clamp(1.25rem,6vw,4.5rem);
+  overflow: hidden;
+}
+.proof-bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(232,168,62,0.04), transparent);
+  animation: proofShimmer 4s ease-in-out infinite;
+}
+@keyframes proofShimmer {
+  0%, 100% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+}
+.proof-inner {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.proof-item {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  color: rgba(192,200,216,0.65);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.proof-item strong {
+  color: var(--gold);
+  font-weight: 500;
+}
+.proof-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+  opacity: 0.5;
+}
+
+/* ── CUSTOM CURSOR ── */
+#ct-cursor {
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 10000;
+  mix-blend-mode: normal;
+}
+.cursor-ring {
+  position: absolute;
+  width: 36px; height: 36px;
+  border: 1.5px solid rgba(232,168,62,0.5);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.12s ease, width 0.2s ease, height 0.2s ease, border-color 0.2s;
+}
+.cursor-dot {
+  position: absolute;
+  width: 5px; height: 5px;
+  background: var(--gold);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.05s linear;
+}
+body.cursor-hover .cursor-ring {
+  width: 52px; height: 52px;
+  border-color: rgba(232,168,62,0.8);
+}
+
+/* ── ANIMATED BORDER — featured tier card ── */
+.tier-card.featured {
+  --border-angle: 0deg;
+  background:
+    linear-gradient(rgba(6,6,14,0.95), rgba(6,6,14,0.9)) padding-box,
+    conic-gradient(from var(--border-angle),
+      rgba(232,168,62,0) 0deg,
+      var(--gold) 60deg,
+      rgba(232,168,62,0) 120deg,
+      rgba(232,168,62,0) 240deg,
+      var(--gold) 300deg,
+      rgba(232,168,62,0) 360deg
+    ) border-box;
+  border: 1.5px solid transparent;
+  animation: spinBorder 4s linear infinite;
+  box-shadow: 0 0 48px rgba(232,168,62,0.12), 0 0 2px rgba(232,168,62,0.08);
+}
+@keyframes spinBorder {
+  to { --border-angle: 360deg; }
+}
+
+/* ── NUMBER COUNTER ── */
+.stat-num[data-target] { display: block; }
 
 .eyebrow {
   font-family: 'DM Mono', monospace;
@@ -705,6 +888,11 @@ footer {
 
 <!-- SCROLL PROGRESS -->
 <div id="scroll-bar" aria-hidden="true"></div>
+<!-- CUSTOM CURSOR -->
+<div id="ct-cursor" aria-hidden="true">
+  <div class="cursor-ring"></div>
+  <div class="cursor-dot"></div>
+</div>
 
 <!-- NAV -->
 <nav>
@@ -734,14 +922,28 @@ footer {
   <div class="hero-glow" aria-hidden="true"></div>
   <div class="hero-content">
     <p class="eyebrow">[KL's First Threads Creator Network]</p>
-    <h1>YOUR BRAND.<br>THEIR VOICE.<br>REAL REACH.</h1>
+    <h1 id="hero-h1">YOUR BRAND.<br>THEIR VOICE.<br>REAL REACH.</h1>
     <p class="hero-sub">We deploy real KL locals to post about your brand authentically on Threads. No bots. No scripts. Real people, real accounts, real engagement.</p>
     <div class="cta-group">
       <a href="#contact" class="btn-gold">BRIEF US</a>
       <a href="#how" class="btn-ghost">HOW IT WORKS</a>
     </div>
   </div>
+  <div class="scroll-hint" aria-hidden="true">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
 </section>
+
+<!-- SOCIAL PROOF BAR -->
+<div class="proof-bar" aria-label="Live stats">
+  <div class="proof-inner">
+    <div class="proof-item"><span class="proof-dot"></span> <strong>40+</strong> Troopers active across KL</div>
+    <div class="proof-item"><span class="proof-dot"></span> <strong>3</strong> brand campaigns running now</div>
+    <div class="proof-item"><span class="proof-dot"></span> Applications reviewed every <strong>Monday</strong></div>
+    <div class="proof-item"><span class="proof-dot"></span> <strong>100%</strong> authentic — zero bot accounts</div>
+  </div>
+</div>
 
 <!-- HOW IT WORKS -->
 <section id="how">
@@ -781,7 +983,7 @@ footer {
     <h2 class="section-heading">WHY THREADS</h2>
     <div class="stat-grid">
       <div class="stat-card reveal">
-        <span class="stat-card-label">100M+</span>
+        <span class="stat-card-label stat-num" data-target="100" data-suffix="M+">100M+</span>
         <p>Users globally — growing fastest in Southeast Asia.</p>
       </div>
       <div class="stat-card reveal" style="transition-delay:0.1s">
@@ -793,7 +995,7 @@ footer {
         <p>Early-adopters and tastemakers — the audience brands actually want to reach.</p>
       </div>
       <div class="stat-card reveal" style="transition-delay:0.3s">
-        <span class="stat-card-label">3–5×</span>
+        <span class="stat-card-label stat-num" data-target="5" data-suffix="×" data-prefix="3–">3–5×</span>
         <p>Real posts from real people outperform sponsored content on engagement.</p>
       </div>
     </div>
@@ -895,6 +1097,57 @@ footer {
 </footer>
 
 <script>
+// ── Nav scroll state ──
+const navEl = document.querySelector('nav');
+window.addEventListener('scroll', () => {
+  navEl.classList.toggle('scrolled', window.scrollY > 60);
+  const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
+  scrollBar.style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
+
+// ── Custom cursor (desktop only) ──
+(function() {
+  const isTouchDevice = window.matchMedia('(hover: none)').matches;
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cursor = document.getElementById('ct-cursor');
+  if (!cursor || isTouchDevice || prefersReduced) { if(cursor) cursor.style.display='none'; return; }
+  const ring = cursor.querySelector('.cursor-ring');
+  const dot  = cursor.querySelector('.cursor-dot');
+  let rx = 0, ry = 0, dx = 0, dy = 0;
+  let raf;
+  document.addEventListener('mousemove', e => { dx = e.clientX; dy = e.clientY; });
+  function moveCursor() {
+    rx += (dx - rx) * 0.14;
+    ry += (dy - ry) * 0.14;
+    ring.style.transform = `translate(calc(${rx}px - 50%), calc(${ry}px - 50%))`;
+    dot.style.transform  = `translate(calc(${dx}px - 50%), calc(${dy}px - 50%))`;
+    raf = requestAnimationFrame(moveCursor);
+  }
+  moveCursor();
+  document.querySelectorAll('a, button, .tier-card, .stat-card').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+  });
+  document.addEventListener('mouseleave', () => { if(raf) cancelAnimationFrame(raf); });
+  document.addEventListener('mouseenter', () => moveCursor());
+})();
+
+// ── Hero word reveal ──
+(function() {
+  const h1 = document.getElementById('hero-h1');
+  if (!h1) return;
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
+  const lines = h1.innerHTML.split('<br>');
+  let wordIdx = 0;
+  h1.innerHTML = lines.map(line =>
+    line.trim().split(/\s+/).map(word => {
+      const delay = 0.3 + wordIdx++ * 0.1;
+      return `<span class="word-wrap"><span class="word" style="--wd:${delay}s">${word}</span></span>`;
+    }).join(' ')
+  ).join('<br>');
+})();
+
 // ── Hamburger / Drawer ──
 const hamburger = document.getElementById('hamburger');
 const drawer = document.getElementById('drawer');
@@ -916,10 +1169,6 @@ drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => clos
 
 // ── Scroll progress bar ──
 const scrollBar = document.getElementById('scroll-bar');
-window.addEventListener('scroll', () => {
-  const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
-  scrollBar.style.width = Math.min(pct, 100) + '%';
-}, { passive: true });
 
 // ── Scroll reveal (IntersectionObserver) ──
 const revealObserver = new IntersectionObserver((entries) => {
@@ -931,6 +1180,33 @@ const revealObserver = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// ── Number counter animation ──
+function animateCounter(el) {
+  const target = parseInt(el.dataset.target, 10);
+  const suffix = el.dataset.suffix || '';
+  const prefix = el.dataset.prefix || '';
+  if (!target) return;
+  const duration = 1800;
+  const start = performance.now();
+  function tick(now) {
+    const p = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = prefix + Math.floor(eased * target) + suffix;
+    if (p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+const counterObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      animateCounter(e.target);
+      counterObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.stat-num[data-target]').forEach(el => counterObserver.observe(el));
 
 // ── Particle constellation (desktop only, respects reduced-motion) ──
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

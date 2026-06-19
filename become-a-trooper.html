@@ -5,10 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Become a Trooper — CYBERTROOPER</title>
 <meta name="description" content="Join KL's first Threads creator network. Post in your own voice about brands you discover. Get paid every month." />
+<meta property="og:title" content="Become a Trooper — CYBERTROOPER" />
+<meta property="og:description" content="Join KL's first Threads creator network. Post in your own voice. Get paid every month." />
+<meta property="og:type" content="website" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23080F0A'/%3E%3Ctext x='3' y='24' font-family='Arial Black,sans-serif' font-weight='900' font-size='18' fill='%2322C55E'%3ECT%3C/text%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
 <style>
+@property --border-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
@@ -24,6 +34,17 @@
 }
 
 html { scroll-behavior: smooth; }
+
+/* Noise grain */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.032;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
 
 body {
   background: var(--bg);
@@ -44,10 +65,17 @@ nav {
   justify-content: space-between;
   padding: 1rem clamp(1.25rem,5vw,4rem);
   padding-top: max(1rem, env(safe-area-inset-top));
-  background: rgba(8,15,10,0.88);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--border);
+  background: rgba(8,15,10,0.1);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  border-bottom: 1px solid transparent;
+  transition: background 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease;
+}
+nav.scrolled {
+  background: rgba(8,15,10,0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom-color: var(--border);
 }
 
 .nav-logo {
@@ -213,6 +241,137 @@ nav {
 }
 
 .hero-content { position: relative; z-index: 1; max-width: 780px; }
+
+/* Word reveal */
+.word-wrap { display: inline-block; overflow: hidden; vertical-align: top; line-height: 0.92; }
+.word {
+  display: inline-block;
+  transform: translateY(110%);
+  opacity: 0;
+  animation: wordReveal 0.9s cubic-bezier(0.16,1,0.3,1) forwards;
+  animation-delay: var(--wd, 0s);
+}
+@keyframes wordReveal {
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Scroll hint */
+.scroll-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: clamp(1.25rem,6vw,4.5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.55rem;
+  z-index: 2;
+  pointer-events: none;
+}
+.scroll-hint span {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(159,200,168,0.4);
+}
+.scroll-line {
+  width: 1px;
+  height: 44px;
+  background: linear-gradient(to bottom, var(--blue), transparent);
+  transform-origin: top;
+  animation: scrollDrop 2s ease-in-out infinite;
+}
+@keyframes scrollDrop {
+  0%   { transform: scaleY(0); opacity: 1; }
+  50%  { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(1); opacity: 0; }
+}
+
+/* Animated border — Top Trooper card */
+.tier-card.top {
+  --border-angle: 0deg;
+  background:
+    linear-gradient(rgba(8,15,10,0.92), rgba(8,15,10,0.88)) padding-box,
+    conic-gradient(from var(--border-angle),
+      rgba(34,197,94,0) 0deg,
+      var(--blue) 60deg,
+      var(--purple) 120deg,
+      rgba(34,197,94,0) 180deg,
+      rgba(34,197,94,0) 300deg,
+      var(--blue) 330deg,
+      rgba(34,197,94,0) 360deg
+    ) border-box;
+  border: 1.5px solid transparent;
+  animation: spinBorderGreen 4s linear infinite;
+  box-shadow: 0 0 40px rgba(34,197,94,0.1);
+}
+@keyframes spinBorderGreen { to { --border-angle: 360deg; } }
+
+/* Smooth FAQ accordion */
+.faq-list details { position: relative; }
+.faq-list .faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.42s cubic-bezier(0.16,1,0.3,1), padding 0.3s ease;
+  padding-bottom: 0;
+}
+.faq-list details[open] .faq-answer {
+  max-height: 400px;
+  padding-bottom: 1.2rem;
+}
+.faq-list summary::after {
+  content: '+';
+  font-family: 'Inter', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 300;
+  color: var(--blue);
+  transition: transform 0.3s ease, content 0s;
+  flex-shrink: 0;
+}
+.faq-list details[open] summary::after {
+  content: '−';
+}
+
+/* Form step slide transitions */
+.form-step {
+  animation: slideIn 0.42s cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(32px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.form-step.slide-left {
+  animation: slideOut 0.3s cubic-bezier(0.4,0,1,1) both;
+}
+@keyframes slideOut {
+  to { opacity: 0; transform: translateX(-32px); }
+}
+
+/* Social proof in hero */
+.hero-proof {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.8rem;
+  flex-wrap: wrap;
+}
+.hero-proof-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--blue);
+  animation: proofPulse 2s ease-in-out infinite;
+}
+@keyframes proofPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.4); }
+}
+.hero-proof span {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: rgba(159,200,168,0.7);
+}
+.hero-proof strong { color: var(--blue); font-weight: 600; }
 
 .eyebrow {
   font-family: 'Inter', sans-serif;
@@ -563,7 +722,7 @@ details[open] summary::after {
 .wizard-form { max-width: 640px; }
 
 .form-step { display: none; flex-direction: column; gap: 1rem; }
-.form-step.active { display: flex; }
+.form-step.active { display: flex; animation: slideIn 0.42s cubic-bezier(0.16,1,0.3,1) both; }
 
 .step-title {
   font-family: 'Space Grotesk', sans-serif;
@@ -1049,11 +1208,19 @@ footer {
   <div class="hero-particles" aria-hidden="true" id="hero-particles"></div>
   <div class="hero-content">
     <p class="eyebrow">KL Creator Network &nbsp;·&nbsp; Now Recruiting</p>
-    <h1>GET PAID<br>TO POST.</h1>
+    <h1 id="hero-h1">GET PAID<br>TO POST.</h1>
     <p class="hero-sub">Join KL's first Threads creator network. Post in your own voice about brands you discover. Get paid every month.</p>
     <div class="cta-group">
       <a href="#apply-form" class="btn-blue">APPLY NOW</a>
     </div>
+    <div class="hero-proof">
+      <div class="hero-proof-dot"></div>
+      <span><strong>40+</strong> Troopers already earning in KL — applications close when spots fill</span>
+    </div>
+  </div>
+  <div class="scroll-hint" aria-hidden="true">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
   </div>
 </section>
 
@@ -1331,12 +1498,55 @@ footer {
 </div>
 
 <script>
-// ── Scroll progress bar ──
+// ── Nav scroll state ──
+const navEl = document.querySelector('nav');
 const scrollBar = document.getElementById('scroll-bar');
 window.addEventListener('scroll', () => {
+  navEl.classList.toggle('scrolled', window.scrollY > 60);
   const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
   scrollBar.style.width = Math.min(pct, 100) + '%';
 }, { passive: true });
+
+// ── Hero word reveal ──
+(function() {
+  const h1 = document.getElementById('hero-h1');
+  if (!h1 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const lines = h1.innerHTML.split('<br>');
+  let wi = 0;
+  h1.innerHTML = lines.map(line =>
+    line.trim().split(/\s+/).map(word =>
+      `<span class="word-wrap"><span class="word" style="--wd:${0.2 + wi++ * 0.12}s">${word}</span></span>`
+    ).join(' ')
+  ).join('<br>');
+})();
+
+// ── Smooth FAQ accordion ──
+document.querySelectorAll('.faq-list details').forEach(d => {
+  const summary = d.querySelector('summary');
+  const answer  = d.querySelector('.faq-answer');
+  if (!summary || !answer) return;
+
+  summary.addEventListener('click', e => {
+    e.preventDefault();
+    if (d.open) {
+      answer.style.maxHeight = answer.scrollHeight + 'px';
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        answer.style.maxHeight = '0';
+        answer.style.paddingBottom = '0';
+      }));
+      answer.addEventListener('transitionend', () => {
+        d.removeAttribute('open');
+      }, { once: true });
+    } else {
+      d.setAttribute('open', '');
+      answer.style.maxHeight = '0';
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+        answer.style.paddingBottom = '1.2rem';
+      }));
+    }
+  });
+});
 
 // ── Scroll reveal ──
 const revealObs = new IntersectionObserver(entries => {
@@ -1553,10 +1763,23 @@ function updateProgress(step) {
 }
 
 function showStep(step) {
-  document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
-  document.getElementById('step-' + step).classList.add('active');
+  const current = document.getElementById('step-' + currentStep);
+  const next    = document.getElementById('step-' + step);
+  if (!next) return;
+
+  if (current && step > currentStep) {
+    current.classList.add('slide-left');
+    current.addEventListener('animationend', () => {
+      current.classList.remove('active', 'slide-left');
+      next.classList.add('active');
+    }, { once: true });
+  } else {
+    document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active', 'slide-left'));
+    next.classList.add('active');
+  }
   updateProgress(step);
   currentStep = step;
+  next.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function validateStep(step) {
