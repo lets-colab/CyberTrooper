@@ -338,17 +338,7 @@ section { padding: var(--section-pad); position: relative; z-index: 1; }
   margin-top: 0.5rem;
 }
 
-.stat-card {
-  background: rgba(255,255,255,0.025);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 2rem 1.8rem;
-  transition: border-color 0.25s, background 0.25s;
-}
-.stat-card:hover {
-  border-color: rgba(232,168,62,0.28);
-  background: rgba(232,168,62,0.04);
-}
+/* stat-card styles defined below in Glassmorphism 2.0 block */
 
 .stat-card-label {
   font-family: 'Bebas Neue', sans-serif;
@@ -388,15 +378,7 @@ section { padding: var(--section-pad); position: relative; z-index: 1; }
   gap: 1.2rem;
 }
 
-.tier-card {
-  background: rgba(255,255,255,0.025);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 2.2rem 1.8rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.9rem;
-}
+/* tier-card styles defined below in 3D Tilt block */
 
 .tier-card.featured {
   border-color: var(--gold);
@@ -590,9 +572,107 @@ footer {
   text-transform: uppercase;
 }
 
+/* ── SCROLL PROGRESS BAR ── */
+#scroll-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: var(--gold);
+  z-index: 1001;
+  width: 0%;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 10px rgba(232,168,62,0.55), 0 0 3px rgba(232,168,62,0.9);
+  pointer-events: none;
+}
+
+/* ── HERO CANVAS ── */
+#hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── GLASSMORPHISM 2.0 stat cards ── */
+.stat-card {
+  background: rgba(6,6,14,0.45);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(192,200,216,0.13);
+  border-radius: 12px;
+  padding: 2rem 1.8rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+.stat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.032;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+.stat-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(232,168,62,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+.stat-card:hover {
+  border-color: rgba(232,168,62,0.32);
+  box-shadow: 0 0 40px rgba(232,168,62,0.08), 0 8px 32px rgba(0,0,0,0.4);
+  transform: translateY(-3px);
+}
+
+/* ── 3D TILT CARDS ── */
+.tier-card {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2.2rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+  position: relative;
+  overflow: hidden;
+}
+.tier-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 60%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.tier-card:hover::before { opacity: 1; }
+
+/* ── SCROLL REVEAL ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.75s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
 /* ── REDUCED MOTION ── */
 @media (prefers-reduced-motion: reduce) {
   .hero-glow { animation: none; }
+  .reveal { opacity: 1; transform: none; transition: none; }
   *, *::before, *::after {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
@@ -623,6 +703,9 @@ footer {
 </head>
 <body>
 
+<!-- SCROLL PROGRESS -->
+<div id="scroll-bar" aria-hidden="true"></div>
+
 <!-- NAV -->
 <nav>
   <a href="/" class="nav-logo">CYBERTROOPER</a>
@@ -647,6 +730,7 @@ footer {
 
 <!-- HERO -->
 <section class="hero">
+  <canvas id="hero-canvas" aria-hidden="true"></canvas>
   <div class="hero-glow" aria-hidden="true"></div>
   <div class="hero-content">
     <p class="eyebrow">[KL's First Threads Creator Network]</p>
@@ -665,21 +749,21 @@ footer {
     <p class="eyebrow">[Signal Architecture]</p>
     <h2 class="section-heading">HOW IT WORKS</h2>
     <div class="steps">
-      <div class="step">
+      <div class="step reveal">
         <span class="step-num">01</span>
         <div class="step-body">
           <h3>BRIEF</h3>
           <p>You send us your campaign objective, tone, and target audience. We translate it into talking points our Trooper network can execute authentically.</p>
         </div>
       </div>
-      <div class="step">
+      <div class="step reveal" style="transition-delay:0.12s">
         <span class="step-num">02</span>
         <div class="step-body">
           <h3>DEPLOY</h3>
           <p>We activate the right Troopers for your brand — matched by location, vibe, and audience. They post in their own voice. No copy-pasting. No disclaimers.</p>
         </div>
       </div>
-      <div class="step">
+      <div class="step reveal" style="transition-delay:0.24s">
         <span class="step-num">03</span>
         <div class="step-body">
           <h3>REPORT</h3>
@@ -696,19 +780,19 @@ footer {
     <p class="eyebrow">[Signal Advantage]</p>
     <h2 class="section-heading">WHY THREADS</h2>
     <div class="stat-grid">
-      <div class="stat-card">
+      <div class="stat-card reveal">
         <span class="stat-card-label">100M+</span>
         <p>Users globally — growing fastest in Southeast Asia.</p>
       </div>
-      <div class="stat-card">
+      <div class="stat-card reveal" style="transition-delay:0.1s">
         <span class="stat-card-label">Text-First</span>
         <p>Format rewards authentic voice over polished ads. Real words cut through.</p>
       </div>
-      <div class="stat-card">
+      <div class="stat-card reveal" style="transition-delay:0.2s">
         <span class="stat-card-label">KL's Crowd</span>
         <p>Early-adopters and tastemakers — the audience brands actually want to reach.</p>
       </div>
-      <div class="stat-card">
+      <div class="stat-card reveal" style="transition-delay:0.3s">
         <span class="stat-card-label">3–5×</span>
         <p>Real posts from real people outperform sponsored content on engagement.</p>
       </div>
@@ -723,14 +807,14 @@ footer {
     <h2 class="section-heading">PICK YOUR SCALE</h2>
     <p class="tiers-sub">Rates revealed after your brief. Every tier includes monthly content strategy, trooper activation, and a campaign report.</p>
     <div class="tiers-grid">
-      <div class="tier-card">
+      <div class="tier-card reveal">
         <span class="tier-name">SEED</span>
         <span class="tier-count">5 Troopers / month</span>
         <p class="tier-desc">Best for testing the network and niche targeting. Start small, learn fast.</p>
         <span class="tier-rate">Rate on application</span>
         <a href="#contact" class="btn-gold" style="text-align:center;margin-top:0.5rem;">BRIEF US</a>
       </div>
-      <div class="tier-card featured">
+      <div class="tier-card featured reveal" style="transition-delay:0.12s">
         <span class="tier-badge">Most Popular</span>
         <span class="tier-name">GROWTH</span>
         <span class="tier-count">15 Troopers / month</span>
@@ -738,7 +822,7 @@ footer {
         <span class="tier-rate">Rate on application</span>
         <a href="#contact" class="btn-gold" style="text-align:center;margin-top:0.5rem;">BRIEF US</a>
       </div>
-      <div class="tier-card">
+      <div class="tier-card reveal" style="transition-delay:0.24s">
         <span class="tier-name">ELITE</span>
         <span class="tier-count">30 Troopers / month</span>
         <p class="tier-desc">Best for maximum reach and product launches. Full-network activation.</p>
@@ -825,50 +909,186 @@ function closeDrawer() {
   hamburger.setAttribute('aria-expanded', 'false');
   document.body.style.overflow = '';
 }
-
-hamburger.addEventListener('click', () => {
-  drawer.classList.contains('open') ? closeDrawer() : openDrawer();
-});
-
+hamburger.addEventListener('click', () => drawer.classList.contains('open') ? closeDrawer() : openDrawer());
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+drawer.addEventListener('click', e => { if (e.target === drawer) closeDrawer(); });
+drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => closeDrawer()));
 
-// Close on backdrop click (clicking the dark area, not a link)
-drawer.addEventListener('click', e => {
-  if (e.target === drawer) closeDrawer();
-});
+// ── Scroll progress bar ──
+const scrollBar = document.getElementById('scroll-bar');
+window.addEventListener('scroll', () => {
+  const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
+  scrollBar.style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
 
-// Close on any nav link click
-drawer.querySelectorAll('a').forEach(a => {
-  a.addEventListener('click', () => closeDrawer());
-});
+// ── Scroll reveal (IntersectionObserver) ──
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// ── Particle constellation (desktop only, respects reduced-motion) ──
+const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const canvas = document.getElementById('hero-canvas');
+
+if (canvas && !prefersReduced) {
+  const ctx = canvas.getContext('2d');
+  let W, H, particles, mouse = { x: 0, y: 0 }, raf;
+
+  function resize() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+
+  function initParticles() {
+    const NUM = W > 768 ? 90 : 50;
+    particles = Array.from({ length: NUM }, (_, i) => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.28,
+      vy: (Math.random() - 0.5) * 0.28,
+      r: i === 0 ? 4 : Math.random() * 1.6 + 0.5,
+      gold: i < 3,
+    }));
+  }
+
+  function drawFrame() {
+    ctx.clearRect(0, 0, W, H);
+    const MAX_D = W > 768 ? 150 : 100;
+
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      // mouse attract
+      const mdx = mouse.x - p.x, mdy = mouse.y - p.y;
+      const md = Math.hypot(mdx, mdy);
+      if (md < 250 && md > 0) {
+        p.vx += (mdx / md) * 0.006;
+        p.vy += (mdy / md) * 0.006;
+      }
+      // damping
+      p.vx *= 0.995; p.vy *= 0.995;
+      p.x += p.vx; p.y += p.vy;
+      // wrap
+      if (p.x < -5) p.x = W + 5;
+      if (p.x > W + 5) p.x = -5;
+      if (p.y < -5) p.y = H + 5;
+      if (p.y > H + 5) p.y = -5;
+
+      // draw dot
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.gold ? 'rgba(232,168,62,0.85)' : 'rgba(192,200,216,0.55)';
+      ctx.fill();
+
+      // draw connections
+      for (let j = i + 1; j < particles.length; j++) {
+        const q = particles[j];
+        const dx = p.x - q.x, dy = p.y - q.y;
+        const d = Math.hypot(dx, dy);
+        if (d < MAX_D) {
+          const alpha = (1 - d / MAX_D) * 0.2;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(q.x, q.y);
+          const isGoldLine = p.gold || q.gold;
+          ctx.strokeStyle = isGoldLine
+            ? `rgba(232,168,62,${alpha * 1.4})`
+            : `rgba(192,200,216,${alpha})`;
+          ctx.lineWidth = isGoldLine ? 1.1 : 0.7;
+          ctx.stroke();
+        }
+      }
+    }
+    raf = requestAnimationFrame(drawFrame);
+  }
+
+  canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - r.left;
+    mouse.y = e.clientY - r.top;
+  });
+
+  function start() {
+    resize();
+    initParticles();
+    if (raf) cancelAnimationFrame(raf);
+    drawFrame();
+  }
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => { resize(); initParticles(); }, 200);
+  });
+
+  // Only run when hero is visible (pause when scrolled away)
+  const heroSection = canvas.closest('section');
+  const heroObserver = new IntersectionObserver(([e]) => {
+    if (e.isIntersecting) { start(); }
+    else if (raf) { cancelAnimationFrame(raf); raf = null; }
+  }, { threshold: 0.01 });
+  heroObserver.observe(heroSection);
+}
+
+// ── 3D Tilt on cards (desktop only) ──
+if (!prefersReduced && window.matchMedia('(hover: hover)').matches) {
+  document.querySelectorAll('.tier-card, .stat-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width  - 0.5;
+      const y = (e.clientY - rect.top)  / rect.height - 0.5;
+      const depth = card.classList.contains('tier-card') ? 12 : 8;
+      card.style.transform = `perspective(900px) rotateX(${-y * depth}deg) rotateY(${x * depth}deg) translateZ(8px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+
+  // ── Magnetic buttons ──
+  document.querySelectorAll('.btn-gold').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+      const rect = btn.getBoundingClientRect();
+      const x = (e.clientX - rect.left - rect.width  / 2) * 0.28;
+      const y = (e.clientY - rect.top  - rect.height / 2) * 0.28;
+      btn.style.transform = `translate(${x}px, ${y}px) scale(1.03)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = '';
+    });
+  });
+}
 
 // ── Brief form → WhatsApp ──
 document.getElementById('brief-form').addEventListener('submit', function (e) {
   e.preventDefault();
   const fd = new FormData(this);
-  const brand  = fd.get('brand_name')  || '';
-  const name   = fd.get('your_name')   || '';
-  const email  = fd.get('email')       || '';
-  const wa     = fd.get('whatsapp')    || '';
-  const tier   = fd.get('tier')        || 'Not specified';
-  const brief  = fd.get('brief')       || '';
+  const brand = fd.get('brand_name') || '';
+  const name  = fd.get('your_name')  || '';
+  const email = fd.get('email')      || '';
+  const wa    = fd.get('whatsapp')   || '';
+  const tier  = fd.get('tier')       || 'Not specified';
+  const brief = fd.get('brief')      || '';
 
   const msg = [
     '🎯 NEW CYBERTROOPER BRIEF',
     '',
-    'Brand: '          + brand,
-    'Contact Name: '   + name,
-    'Email: '          + email,
-    'WhatsApp: '       + wa,
-    'Tier Interest: '  + tier,
+    'Brand: '         + brand,
+    'Contact Name: '  + name,
+    'Email: '         + email,
+    'WhatsApp: '      + wa,
+    'Tier Interest: ' + tier,
     '',
     'Campaign Brief:',
     brief,
   ].join('\n');
 
-  const waURL = 'https://wa.me/8801631326245?text=' + encodeURIComponent(msg);
-  window.open(waURL, '_blank', 'noopener');
-
+  window.open('https://wa.me/8801631326245?text=' + encodeURIComponent(msg), '_blank', 'noopener');
   document.getElementById('form-success').classList.add('visible');
   this.style.display = 'none';
 });

@@ -869,9 +869,119 @@ footer {
   text-transform: uppercase;
 }
 
+/* ── SCROLL PROGRESS BAR ── */
+#scroll-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--blue), var(--purple));
+  z-index: 1001;
+  width: 0%;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 10px rgba(34,197,94,0.6);
+  pointer-events: none;
+}
+
+/* ── CURSOR TRAIL CANVAS ── */
+#cursor-trail {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── FLOATING AMBIENT PARTICLES ── */
+.hero-particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.particle-dot {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--blue);
+  opacity: 0;
+  animation: floatUp var(--dur, 8s) var(--delay, 0s) ease-in-out infinite;
+}
+@keyframes floatUp {
+  0%   { opacity: 0; transform: translateY(0) scale(0.8); }
+  15%  { opacity: var(--op, 0.4); }
+  85%  { opacity: var(--op, 0.4); }
+  100% { opacity: 0; transform: translateY(-80px) scale(1.2); }
+}
+
+/* ── GLASSMORPHISM TIER CARDS ── */
+.tier-card {
+  background: rgba(8,15,10,0.5);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  border-radius: 14px;
+  padding: 2rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.tier-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.028;
+  pointer-events: none;
+  border-radius: inherit;
+}
+.tier-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(34,197,94,0.07) 0%, transparent 55%);
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.tier-card:hover::after { opacity: 1; }
+
+/* ── GLASSMORPHISM FAQ ── */
+.faq-list details {
+  background: rgba(8,15,10,0.45);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.faq-list details:hover,
+.faq-list details[open] {
+  border-color: rgba(34,197,94,0.3);
+  box-shadow: 0 0 24px rgba(34,197,94,0.05);
+}
+
+/* ── SCROLL REVEAL ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.75s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
 /* ── REDUCED MOTION ── */
 @media (prefers-reduced-motion: reduce) {
   .hero-mesh { animation: none; }
+  .particle-dot { animation: none; opacity: 0; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  #cursor-trail { display: none; }
   *, *::before, *::after {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
@@ -905,6 +1015,11 @@ footer {
 </head>
 <body>
 
+<!-- SCROLL PROGRESS -->
+<div id="scroll-bar" aria-hidden="true"></div>
+<!-- CURSOR TRAIL -->
+<canvas id="cursor-trail" aria-hidden="true"></canvas>
+
 <!-- NAV -->
 <nav>
   <a href="index.html" class="nav-logo">CYBERTROOPER</a>
@@ -931,6 +1046,7 @@ footer {
 <section class="hero">
   <div class="hero-mesh" aria-hidden="true"></div>
   <div class="hero-overlay" aria-hidden="true"></div>
+  <div class="hero-particles" aria-hidden="true" id="hero-particles"></div>
   <div class="hero-content">
     <p class="eyebrow">KL Creator Network &nbsp;·&nbsp; Now Recruiting</p>
     <h1>GET PAID<br>TO POST.</h1>
@@ -978,21 +1094,21 @@ footer {
     <p class="eyebrow" style="font-family:Inter,sans-serif;font-weight:500;letter-spacing:0.14em;color:var(--purple);text-transform:uppercase;font-size:0.75rem;margin-bottom:1.2rem;">Trooper Tiers</p>
     <h2 class="section-heading">EARN MORE.<br>POST MORE.</h2>
     <div class="tiers-grid">
-      <div class="tier-card basic">
+      <div class="tier-card basic reveal">
         <span class="tier-label">Tier 1</span>
         <span class="tier-name">BASIC</span>
         <span class="tier-req">4+ posts per month</span>
         <p class="tier-desc">Get started and build your track record. Ideal for new Troopers establishing their posting rhythm.</p>
         <span class="tier-rate">Rates revealed after approval</span>
       </div>
-      <div class="tier-card active">
+      <div class="tier-card active reveal" style="transition-delay:0.12s">
         <span class="tier-label">Tier 2</span>
         <span class="tier-name">ACTIVE</span>
         <span class="tier-req">8+ posts per month</span>
         <p class="tier-desc">Higher earning potential and priority campaign access. For Troopers who show up consistently.</p>
         <span class="tier-rate">Rates revealed after approval</span>
       </div>
-      <div class="tier-card top">
+      <div class="tier-card top reveal" style="transition-delay:0.24s">
         <span class="tier-label">Invite Only</span>
         <span class="tier-name">TOP TROOPER</span>
         <span class="tier-req">12+ posts + check-ins / month</span>
@@ -1010,11 +1126,11 @@ footer {
     <p class="eyebrow" style="font-family:Inter,sans-serif;font-weight:500;letter-spacing:0.14em;color:var(--pink);text-transform:uppercase;font-size:0.75rem;margin-bottom:1.2rem;">Who We Want</p>
     <h2 class="section-heading">REAL PEOPLE.<br>REAL VOICE.</h2>
     <ul class="checklist">
-      <li>Based in KL or surrounding areas</li>
-      <li>Active on Threads — posting at least a few times a week</li>
-      <li>You sound like a real person, not an ad</li>
-      <li>Can commit to posting every month</li>
-      <li>18 years or above</li>
+      <li class="reveal">Based in KL or surrounding areas</li>
+      <li class="reveal" style="transition-delay:0.08s">Active on Threads — posting at least a few times a week</li>
+      <li class="reveal" style="transition-delay:0.16s">You sound like a real person, not an ad</li>
+      <li class="reveal" style="transition-delay:0.24s">Can commit to posting every month</li>
+      <li class="reveal" style="transition-delay:0.32s">18 years or above</li>
     </ul>
     <p class="who-note">We don't care about follower count. We care about authentic voice.</p>
   </div>
@@ -1215,6 +1331,127 @@ footer {
 </div>
 
 <script>
+// ── Scroll progress bar ──
+const scrollBar = document.getElementById('scroll-bar');
+window.addEventListener('scroll', () => {
+  const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
+  scrollBar.style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
+
+// ── Scroll reveal ──
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+// ── Floating particles in hero ──
+(function() {
+  const container = document.getElementById('hero-particles');
+  if (!container) return;
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
+  const colors = ['var(--blue)', 'var(--purple)', 'var(--pink)'];
+  const opacities = [0.35, 0.25, 0.18];
+  for (let i = 0; i < 18; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'particle-dot';
+    const size = Math.random() * 6 + 2;
+    const colorIdx = Math.floor(Math.random() * colors.length);
+    dot.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random()*100}%;
+      top:${30 + Math.random()*60}%;
+      background:${colors[colorIdx]};
+      --op:${opacities[colorIdx]};
+      --dur:${6 + Math.random()*8}s;
+      --delay:${Math.random()*6}s;
+    `;
+    container.appendChild(dot);
+  }
+})();
+
+// ── Cursor glow trail (desktop only) ──
+(function() {
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isTouchDevice = window.matchMedia('(hover: none)').matches;
+  if (prefersReduced || isTouchDevice) return;
+
+  const canvas = document.getElementById('cursor-trail');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+
+  const trail = [];
+  const MAX_TRAIL = 28;
+  let mouse = { x: -200, y: -200 };
+
+  document.addEventListener('mousemove', e => {
+    mouse = { x: e.clientX, y: e.clientY };
+    trail.push({ x: e.clientX, y: e.clientY, age: 0 });
+    if (trail.length > MAX_TRAIL) trail.shift();
+  });
+
+  function drawTrail() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (trail.length < 2) { requestAnimationFrame(drawTrail); return; }
+
+    for (let i = 1; i < trail.length; i++) {
+      const t = i / trail.length;
+      const alpha = t * 0.38;
+      const width = t * 5;
+      const r = Math.round(34 + (168 - 34) * (1 - t));
+      const g = Math.round(197 + (85 - 197) * (1 - t));
+      const b = Math.round(94 + (247 - 94) * (1 - t));
+
+      ctx.beginPath();
+      ctx.moveTo(trail[i-1].x, trail[i-1].y);
+      ctx.lineTo(trail[i].x, trail[i].y);
+      ctx.strokeStyle = `rgba(${r},${g},${b},${alpha})`;
+      ctx.lineWidth = width;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+    }
+
+    // Glow dot at cursor
+    const grad = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 18);
+    grad.addColorStop(0, 'rgba(34,197,94,0.22)');
+    grad.addColorStop(1, 'rgba(34,197,94,0)');
+    ctx.beginPath();
+    ctx.arc(mouse.x, mouse.y, 18, 0, Math.PI * 2);
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    requestAnimationFrame(drawTrail);
+  }
+  drawTrail();
+})();
+
+// ── 3D Tilt on tier cards ──
+(function() {
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isTouch = window.matchMedia('(hover: none)').matches;
+  if (prefersReduced || isTouch) return;
+
+  document.querySelectorAll('.tier-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width  - 0.5;
+      const y = (e.clientY - rect.top)  / rect.height - 0.5;
+      card.style.transform = `perspective(900px) rotateX(${-y * 10}deg) rotateY(${x * 10}deg) translateZ(10px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+})();
+
 // ── Supabase config ──
 const SUPABASE_URL = 'https://nykukkccynnykbmxznhl.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im55a3Vra2NjeW5ueWtibXh6bmhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzNjEwMzksImV4cCI6MjA4ODkzNzAzOX0.pchGj0hZ2dbNUW9o6tnL2A8QnE2GwWvPlDzR1jCmu9Y';
