@@ -1682,7 +1682,7 @@ async function flushQueue() {
   const remaining = [];
   for (const payload of q) {
     try {
-      await supabaseInsert(payload);
+      await submitToNotion(payload);
     } catch {
       remaining.push(payload);
     }
@@ -1691,37 +1691,19 @@ async function flushQueue() {
 }
 window.addEventListener('online', flushQueue);
 
-// ── Supabase insert ──
-async function supabaseInsert(data) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/trooper_signups`, {
+// ── Primary submit: Notion first, Supabase second (via edge function) ──
+async function submitToNotion(data) {
+  const res = await fetch(`${SUPABASE_URL}/functions/v1/notion-sync`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'apikey': SUPABASE_ANON_KEY,
       'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
-      'Prefer': 'return=representation',
     },
     body: JSON.stringify(data),
   });
-  if (!res.ok) throw new Error('Supabase error: ' + res.status);
-  const rows = await res.json();
-  return rows[0];
-}
-
-// Non-blocking Notion sync — fires after row is in DB
-function syncNotion(recordId) {
-  fetch(`${SUPABASE_URL}/functions/v1/notion-sync`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'apikey': SUPABASE_ANON_KEY,
-      'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
-    },
-    body: JSON.stringify({ record_id: recordId }),
-  })
-  .then(r => r.json())
-  .then(d => console.log('Notion sync:', d.success ? 'ok' : d.error))
-  .catch(e => console.warn('Notion sync skipped:', e.message));
+  if (!res.ok) throw new Error('Submission error: ' + res.status);
+  return await res.json();
 }
 
 // ── Hamburger / Drawer ──
@@ -1844,25 +1826,22 @@ document.getElementById('trooper-form').addEventListener('submit', async functio
     payment_method: fd.get('payment_method') || undefined,
     source:         'become-a-trooper',
   };
-  // Strip undefined so JSON.stringify omits them (DB uses column defaults)
   const payload = Object.fromEntries(Object.entries(raw).filter(([,v]) => v !== undefined));
 
   let refId = 'CT-' + new Date().getFullYear() + '-' + String(Date.now()).slice(-5);
   let insertOk = false;
 
   try {
-    const row = await supabaseInsert(payload);
+    // Notion first — edge function writes Notion then Supabase
+    const result = await submitToNotion(payload);
     insertOk = true;
-    if (row && row.reference_id) {
-      refId = row.reference_id;
-    }
-    if (row && row.id) {
-      syncNotion(row.id);
+    if (result && result.reference_id) {
+      refId = result.reference_id;
     }
   } catch (err) {
-    console.warn('Insert failed — queuing:', err.message);
+    console.warn('Submission failed — queuing:', err.message);
     saveToQueue(payload);
-    // Still show success UI so applicant isn't stuck; data queued for retry
+    // Still show success UI; data queued for retry when online
   }
 
   // Update status text based on whether DB insert succeeded
