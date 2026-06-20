@@ -1260,35 +1260,50 @@ footer {
 </head>
 <body>
 
-<!-- SCROLL PROGRESS -->
-<div id="scroll-bar" aria-hidden="true"></div>
-<!-- CUSTOM CURSOR -->
-<div id="ct-cursor" aria-hidden="true">
-  <div class="cursor-ring"></div>
-  <div class="cursor-dot"></div>
+<!-- WebGL Canvas -->
+<canvas id="webgl-canvas" aria-hidden="true"></canvas>
+
+<!-- Static SVG Fallback -->
+<div id="webgl-fallback" aria-hidden="true">
+  <svg width="100%" height="100%" viewBox="0 0 900 700" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="grd" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#C0C8D8" stop-opacity="0.18"/>
+        <stop offset="100%" stop-color="#06060E" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <circle cx="450" cy="350" r="320" fill="url(#grd)"/>
+    <circle cx="450" cy="350" r="70" fill="none" stroke="#C0C8D8" stroke-width="1.2" opacity="0.5"/>
+    <circle cx="450" cy="350" r="95" fill="none" stroke="#E8A83E" stroke-width="0.6" opacity="0.25" stroke-dasharray="4 6"/>
+    <g opacity="0.4" stroke="#E8A83E" stroke-width="0.7">
+      <line x1="450" y1="350" x2="210" y2="190"/><circle cx="210" cy="190" r="5" fill="#E8A83E"/>
+      <line x1="450" y1="350" x2="650" y2="170"/><circle cx="650" cy="170" r="5" fill="#E8A83E"/>
+      <line x1="450" y1="350" x2="720" y2="360"/><circle cx="720" cy="360" r="5" fill="#E8A83E"/>
+      <line x1="450" y1="350" x2="640" y2="510"/><circle cx="640" cy="510" r="5" fill="#E8A83E"/>
+      <line x1="450" y1="350" x2="260" y2="500"/><circle cx="260" cy="500" r="5" fill="#E8A83E"/>
+      <line x1="450" y1="350" x2="175" y2="360"/><circle cx="175" cy="360" r="5" fill="#E8A83E"/>
+      <line x1="450" y1="350" x2="380" y2="160"/><circle cx="380" cy="160" r="4" fill="#E8A83E"/>
+      <line x1="450" y1="350" x2="520" y2="555"/><circle cx="520" cy="555" r="4" fill="#E8A83E"/>
+    </g>
+  </svg>
 </div>
 
-<!-- NAV -->
-<nav>
-  <a href="/" class="nav-logo">CYBERTROOPER</a>
+<div id="vignette" aria-hidden="true"></div>
+
+<!-- ── Nav ── -->
+<nav role="navigation" aria-label="Main navigation">
+  <a href="#" class="nav-logo">CYBER<span>TROOPER</span></a>
   <ul class="nav-links">
-    <li><a href="#how">How It Works</a></li>
-    <li><a href="#tiers">Tiers</a></li>
-    <li><a href="#contact">Brief Us</a></li>
-    <li><a href="become-a-trooper.html" class="nav-pill">Become a Trooper</a></li>
+    <li><a href="#how-it-works">System</a></li>
+    <li><a href="#why-threads">Why Threads</a></li>
+    <li><a href="#tiers">Services</a></li>
+    <li><a href="become-a-trooper.html">Join</a></li>
   </ul>
-  <button class="hamburger" aria-label="Open menu" aria-expanded="false" id="hamburger">
-    <span></span><span></span><span></span>
-  </button>
+  <a href="#contact" class="nav-cta">Brief Us</a>
 </nav>
 
-<!-- MOBILE DRAWER -->
-<div class="nav-drawer" id="drawer" role="dialog" aria-label="Navigation menu">
-  <a href="#how">How It Works</a>
-  <a href="#tiers">Tiers</a>
-  <a href="#contact">Brief Us</a>
-  <a href="become-a-trooper.html" class="drawer-cta">Become a Trooper</a>
-</div>
+<!-- ── Scroll Container ── -->
+<div id="scroll-container">
 
 <!-- HERO -->
 <section class="hero">
@@ -1303,112 +1318,123 @@ footer {
       <a href="#contact" class="btn-gold">BRIEF US</a>
       <a href="#how" class="btn-ghost">HOW IT WORKS</a>
     </div>
-  </div>
-  <div class="scroll-hint" aria-hidden="true">
-    <span>Scroll</span>
-    <div class="scroll-line"></div>
-  </div>
-</section>
+    <div class="scroll-hint" aria-hidden="true">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
 
-<!-- SOCIAL PROOF BAR -->
-<div class="proof-bar" aria-label="Live stats">
-  <div class="proof-inner">
-    <div class="proof-item"><span class="proof-dot"></span> <strong>40+</strong> Troopers active across KL</div>
-    <div class="proof-item"><span class="proof-dot"></span> <strong>3</strong> brand campaigns running now</div>
-    <div class="proof-item"><span class="proof-dot"></span> Applications reviewed every <strong>Monday</strong></div>
-    <div class="proof-item"><span class="proof-dot"></span> <strong>100%</strong> authentic — zero bot accounts</div>
-  </div>
-</div>
+  <!-- Spacer 1: Hero → How It Works transition -->
+  <div class="scroll-spacer" aria-hidden="true"></div>
 
-<!-- HOW IT WORKS -->
-<section id="how">
-  <div class="section-inner">
-    <p class="eyebrow">[Signal Architecture]</p>
-    <h2 class="section-heading">HOW IT WORKS</h2>
-    <div class="steps">
-      <div class="step reveal">
-        <span class="step-num">01</span>
-        <div class="step-body">
-          <h3>BRIEF</h3>
-          <p>You send us your campaign objective, tone, and target audience. We translate it into talking points our Trooper network can execute authentically.</p>
+  <!-- HOW IT WORKS -->
+  <section id="how-it-works" aria-label="How It Works">
+    <div class="section-inner">
+      <span class="section-eyebrow reveal">[THE SYSTEM]</span>
+      <h2 class="section-headline reveal">HOW WE BUILD YOUR GROWTH OS</h2>
+      <p class="section-sub reveal">Three phases. One operating system. Built to run while you focus on what you do best.</p>
+      <div class="steps-grid">
+        <div class="step-card reveal">
+          <span class="step-number">01 / SIGNAL</span>
+          <h3 class="step-title">MAP THE FIELD</h3>
+          <p class="step-desc">CRM setup, crowd stream architecture, ambassador tiers, KOL tracking. We build your data layer before we activate a single creator.</p>
         </div>
-      </div>
-      <div class="step reveal" style="transition-delay:0.12s">
-        <span class="step-num">02</span>
-        <div class="step-body">
-          <h3>DEPLOY</h3>
-          <p>We activate the right Troopers for your brand — matched by location, vibe, and audience. They post in their own voice. No copy-pasting. No disclaimers.</p>
+        <div class="step-card reveal" style="transition-delay:0.1s">
+          <span class="step-number">02 / DEPLOY</span>
+          <h3 class="step-title">ACTIVATE TROOPERS</h3>
+          <p class="step-desc">Matched creators deploy content on Threads. First Visit Pass drives foot traffic. WhatsApp follow-up closes warm leads. Every move tracked in real time.</p>
         </div>
-      </div>
-      <div class="step reveal" style="transition-delay:0.24s">
-        <span class="step-num">03</span>
-        <div class="step-body">
-          <h3>REPORT</h3>
-          <p>At the end of each month, you receive a campaign report: posts delivered, top-performing content, and engagement highlights.</p>
+        <div class="step-card reveal" style="transition-delay:0.2s">
+          <span class="step-number">03 / GROW</span>
+          <h3 class="step-title">MEASURE &amp; SCALE</h3>
+          <p class="step-desc">Weekly performance dashboards. 300-pax forecasting. Real data, not vanity metrics. We adjust the system every 7 days until your venue is full.</p>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- WHY THREADS -->
-<section id="why">
-  <div class="section-inner">
-    <p class="eyebrow">[Signal Advantage]</p>
-    <h2 class="section-heading">WHY THREADS</h2>
-    <div class="stat-grid">
-      <div class="stat-card reveal">
-        <span class="stat-card-label stat-num" data-target="100" data-suffix="M+">100M+</span>
-        <p>Users globally — growing fastest in Southeast Asia.</p>
-      </div>
-      <div class="stat-card reveal" style="transition-delay:0.1s">
-        <span class="stat-card-label">Text-First</span>
-        <p>Format rewards authentic voice over polished ads. Real words cut through.</p>
-      </div>
-      <div class="stat-card reveal" style="transition-delay:0.2s">
-        <span class="stat-card-label">KL's Crowd</span>
-        <p>Early-adopters and tastemakers — the audience brands actually want to reach.</p>
-      </div>
-      <div class="stat-card reveal" style="transition-delay:0.3s">
-        <span class="stat-card-label stat-num" data-target="5" data-suffix="×" data-prefix="3–">3–5×</span>
-        <p>Real posts from real people outperform sponsored content on engagement.</p>
+  <!-- Spacer 2: How It Works → Why Threads -->
+  <div class="scroll-spacer" aria-hidden="true"></div>
+
+  <!-- WHY THREADS -->
+  <section id="why-threads" aria-label="Why Threads">
+    <div class="section-inner">
+      <span class="section-eyebrow reveal">[THE CHANNEL]</span>
+      <h2 class="section-headline reveal">WHY THREADS IN 2026</h2>
+      <p class="section-sub reveal">Every growth channel gets saturated. Threads is early. We're already operating inside it.</p>
+      <div class="stats-grid">
+        <div class="stat-card reveal">
+          <div class="stat-number">175M+</div>
+          <div class="stat-label">Monthly active users globally</div>
+        </div>
+        <div class="stat-card reveal" style="transition-delay:0.08s">
+          <div class="stat-number">3.2×</div>
+          <div class="stat-label">Higher engagement vs Instagram</div>
+        </div>
+        <div class="stat-card reveal" style="transition-delay:0.16s">
+          <div class="stat-number">KL-first</div>
+          <div class="stat-label">No competitor has activated this market</div>
+        </div>
+        <div class="stat-card reveal" style="transition-delay:0.24s">
+          <div class="stat-number">0 ads</div>
+          <div class="stat-label">Organic reach still dominates the feed</div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- TIERS -->
-<section id="tiers">
-  <div class="section-inner">
-    <p class="eyebrow">[Campaign Tiers]</p>
-    <h2 class="section-heading">PICK YOUR SCALE</h2>
-    <p class="tiers-sub">Rates revealed after your brief. Every tier includes monthly content strategy, trooper activation, and a campaign report.</p>
-    <div class="tiers-grid">
-      <div class="tier-card reveal">
-        <span class="tier-name">SEED</span>
-        <span class="tier-count">5 Troopers / month</span>
-        <p class="tier-desc">Best for testing the network and niche targeting. Start small, learn fast.</p>
-        <span class="tier-rate">Rate on application</span>
-        <a href="#contact" class="btn-gold" style="text-align:center;margin-top:0.5rem;">BRIEF US</a>
-      </div>
-      <div class="tier-card featured reveal" style="transition-delay:0.12s">
-        <span class="tier-badge">Most Popular</span>
-        <span class="tier-name">GROWTH</span>
-        <span class="tier-count">15 Troopers / month</span>
-        <p class="tier-desc">Best for building consistent share-of-voice across KL's Threads community.</p>
-        <span class="tier-rate">Rate on application</span>
-        <a href="#contact" class="btn-gold" style="text-align:center;margin-top:0.5rem;">BRIEF US</a>
-      </div>
-      <div class="tier-card reveal" style="transition-delay:0.24s">
-        <span class="tier-name">ELITE</span>
-        <span class="tier-count">30 Troopers / month</span>
-        <p class="tier-desc">Best for maximum reach and product launches. Full-network activation.</p>
-        <span class="tier-rate">Rate on application</span>
-        <a href="#contact" class="btn-gold" style="text-align:center;margin-top:0.5rem;">BRIEF US</a>
+  <!-- Spacer 3: Why Threads → Tiers -->
+  <div class="scroll-spacer" aria-hidden="true"></div>
+
+  <!-- TIERS -->
+  <section id="tiers" aria-label="Service Tiers">
+    <div class="section-inner">
+      <span class="section-eyebrow reveal">[THE PACKAGES]</span>
+      <h2 class="section-headline reveal">VENUE GROWTH OS TIERS</h2>
+      <p class="section-sub reveal">Pick your entry point. Scale when the system proves itself. No guesswork — results first.</p>
+      <div class="tiers-grid">
+        <div class="tier-card reveal">
+          <div class="tier-name">STARTER OS</div>
+          <div class="tier-tagline">For brands ready to test the Threads channel with real creator reach and a live CRM.</div>
+          <ul class="tier-features">
+            <li>CRM setup + contact layer</li>
+            <li>Content calendar architecture</li>
+            <li>5 matched Trooper activations</li>
+            <li>Basic weekly performance report</li>
+            <li>WhatsApp follow-up map</li>
+          </ul>
+          <a href="#contact" class="tier-cta">Brief Us →</a>
+        </div>
+        <div class="tier-card featured reveal" style="transition-delay:0.1s">
+          <div class="tier-badge">Most Popular</div>
+          <div class="tier-name">GROWTH OS</div>
+          <div class="tier-tagline">Full ambassador stack, KOL tracking, foot traffic forecasting, and weekly data review.</div>
+          <ul class="tier-features">
+            <li>Everything in Starter OS</li>
+            <li>Ambassador tier system</li>
+            <li>KOL manager + tracking dashboard</li>
+            <li>First Visit Pass deployment</li>
+            <li>300-pax weekly forecast model</li>
+            <li>Community partnership map</li>
+          </ul>
+          <a href="#contact" class="tier-cta">Brief Us →</a>
+        </div>
+        <div class="tier-card reveal" style="transition-delay:0.2s">
+          <div class="tier-name">COMMAND OS</div>
+          <div class="tier-tagline">Full-stack Growth OS with automation, VIP layer, and weekly strategy calls with our team.</div>
+          <ul class="tier-features">
+            <li>Everything in Growth OS</li>
+            <li>Automation map + smart triggers</li>
+            <li>VIP tracker + CRM segmentation</li>
+            <li>Client-safe live dashboard</li>
+            <li>Weekly 1-on-1 strategy call</li>
+            <li>Case study reporting</li>
+          </ul>
+          <a href="#contact" class="tier-cta">Brief Us →</a>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
 <!-- CREATOR RECRUITMENT BANNER -->
 <section id="recruit">
@@ -1448,42 +1474,32 @@ footer {
           <label for="brand-name">Brand Name</label>
           <input type="text" id="brand-name" name="brand_name" placeholder="Your brand" required />
         </div>
-        <div class="field">
-          <label for="your-name">Your Name</label>
-          <input type="text" id="your-name" name="your_name" placeholder="First Last" required />
+        <div class="contact-info reveal">
+          <div class="contact-detail">
+            <span class="contact-detail-label">Email</span>
+            <span class="contact-detail-value">360cybertroopers@gmail.com</span>
+          </div>
+          <div class="contact-detail">
+            <span class="contact-detail-label">WhatsApp</span>
+            <span class="contact-detail-value">+880 163 132 6245</span>
+          </div>
+          <div class="contact-detail">
+            <span class="contact-detail-label">Base</span>
+            <span class="contact-detail-value">Kuala Lumpur, Malaysia</span>
+          </div>
+          <div class="contact-detail">
+            <span class="contact-detail-label">Response Time</span>
+            <span class="contact-detail-value">Within 48 hours</span>
+          </div>
+          <div class="trooper-block">
+            <h3>Are You a Creator?</h3>
+            <p>Join KL's first Threads creator network. Rates revealed after approval. Apply in 3 minutes.</p>
+            <a href="become-a-trooper.html" class="btn-primary" style="display:block;text-align:center;">Apply to be a Trooper →</a>
+          </div>
         </div>
       </div>
-      <div class="form-row">
-        <div class="field">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" placeholder="you@brand.com" required />
-        </div>
-        <div class="field">
-          <label for="whatsapp">WhatsApp</label>
-          <input type="tel" id="whatsapp" name="whatsapp" placeholder="+60 12 345 6789" required />
-        </div>
-      </div>
-      <div class="field">
-        <label for="tier">Tier Interest</label>
-        <select id="tier" name="tier">
-          <option value="">Select a tier</option>
-          <option value="Seed">Seed — 5 Troopers/month</option>
-          <option value="Growth">Growth — 15 Troopers/month</option>
-          <option value="Elite">Elite — 30 Troopers/month</option>
-          <option value="Not sure">Not sure yet</option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="brief">Campaign Brief</label>
-        <textarea id="brief" name="brief" rows="5" placeholder="Tell us your campaign objective, target audience, and any tone or brand guidelines we should know."></textarea>
-      </div>
-      <button type="submit" class="btn-gold" style="width:100%;padding:1rem 2rem;font-size:0.82rem;letter-spacing:0.18em;">SEND BRIEF</button>
-    </form>
-    <div class="form-success" id="form-success">
-      <p>✦ &nbsp;Brief received — we'll be in touch within 48 hours. Check your WhatsApp.</p>
     </div>
-  </div>
-</section>
+  </section>
 
 <!-- ALICIA AI CHAT WIDGET -->
 <div id="alicia-widget">
@@ -1543,48 +1559,16 @@ window.addEventListener('scroll', () => {
   scrollBar.style.width = Math.min(pct, 100) + '%';
 }, { passive: true });
 
-// ── Custom cursor (desktop only) ──
-(function() {
-  const isTouchDevice = window.matchMedia('(hover: none)').matches;
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const cursor = document.getElementById('ct-cursor');
-  if (!cursor || isTouchDevice || prefersReduced) { if(cursor) cursor.style.display='none'; return; }
-  const ring = cursor.querySelector('.cursor-ring');
-  const dot  = cursor.querySelector('.cursor-dot');
-  let rx = 0, ry = 0, dx = 0, dy = 0;
-  let raf;
-  document.addEventListener('mousemove', e => { dx = e.clientX; dy = e.clientY; });
-  function moveCursor() {
-    rx += (dx - rx) * 0.14;
-    ry += (dy - ry) * 0.14;
-    ring.style.transform = `translate(calc(${rx}px - 50%), calc(${ry}px - 50%))`;
-    dot.style.transform  = `translate(calc(${dx}px - 50%), calc(${dy}px - 50%))`;
-    raf = requestAnimationFrame(moveCursor);
-  }
-  moveCursor();
-  document.querySelectorAll('a, button, .tier-card, .stat-card').forEach(el => {
-    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-  });
-  document.addEventListener('mouseleave', () => { if(raf) cancelAnimationFrame(raf); });
-  document.addEventListener('mouseenter', () => moveCursor());
-})();
+/* ─── Supabase ─── */
+const _supabase = window.supabase.createClient(
+  'https://nykukkccynnykbmxznhl.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im55a3Vra2NjeW5ueWtibXh6bmhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzNjEwMzksImV4cCI6MjA4ODkzNzAzOX0.pchGj0hZ2dbNUW9o6tnL2A8QnE2GwWvPlDzR1jCmu9Y'
+);
 
-// ── Hero word reveal ──
-(function() {
-  const h1 = document.getElementById('hero-h1');
-  if (!h1) return;
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReduced) return;
-  const lines = h1.innerHTML.split('<br>');
-  let wordIdx = 0;
-  h1.innerHTML = lines.map(line =>
-    line.trim().split(/\s+/).map(word => {
-      const delay = 0.3 + wordIdx++ * 0.1;
-      return `<span class="word-wrap"><span class="word" style="--wd:${delay}s">${word}</span></span>`;
-    }).join(' ')
-  ).join('<br>');
-})();
+/* ─── Contact form ─── */
+const briefForm   = document.getElementById('brief-form');
+const briefSubmit = document.getElementById('brief-submit');
+const briefStatus = document.getElementById('brief-status');
 
 // ── Hamburger / Drawer ──
 const hamburger = document.getElementById('hamburger');
@@ -2044,6 +2028,317 @@ document.getElementById('brief-form').addEventListener('submit', function(e) {
   document.getElementById('form-success').classList.add('visible');
   this.style.display = 'none';
 });
+
+/* ─── Lenis + GSAP ─── */
+gsap.registerPlugin(ScrollTrigger);
+
+const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (!prefersReduced) {
+  const lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add((t) => lenis.raf(t * 1000));
+  gsap.ticker.lagSmoothing(0);
+}
+
+/* ─── Scroll reveal ─── */
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach((en, i) => {
+    if (en.isIntersecting) {
+      const delay = parseFloat(en.target.style.transitionDelay) || 0;
+      setTimeout(() => en.target.classList.add('visible'), delay * 1000 + i * 40);
+      revealObs.unobserve(en.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+/* ─── Hero entrance ─── */
+if (!prefersReduced) {
+  gsap.timeline({ delay: 0.25 })
+    .to('#hero-eyebrow',  { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' })
+    .to('#hero-headline', { opacity: 1, y: 0, duration: 0.85, ease: 'power3.out' }, '-=0.35')
+    .to('#hero-sub',      { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' }, '-=0.5')
+    .to('#hero-actions',  { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' }, '-=0.35');
+} else {
+  ['#hero-eyebrow','#hero-headline','#hero-sub','#hero-actions'].forEach(sel => {
+    const el = document.querySelector(sel);
+    if (el) { el.style.opacity = '1'; el.style.transform = 'none'; }
+  });
+}
+
+/* ─────────────────────────────────────────
+   THREE.JS SCENE
+───────────────────────────────────────── */
+(function() {
+  const canvas    = document.getElementById('webgl-canvas');
+  const isMobile  = window.innerWidth < 768;
+  const N         = isMobile ? 45 : 80;  // node count
+  const P         = isMobile ? 80 : 180; // particle count
+
+  let renderer, scene, camera;
+  let sphere, nodesMesh, particlesMesh;
+  let holUniforms;
+  const lineMeshes  = [];
+  const clock       = new THREE.Clock();
+  const dummy       = new THREE.Object3D();
+  const scrollProg  = { v: 0 };
+
+  // ── Pre-compute node positions for 4 states ──
+  const posRadial  = new Float32Array(N * 3);
+  const posLinear  = new Float32Array(N * 3);
+  const posScatter = new Float32Array(N * 3);
+  const posRing    = new Float32Array(N * 3);
+  const posCurrent = new Float32Array(N * 3);
+
+  (function precompute() {
+    const phi = Math.PI * (3 - Math.sqrt(5));
+    for (let i = 0; i < N; i++) {
+      const t = i / N;
+      // Radial — fibonacci sphere
+      const y  = 1 - t * 2;
+      const r  = Math.sqrt(1 - y * y);
+      const th = phi * i;
+      const R  = 2.6 + (Math.random() - 0.5) * 0.6;
+      posRadial[i*3]   = r * Math.cos(th) * R;
+      posRadial[i*3+1] = y * R;
+      posRadial[i*3+2] = r * Math.sin(th) * R;
+
+      // Linear — 3-column grid
+      const col = i % 3;
+      const row = Math.floor(i / 3);
+      posLinear[i*3]   = (col - 1) * 2.8 + (Math.random() - 0.5) * 0.35;
+      posLinear[i*3+1] = 1.6 - row * 0.52 + (Math.random() - 0.5) * 0.1;
+      posLinear[i*3+2] = -0.4 + Math.random() * 0.5;
+
+      // Scatter — deep background
+      posScatter[i*3]   = (Math.random() - 0.5) * 9;
+      posScatter[i*3+1] = (Math.random() - 0.5) * 6;
+      posScatter[i*3+2] = -3 - Math.random() * 6;
+
+      // Ring
+      const angle = (i / N) * Math.PI * 2;
+      const rr    = 2.5 + Math.sin(i * 0.7) * 0.35;
+      posRing[i*3]   = Math.cos(angle) * rr;
+      posRing[i*3+1] = Math.sin(angle * 0.5) * 0.45;
+      posRing[i*3+2] = Math.sin(angle) * rr;
+
+      // Start current at radial
+      posCurrent[i*3]   = posRadial[i*3];
+      posCurrent[i*3+1] = posRadial[i*3+1];
+      posCurrent[i*3+2] = posRadial[i*3+2];
+    }
+  })();
+
+  // ── WebGL init ──
+  try {
+    renderer = new THREE.WebGLRenderer({
+      canvas, antialias: !isMobile, alpha: true, powerPreference: 'high-performance'
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1 : 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0, 0);
+  } catch (e) {
+    document.body.classList.add('no-webgl');
+    return;
+  }
+
+  // ── Scene ──
+  scene  = new THREE.Scene();
+  camera = new THREE.PerspectiveCamera(52, window.innerWidth / window.innerHeight, 0.1, 100);
+  camera.position.set(0, 0.5, 6.5);
+
+  // ── Holographic sphere shader ──
+  const holVert = `
+    varying vec3 vNormal;
+    varying vec3 vViewPos;
+    varying vec2 vUv;
+    void main(){
+      vNormal  = normalize(normalMatrix * normal);
+      vViewPos = (modelViewMatrix * vec4(position,1.0)).xyz;
+      vUv      = uv;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
+    }
+  `;
+  const holFrag = `
+    uniform float uTime;
+    uniform vec3  uColor;
+    uniform float uBrightness;
+    varying vec3  vNormal;
+    varying vec3  vViewPos;
+    varying vec2  vUv;
+
+    void main(){
+      vec3 viewDir = normalize(vViewPos);
+      float fres = pow(1.0 - max(dot(vNormal, -viewDir), 0.0), 2.8);
+
+      // Horizontal scanlines
+      float scan = pow(sin(vUv.y * 480.0 - uTime * 2.2) * 0.5 + 0.5, 3.0) * 0.45;
+
+      // Vertical signal ripple
+      float ripple = sin(vUv.x * 12.0 + uTime * 0.6) * 0.04 + 1.0;
+
+      // Flicker
+      float flicker = sin(uTime * 5.3) * 0.025 + sin(uTime * 13.7) * 0.012 + 1.0;
+
+      float alpha = (fres * 0.9 + scan * 0.5) * uBrightness * flicker * ripple;
+      gl_FragColor = vec4(uColor * uBrightness * flicker, clamp(alpha, 0.0, 0.92));
+    }
+  `;
+  holUniforms = {
+    uTime:       { value: 0.0 },
+    uColor:      { value: new THREE.Color('#C0C8D8') },
+    uBrightness: { value: 1.5 },
+  };
+  const holMat = new THREE.ShaderMaterial({
+    vertexShader: holVert, fragmentShader: holFrag,
+    uniforms: holUniforms, transparent: true,
+    side: THREE.DoubleSide, depthWrite: false,
+  });
+  sphere = new THREE.Mesh(new THREE.IcosahedronGeometry(0.88, 6), holMat);
+  scene.add(sphere);
+
+  // ── Node InstancedMesh (1 draw call) ──
+  const nodeMat = new THREE.MeshBasicMaterial({ color: 0xE8A83E, transparent: true, opacity: 0.88 });
+  nodesMesh = new THREE.InstancedMesh(new THREE.SphereGeometry(0.04, 6, 6), nodeMat, N);
+  nodesMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  for (let i = 0; i < N; i++) {
+    dummy.position.set(posRadial[i*3], posRadial[i*3+1], posRadial[i*3+2]);
+    dummy.updateMatrix();
+    nodesMesh.setMatrixAt(i, dummy.matrix);
+  }
+  nodesMesh.instanceMatrix.needsUpdate = true;
+  scene.add(nodesMesh);
+
+  // ── Connection lines ──
+  const lineMat = new THREE.MeshBasicMaterial({ color: 0xE8A83E, transparent: true, opacity: 0.11 });
+  for (let i = 0; i < N; i++) {
+    const s = new THREE.Vector3(0,0,0);
+    const e = new THREE.Vector3(posRadial[i*3], posRadial[i*3+1], posRadial[i*3+2]);
+    const tube = new THREE.TubeGeometry(new THREE.LineCurve3(s,e), 1, 0.0025, 3, false);
+    const m = new THREE.Mesh(tube, lineMat.clone());
+    scene.add(m);
+    lineMeshes.push(m);
+  }
+
+  // ── Particle drift InstancedMesh ──
+  const pMat = new THREE.MeshBasicMaterial({ color: 0xE8A83E, transparent: true, opacity: 0 });
+  particlesMesh = new THREE.InstancedMesh(new THREE.SphereGeometry(0.016, 4, 4), pMat, P);
+  particlesMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  for (let i = 0; i < P; i++) {
+    dummy.position.set(
+      (Math.random() - 0.5) * 12,
+      (Math.random() - 0.5) * 9,
+      (Math.random() - 0.5) * 5 - 2
+    );
+    dummy.scale.setScalar(Math.random() * 0.7 + 0.3);
+    dummy.updateMatrix();
+    particlesMesh.setMatrixAt(i, dummy.matrix);
+  }
+  particlesMesh.instanceMatrix.needsUpdate = true;
+  scene.add(particlesMesh);
+
+  // Subtle ambient
+  scene.add(new THREE.AmbientLight(0xffffff, 0.35));
+  const dLight = new THREE.DirectionalLight(0xC0C8D8, 0.7);
+  dLight.position.set(3, 5, 2);
+  scene.add(dLight);
+
+  // ── GSAP scroll timeline ──
+  if (!prefersReduced) {
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: '#scroll-container',
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 2.0,
+        onUpdate: self => { scrollProg.v = self.progress; }
+      }
+    })
+    .to(camera.position, { z: 5, y: 0.3, duration: 1 }, 0)
+    .to(camera.position, { z: 5.5, y: 1.8, duration: 1 }, 1)
+    .to(camera.position, { z: 9, y: 0.8, duration: 1 }, 2)
+    .to(sphere.scale,    { x: 0.42, y: 0.42, z: 0.42, duration: 1 }, 1)
+    .to(sphere.scale,    { x: 0.7, y: 0.7, z: 0.7, duration: 1 }, 2)
+    .to(holUniforms.uBrightness, { value: 2.5, duration: 0.5 }, 2.6);
+  }
+
+  // ── Node lerp helper ──
+  function lerpNodes(target, alpha) {
+    const a = Math.min(alpha, 1);
+    for (let i = 0; i < N; i++) {
+      const ix = i*3;
+      posCurrent[ix]   += (target[ix]   - posCurrent[ix])   * a;
+      posCurrent[ix+1] += (target[ix+1] - posCurrent[ix+1]) * a;
+      posCurrent[ix+2] += (target[ix+2] - posCurrent[ix+2]) * a;
+      dummy.position.set(posCurrent[ix], posCurrent[ix+1], posCurrent[ix+2]);
+      dummy.updateMatrix();
+      nodesMesh.setMatrixAt(i, dummy.matrix);
+    }
+    nodesMesh.instanceMatrix.needsUpdate = true;
+  }
+
+  // ── Render loop ──
+  let frameId;
+  function animate() {
+    frameId = requestAnimationFrame(animate);
+    const t = clock.getElapsedTime();
+    const p = scrollProg.v;
+
+    holUniforms.uTime.value = t;
+
+    // Sphere slow rotation
+    sphere.rotation.y = t * 0.16;
+    sphere.rotation.x = Math.sin(t * 0.08) * 0.1;
+
+    // Node state transitions
+    const LERP = 0.055;
+    if      (p < 0.28) lerpNodes(posRadial,  LERP);
+    else if (p < 0.55) lerpNodes(posLinear,  LERP);
+    else if (p < 0.78) lerpNodes(posScatter, LERP);
+    else               lerpNodes(posRing,    LERP);
+
+    // Update line geometries (cheaply)
+    const lineOpacity = p < 0.55 ? 0.11 : Math.max(0, 0.11 * (1 - (p - 0.55) * 4));
+    for (let i = 0; i < N; i++) {
+      const lm = lineMeshes[i];
+      lm.material.opacity = lineOpacity;
+      if (lineOpacity > 0.003) {
+        lm.geometry.dispose();
+        const e = new THREE.Vector3(posCurrent[i*3], posCurrent[i*3+1], posCurrent[i*3+2]);
+        lm.geometry = new THREE.TubeGeometry(
+          new THREE.LineCurve3(new THREE.Vector3(0,0,0), e), 1, 0.0025, 3, false
+        );
+      }
+    }
+
+    // Particles visible in scatter phase
+    const pOp = (p > 0.5 && p < 0.85) ? Math.min(1,(p-0.5)/0.2) * 0.25 : 0;
+    particlesMesh.material.opacity = pOp;
+    if (pOp > 0.005) {
+      for (let i = 0; i < P; i++) {
+        particlesMesh.getMatrixAt(i, dummy.matrix);
+        dummy.matrix.decompose(dummy.position, dummy.quaternion, dummy.scale);
+        dummy.position.y += 0.004;
+        if (dummy.position.y > 5.5) dummy.position.y = -4.5;
+        dummy.updateMatrix();
+        particlesMesh.setMatrixAt(i, dummy.matrix);
+      }
+      particlesMesh.instanceMatrix.needsUpdate = true;
+    }
+
+    renderer.render(scene, camera);
+  }
+
+  animate();
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+})();
 </script>
+
 </body>
 </html>
