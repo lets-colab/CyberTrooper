@@ -1660,7 +1660,8 @@ if (canvas && !prefersReduced && typeof THREE !== 'undefined') {
     let animRaf;
 
     function build() {
-      W = canvas.offsetWidth; H = canvas.offsetHeight;
+      W = canvas.offsetWidth  || window.innerWidth;
+      H = canvas.offsetHeight || window.innerHeight;
       scene = new THREE.Scene();
       camera = new THREE.PerspectiveCamera(65, W / H, 0.1, 50);
       camera.position.set(0, 0, 5);
@@ -1826,8 +1827,7 @@ if (canvas && !prefersReduced && typeof THREE !== 'undefined') {
     }, { threshold: 0.01 });
     heroObs.observe(canvas.closest('section'));
 
-    build();
-    frame();
+    requestAnimationFrame(() => { build(); frame(); });
   })();
 
 } else if (canvas && !prefersReduced) {
