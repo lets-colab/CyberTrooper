@@ -34,6 +34,8 @@
   --text: #F2F0EA;
   /* Pantone Color of the Year 2025 — Mocha Mousse 17-1230 */
   --mocha: #A07855;
+  /* Pantone Color of the Year 2026 — Cloud Dancer 11-4201 */
+  --cloud: #F0EDE6;
   --gold-dim: rgba(232,168,62,0.12);
   --gold-glow: rgba(232,168,62,0.22);
   --border: rgba(192,200,216,0.1);
@@ -398,17 +400,22 @@ body.cursor-hover .cursor-ring {
   to { --border-angle: 360deg; }
 }
 
-/* Pantone accent chip */
+/* Pantone accent chips */
+.pantone-chips {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
 .pantone-chip {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
   font-family: 'DM Mono', monospace;
-  font-size: 0.55rem;
+  font-size: 0.52rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgba(160,120,85,0.7);
-  margin-bottom: 1rem;
 }
 .pantone-chip::before {
   content: '';
@@ -417,6 +424,13 @@ body.cursor-hover .cursor-ring {
   border-radius: 2px;
   background: var(--mocha);
   flex-shrink: 0;
+}
+.pantone-chip.cloud {
+  color: rgba(240,237,230,0.5);
+}
+.pantone-chip.cloud::before {
+  background: var(--cloud);
+  border: 1px solid rgba(192,200,216,0.2);
 }
 
 /* ── NUMBER COUNTER ── */
@@ -437,7 +451,7 @@ body.cursor-hover .cursor-ring {
   font-size: clamp(72px, 14vw, 180px);
   line-height: 0.9;
   letter-spacing: 0.02em;
-  color: var(--text);
+  color: var(--cloud);
   margin-bottom: 1.8rem;
 }
 
@@ -499,7 +513,7 @@ section { padding: var(--section-pad); position: relative; z-index: 1; }
   font-size: clamp(2.8rem, 6.5vw, 5.5rem);
   letter-spacing: 0.03em;
   line-height: 1;
-  color: var(--text);
+  color: var(--cloud);
   margin-bottom: 2.5rem;
 }
 
@@ -791,7 +805,7 @@ footer {
   position: fixed;
   top: 0; left: 0;
   height: 2px;
-  background: linear-gradient(to right, var(--mocha), var(--gold));
+  background: linear-gradient(to right, var(--mocha), var(--gold), var(--cloud));
   z-index: 1001;
   width: 0%;
   transition: width 0.1s linear;
@@ -1310,7 +1324,10 @@ footer {
   <canvas id="hero-canvas" aria-hidden="true" style="touch-action: none; pointer-events: none;"></canvas>
   <div class="hero-glow" aria-hidden="true"></div>
   <div class="hero-content">
-    <span class="pantone-chip">Pantone 17-1230 · Mocha Mousse · 2025</span>
+    <div class="pantone-chips">
+      <span class="pantone-chip">Pantone 17-1230 · Mocha Mousse · 2025</span>
+      <span class="pantone-chip cloud">Pantone 11-4201 · Cloud Dancer · 2026</span>
+    </div>
     <p class="eyebrow">[KL's First Threads Creator Network]</p>
     <h1 id="hero-h1">YOUR BRAND.<br>THEIR VOICE.<br>REAL REACH.</h1>
     <p class="hero-sub">We deploy real KL locals to post about your brand authentically on Threads. No bots. No scripts. Real people, real accounts, real engagement.</p>
