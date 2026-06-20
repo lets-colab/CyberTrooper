@@ -41,6 +41,7 @@
 }
 
 html { scroll-behavior: smooth; }
+/* Lenis handles smooth scroll on desktop — native scroll on touch */
 
 body {
   background: var(--bg);
@@ -1866,12 +1867,14 @@ if (!prefersReduced && window.matchMedia('(hover: hover)').matches) {
   });
 }
 
-// ── Lenis smooth scroll ──
-if (!prefersReduced && typeof Lenis !== 'undefined') {
+// ── Lenis smooth scroll — desktop only (touch devices use native scroll) ──
+const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+if (!prefersReduced && !isTouchDevice && typeof Lenis !== 'undefined') {
   const lenis = new Lenis({
     duration: 1.25,
     easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     smoothWheel: true,
+    touchMultiplier: 0,
   });
   if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
     lenis.on('scroll', ScrollTrigger.update);
