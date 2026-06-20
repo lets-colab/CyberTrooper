@@ -1768,8 +1768,8 @@ function showStep(step) {
     current.classList.add('slide-left');
     current.addEventListener('animationend', () => {
       current.classList.remove('active', 'slide-left');
-      next.classList.add('active');
     }, { once: true });
+    next.classList.add('active');
   } else {
     document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active', 'slide-left'));
     next.classList.add('active');
