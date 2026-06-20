@@ -12,6 +12,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<!-- Three.js WebGL + GSAP ScrollTrigger + Lenis -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
 <style>
 /* ── CSS HOUDINI — animated border property ── */
 @property --border-angle {
@@ -27,6 +32,8 @@
   --gold: #E8A83E;
   --chrome: #C0C8D8;
   --text: #F2F0EA;
+  /* Pantone Color of the Year 2025 — Mocha Mousse 17-1230 */
+  --mocha: #A07855;
   --gold-dim: rgba(232,168,62,0.12);
   --gold-glow: rgba(232,168,62,0.22);
   --border: rgba(192,200,216,0.1);
@@ -300,7 +307,7 @@ nav.scrolled {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(232,168,62,0.04), transparent);
+  background: linear-gradient(90deg, transparent, rgba(160,120,85,0.06), transparent);
   animation: proofShimmer 4s ease-in-out infinite;
 }
 @keyframes proofShimmer {
@@ -332,8 +339,8 @@ nav.scrolled {
 .proof-dot {
   width: 5px; height: 5px;
   border-radius: 50%;
-  background: var(--gold);
-  opacity: 0.5;
+  background: var(--mocha);
+  opacity: 0.7;
 }
 
 /* ── CUSTOM CURSOR ── */
@@ -362,28 +369,51 @@ nav.scrolled {
 }
 body.cursor-hover .cursor-ring {
   width: 52px; height: 52px;
-  border-color: rgba(232,168,62,0.8);
+  border-color: rgba(160,120,85,0.9);
 }
 
-/* ── ANIMATED BORDER — featured tier card ── */
+/* ── ANIMATED BORDER — featured tier card (Mocha Mousse + Gold) ── */
 .tier-card.featured {
   --border-angle: 0deg;
   background:
     linear-gradient(rgba(6,6,14,0.95), rgba(6,6,14,0.9)) padding-box,
     conic-gradient(from var(--border-angle),
-      rgba(232,168,62,0) 0deg,
-      var(--gold) 60deg,
+      rgba(160,120,85,0) 0deg,
+      var(--mocha) 40deg,
+      var(--gold) 80deg,
       rgba(232,168,62,0) 120deg,
-      rgba(232,168,62,0) 240deg,
-      var(--gold) 300deg,
-      rgba(232,168,62,0) 360deg
+      rgba(160,120,85,0) 240deg,
+      var(--gold) 280deg,
+      var(--mocha) 320deg,
+      rgba(160,120,85,0) 360deg
     ) border-box;
   border: 1.5px solid transparent;
   animation: spinBorder 4s linear infinite;
-  box-shadow: 0 0 48px rgba(232,168,62,0.12), 0 0 2px rgba(232,168,62,0.08);
+  box-shadow: 0 0 48px rgba(160,120,85,0.12), 0 0 2px rgba(232,168,62,0.08);
 }
 @keyframes spinBorder {
   to { --border-angle: 360deg; }
+}
+
+/* Pantone accent chip */
+.pantone-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(160,120,85,0.7);
+  margin-bottom: 1rem;
+}
+.pantone-chip::before {
+  content: '';
+  display: block;
+  width: 8px; height: 8px;
+  border-radius: 2px;
+  background: var(--mocha);
+  flex-shrink: 0;
 }
 
 /* ── NUMBER COUNTER ── */
@@ -521,8 +551,6 @@ section { padding: var(--section-pad); position: relative; z-index: 1; }
   margin-top: 0.5rem;
 }
 
-/* stat-card styles defined below in Glassmorphism 2.0 block */
-
 .stat-card-label {
   font-family: 'Bebas Neue', sans-serif;
   font-size: clamp(2rem, 4vw, 3rem);
@@ -560,8 +588,6 @@ section { padding: var(--section-pad); position: relative; z-index: 1; }
   grid-template-columns: repeat(3, 1fr);
   gap: 1.2rem;
 }
-
-/* tier-card styles defined below in 3D Tilt block */
 
 .tier-card.featured {
   border-color: var(--gold);
@@ -680,7 +706,7 @@ form { display: grid; gap: 1rem; max-width: 640px; }
 
 .field input:focus,
 .field select:focus,
-.field textarea:focus { border-color: var(--gold); }
+.field textarea:focus { border-color: var(--mocha); }
 
 .field option { background: #0f0f1e; color: var(--text); }
 
@@ -688,8 +714,8 @@ textarea { resize: vertical; min-height: 130px; }
 
 .form-success {
   display: none;
-  background: rgba(232,168,62,0.07);
-  border: 1px solid rgba(232,168,62,0.4);
+  background: rgba(160,120,85,0.07);
+  border: 1px solid rgba(160,120,85,0.4);
   border-radius: 8px;
   padding: 1.5rem;
   margin-top: 1rem;
@@ -760,11 +786,11 @@ footer {
   position: fixed;
   top: 0; left: 0;
   height: 2px;
-  background: var(--gold);
+  background: linear-gradient(to right, var(--mocha), var(--gold));
   z-index: 1001;
   width: 0%;
   transition: width 0.1s linear;
-  box-shadow: 0 0 10px rgba(232,168,62,0.55), 0 0 3px rgba(232,168,62,0.9);
+  box-shadow: 0 0 10px rgba(232,168,62,0.55), 0 0 3px rgba(160,120,85,0.7);
   pointer-events: none;
 }
 
@@ -805,12 +831,12 @@ footer {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: linear-gradient(135deg, rgba(232,168,62,0.06) 0%, transparent 60%);
+  background: linear-gradient(135deg, rgba(160,120,85,0.05) 0%, transparent 60%);
   pointer-events: none;
 }
 .stat-card:hover {
-  border-color: rgba(232,168,62,0.32);
-  box-shadow: 0 0 40px rgba(232,168,62,0.08), 0 8px 32px rgba(0,0,0,0.4);
+  border-color: rgba(160,120,85,0.35);
+  box-shadow: 0 0 40px rgba(160,120,85,0.08), 0 8px 32px rgba(0,0,0,0.4);
   transform: translateY(-3px);
 }
 
@@ -921,6 +947,7 @@ footer {
   <canvas id="hero-canvas" aria-hidden="true"></canvas>
   <div class="hero-glow" aria-hidden="true"></div>
   <div class="hero-content">
+    <span class="pantone-chip">Pantone 17-1230 · Mocha Mousse · 2025</span>
     <p class="eyebrow">[KL's First Threads Creator Network]</p>
     <h1 id="hero-h1">YOUR BRAND.<br>THEIR VOICE.<br>REAL REACH.</h1>
     <p class="hero-sub">We deploy real KL locals to post about your brand authentically on Threads. No bots. No scripts. Real people, real accounts, real engagement.</p>
@@ -1099,6 +1126,7 @@ footer {
 <script>
 // ── Nav scroll state ──
 const navEl = document.querySelector('nav');
+const scrollBar = document.getElementById('scroll-bar');
 window.addEventListener('scroll', () => {
   navEl.classList.toggle('scrolled', window.scrollY > 60);
   const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
@@ -1151,7 +1179,6 @@ window.addEventListener('scroll', () => {
 // ── Hamburger / Drawer ──
 const hamburger = document.getElementById('hamburger');
 const drawer = document.getElementById('drawer');
-
 function openDrawer() {
   drawer.classList.add('open');
   hamburger.setAttribute('aria-expanded', 'true');
@@ -1166,9 +1193,6 @@ hamburger.addEventListener('click', () => drawer.classList.contains('open') ? cl
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
 drawer.addEventListener('click', e => { if (e.target === drawer) closeDrawer(); });
 drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => closeDrawer()));
-
-// ── Scroll progress bar ──
-const scrollBar = document.getElementById('scroll-bar');
 
 // ── Scroll reveal (IntersectionObserver) ──
 const revealObserver = new IntersectionObserver((entries) => {
@@ -1197,118 +1221,246 @@ function animateCounter(el) {
   }
   requestAnimationFrame(tick);
 }
-
 const counterObserver = new IntersectionObserver(entries => {
   entries.forEach(e => {
-    if (e.isIntersecting) {
-      animateCounter(e.target);
-      counterObserver.unobserve(e.target);
-    }
+    if (e.isIntersecting) { animateCounter(e.target); counterObserver.unobserve(e.target); }
   });
 }, { threshold: 0.5 });
 document.querySelectorAll('.stat-num[data-target]').forEach(el => counterObserver.observe(el));
 
-// ── Particle constellation (desktop only, respects reduced-motion) ──
+// ── Three.js WebGL particle constellation ──
+// Palette: chrome + gold + Pantone Mocha Mousse 17-1230 (#A07855)
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const canvas = document.getElementById('hero-canvas');
 
-if (canvas && !prefersReduced) {
+if (canvas && !prefersReduced && typeof THREE !== 'undefined') {
+  (function() {
+    const isMobile = window.innerWidth < 768;
+    let W = canvas.offsetWidth, H = canvas.offsetHeight;
+    let scene, camera, renderer, chromeInst, goldInst, mochaInst, lineSegs;
+    const dummy = new THREE.Object3D();
+    let pts = [];
+    const mouse = { x: 0, y: 0 };
+    let animRaf;
+
+    function build() {
+      W = canvas.offsetWidth; H = canvas.offsetHeight;
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(65, W / H, 0.1, 50);
+      camera.position.set(0, 0, 5);
+
+      try {
+        renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: !isMobile, powerPreference: 'high-performance' });
+      } catch(e) { return; }
+
+      renderer.setPixelRatio(Math.min(devicePixelRatio, isMobile ? 1 : 2));
+      renderer.setSize(W, H, false);
+      renderer.setClearColor(0x000000, 0);
+
+      const NUM      = isMobile ? 50 : 90;
+      const N_GOLD   = 3;  // gold anchor nodes
+      const N_MOCHA  = 5;  // Mocha Mousse accent nodes
+
+      const nodeGeo  = new THREE.SphereGeometry(0.021, 5, 5);
+      const goldGeo  = new THREE.SphereGeometry(0.042, 7, 7);
+      const mochaGeo = new THREE.SphereGeometry(0.032, 6, 6);
+
+      const chromeMat = new THREE.MeshBasicMaterial({ color: 0xC0C8D8, transparent: true, opacity: 0.50 });
+      const goldMat   = new THREE.MeshBasicMaterial({ color: 0xE8A83E, transparent: true, opacity: 0.88 });
+      const mochaMat  = new THREE.MeshBasicMaterial({ color: 0xA07855, transparent: true, opacity: 0.70 });
+
+      chromeInst = new THREE.InstancedMesh(nodeGeo,  chromeMat, NUM - N_GOLD - N_MOCHA);
+      goldInst   = new THREE.InstancedMesh(goldGeo,  goldMat,   N_GOLD);
+      mochaInst  = new THREE.InstancedMesh(mochaGeo, mochaMat,  N_MOCHA);
+
+      chromeInst.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+      goldInst.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+      mochaInst.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+
+      scene.add(chromeInst); scene.add(goldInst); scene.add(mochaInst);
+
+      // Line buffer
+      const MAX_SEGS = NUM * (NUM - 1) / 2;
+      const lineGeo = new THREE.BufferGeometry();
+      const lp = new Float32Array(MAX_SEGS * 6);
+      const lc = new Float32Array(MAX_SEGS * 6);
+      lineGeo.setAttribute('position', new THREE.BufferAttribute(lp, 3).setUsage(THREE.DynamicDrawUsage));
+      lineGeo.setAttribute('color',    new THREE.BufferAttribute(lc, 3).setUsage(THREE.DynamicDrawUsage));
+      lineGeo.setDrawRange(0, 0);
+      lineSegs = new THREE.LineSegments(lineGeo, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 1 }));
+      scene.add(lineSegs);
+
+      const sx = isMobile ? 3.0 : 4.8, sy = sx * (H / W) * 0.78, sz = 1.3;
+      pts = Array.from({ length: NUM }, (_, i) => ({
+        x: (Math.random() - 0.5) * sx,
+        y: (Math.random() - 0.5) * sy,
+        z: (Math.random() - 0.5) * sz,
+        vx: (Math.random() - 0.5) * 0.003,
+        vy: (Math.random() - 0.5) * 0.003,
+        vz: (Math.random() - 0.5) * 0.0007,
+        type: i < N_GOLD ? 'gold' : i < N_GOLD + N_MOCHA ? 'mocha' : 'chrome',
+      }));
+
+      // Scroll-driven camera zoom via GSAP ScrollTrigger
+      if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.to(camera.position, {
+          z: 3.8,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: canvas.closest('section'),
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 1.5,
+          },
+        });
+      }
+    }
+
+    // Color tables [r,g,b] normalised
+    const C = {
+      gold:   [0.910, 0.659, 0.243],
+      mocha:  [0.627, 0.471, 0.333],
+      chrome: [0.753, 0.784, 0.847],
+    };
+
+    function frame() {
+      const NUM = pts.length;
+      const MAX_D = isMobile ? 1.5 : 1.9;
+      const bx = isMobile ? 1.5 : 2.4, by = bx * (H / W) * 0.78, bz = 0.65;
+
+      // Subtle camera lean toward mouse
+      camera.position.x += (mouse.x * 0.20 - camera.position.x) * 0.032;
+      camera.position.y += (mouse.y * 0.11 - camera.position.y) * 0.032;
+      camera.lookAt(0, 0, 0);
+
+      const lp = lineSegs.geometry.attributes.position.array;
+      const lc = lineSegs.geometry.attributes.color.array;
+      let seg = 0, ci = 0, gi = 0, mi = 0;
+
+      for (let i = 0; i < NUM; i++) {
+        const p = pts[i];
+        // Mouse pull in world coords
+        const wx = mouse.x * 2.0, wy = mouse.y * 1.1;
+        const mdx = wx - p.x, mdy = wy - p.y, md = Math.hypot(mdx, mdy);
+        if (md < 1.4 && md > 0.01) { p.vx += (mdx / md) * 0.00006; p.vy += (mdy / md) * 0.00006; }
+        p.vx *= 0.997; p.vy *= 0.997; p.vz *= 0.997;
+        p.x += p.vx; p.y += p.vy; p.z += p.vz;
+        if (p.x >  bx) p.x = -bx; if (p.x < -bx) p.x =  bx;
+        if (p.y >  by) p.y = -by; if (p.y < -by) p.y =  by;
+        if (p.z >  bz || p.z < -bz) p.vz *= -1;
+
+        dummy.position.set(p.x, p.y, p.z); dummy.updateMatrix();
+        if      (p.type === 'gold')   goldInst.setMatrixAt(gi++, dummy.matrix);
+        else if (p.type === 'mocha')  mochaInst.setMatrixAt(mi++, dummy.matrix);
+        else                          chromeInst.setMatrixAt(ci++, dummy.matrix);
+
+        for (let j = i + 1; j < NUM; j++) {
+          const q = pts[j];
+          const d = Math.hypot(p.x - q.x, p.y - q.y, p.z - q.z);
+          if (d < MAX_D) {
+            const t   = 1 - d / MAX_D;
+            const col = (p.type !== 'chrome' || q.type !== 'chrome')
+              ? (p.type === 'gold' || q.type === 'gold' ? C.gold : C.mocha)
+              : C.chrome;
+            const a = (p.type !== 'chrome' || q.type !== 'chrome') ? t * 0.55 : t * 0.17;
+            const b = seg * 6;
+            lp[b]=p.x; lp[b+1]=p.y; lp[b+2]=p.z;
+            lp[b+3]=q.x; lp[b+4]=q.y; lp[b+5]=q.z;
+            lc[b]=col[0]*a; lc[b+1]=col[1]*a; lc[b+2]=col[2]*a;
+            lc[b+3]=col[0]*a; lc[b+4]=col[1]*a; lc[b+5]=col[2]*a;
+            seg++;
+          }
+        }
+      }
+
+      chromeInst.count = ci; chromeInst.instanceMatrix.needsUpdate = true;
+      goldInst.count   = gi; goldInst.instanceMatrix.needsUpdate   = true;
+      mochaInst.count  = mi; mochaInst.instanceMatrix.needsUpdate  = true;
+      lineSegs.geometry.setDrawRange(0, seg * 2);
+      lineSegs.geometry.attributes.position.needsUpdate = true;
+      lineSegs.geometry.attributes.color.needsUpdate    = true;
+
+      renderer.render(scene, camera);
+      animRaf = requestAnimationFrame(frame);
+    }
+
+    canvas.addEventListener('mousemove', e => {
+      const r = canvas.getBoundingClientRect();
+      mouse.x =  ((e.clientX - r.left) / r.width  - 0.5) * 2;
+      mouse.y = -((e.clientY - r.top)  / r.height - 0.5) * 2;
+    });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        W = canvas.offsetWidth; H = canvas.offsetHeight;
+        if (!camera || !renderer) return;
+        camera.aspect = W / H;
+        camera.updateProjectionMatrix();
+        renderer.setSize(W, H, false);
+      }, 200);
+    });
+
+    // Pause animation when hero scrolls out of viewport
+    const heroObs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { if (!animRaf) frame(); }
+      else { cancelAnimationFrame(animRaf); animRaf = null; }
+    }, { threshold: 0.01 });
+    heroObs.observe(canvas.closest('section'));
+
+    build();
+    frame();
+  })();
+
+} else if (canvas && !prefersReduced) {
+  // Fallback 2D canvas if Three.js unavailable
   const ctx = canvas.getContext('2d');
   let W, H, particles, mouse = { x: 0, y: 0 }, raf;
-
-  function resize() {
-    W = canvas.width  = canvas.offsetWidth;
-    H = canvas.height = canvas.offsetHeight;
-  }
-
+  function resize() { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight; }
   function initParticles() {
     const NUM = W > 768 ? 90 : 50;
     particles = Array.from({ length: NUM }, (_, i) => ({
-      x: Math.random() * W,
-      y: Math.random() * H,
-      vx: (Math.random() - 0.5) * 0.28,
-      vy: (Math.random() - 0.5) * 0.28,
-      r: i === 0 ? 4 : Math.random() * 1.6 + 0.5,
-      gold: i < 3,
+      x: Math.random()*W, y: Math.random()*H,
+      vx: (Math.random()-0.5)*0.28, vy: (Math.random()-0.5)*0.28,
+      r: i===0?4:Math.random()*1.6+0.5,
+      type: i<3?'gold':i<8?'mocha':'chrome',
     }));
   }
-
   function drawFrame() {
-    ctx.clearRect(0, 0, W, H);
-    const MAX_D = W > 768 ? 150 : 100;
-
-    for (let i = 0; i < particles.length; i++) {
-      const p = particles[i];
-      // mouse attract
-      const mdx = mouse.x - p.x, mdy = mouse.y - p.y;
-      const md = Math.hypot(mdx, mdy);
-      if (md < 250 && md > 0) {
-        p.vx += (mdx / md) * 0.006;
-        p.vy += (mdy / md) * 0.006;
-      }
-      // damping
-      p.vx *= 0.995; p.vy *= 0.995;
-      p.x += p.vx; p.y += p.vy;
-      // wrap
-      if (p.x < -5) p.x = W + 5;
-      if (p.x > W + 5) p.x = -5;
-      if (p.y < -5) p.y = H + 5;
-      if (p.y > H + 5) p.y = -5;
-
-      // draw dot
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = p.gold ? 'rgba(232,168,62,0.85)' : 'rgba(192,200,216,0.55)';
+    ctx.clearRect(0,0,W,H);
+    const MAX_D = W>768?150:100;
+    for (let i=0;i<particles.length;i++) {
+      const p=particles[i];
+      const mdx=mouse.x-p.x, mdy=mouse.y-p.y, md=Math.hypot(mdx,mdy);
+      if(md<250&&md>0){p.vx+=(mdx/md)*0.006;p.vy+=(mdy/md)*0.006;}
+      p.vx*=0.995;p.vy*=0.995;p.x+=p.vx;p.y+=p.vy;
+      if(p.x<-5)p.x=W+5;if(p.x>W+5)p.x=-5;
+      if(p.y<-5)p.y=H+5;if(p.y>H+5)p.y=-5;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.type==='gold'?'rgba(232,168,62,0.85)':p.type==='mocha'?'rgba(160,120,85,0.75)':'rgba(192,200,216,0.55)';
       ctx.fill();
-
-      // draw connections
-      for (let j = i + 1; j < particles.length; j++) {
-        const q = particles[j];
-        const dx = p.x - q.x, dy = p.y - q.y;
-        const d = Math.hypot(dx, dy);
-        if (d < MAX_D) {
-          const alpha = (1 - d / MAX_D) * 0.2;
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(q.x, q.y);
-          const isGoldLine = p.gold || q.gold;
-          ctx.strokeStyle = isGoldLine
-            ? `rgba(232,168,62,${alpha * 1.4})`
-            : `rgba(192,200,216,${alpha})`;
-          ctx.lineWidth = isGoldLine ? 1.1 : 0.7;
-          ctx.stroke();
+      for(let j=i+1;j<particles.length;j++){
+        const q=particles[j];
+        const dx=p.x-q.x,dy=p.y-q.y,d=Math.hypot(dx,dy);
+        if(d<MAX_D){
+          const alpha=(1-d/MAX_D)*0.2;
+          ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);
+          const isAccent=p.type!=='chrome'||q.type!=='chrome';
+          ctx.strokeStyle=isAccent
+            ?(p.type==='gold'||q.type==='gold'?`rgba(232,168,62,${alpha*1.4})`:`rgba(160,120,85,${alpha*1.2})`)
+            :`rgba(192,200,216,${alpha})`;
+          ctx.lineWidth=isAccent?1.1:0.7;ctx.stroke();
         }
       }
     }
-    raf = requestAnimationFrame(drawFrame);
+    raf=requestAnimationFrame(drawFrame);
   }
-
-  canvas.addEventListener('mousemove', e => {
-    const r = canvas.getBoundingClientRect();
-    mouse.x = e.clientX - r.left;
-    mouse.y = e.clientY - r.top;
-  });
-
-  function start() {
-    resize();
-    initParticles();
-    if (raf) cancelAnimationFrame(raf);
-    drawFrame();
-  }
-
-  let resizeTimer;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => { resize(); initParticles(); }, 200);
-  });
-
-  // Only run when hero is visible (pause when scrolled away)
-  const heroSection = canvas.closest('section');
-  const heroObserver = new IntersectionObserver(([e]) => {
-    if (e.isIntersecting) { start(); }
-    else if (raf) { cancelAnimationFrame(raf); raf = null; }
-  }, { threshold: 0.01 });
-  heroObserver.observe(heroSection);
+  canvas.addEventListener('mousemove',e=>{const r=canvas.getBoundingClientRect();mouse.x=e.clientX-r.left;mouse.y=e.clientY-r.top;});
+  let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{resize();initParticles();},200);});
+  const hObs=new IntersectionObserver(([e])=>{if(e.isIntersecting){resize();initParticles();if(raf)cancelAnimationFrame(raf);drawFrame();}else if(raf){cancelAnimationFrame(raf);raf=null;}},{threshold:0.01});
+  hObs.observe(canvas.closest('section'));
 }
 
 // ── 3D Tilt on cards (desktop only) ──
@@ -1321,9 +1473,7 @@ if (!prefersReduced && window.matchMedia('(hover: hover)').matches) {
       const depth = card.classList.contains('tier-card') ? 12 : 8;
       card.style.transform = `perspective(900px) rotateX(${-y * depth}deg) rotateY(${x * depth}deg) translateZ(8px)`;
     });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = '';
-    });
+    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
   });
 
   // ── Magnetic buttons ──
@@ -1334,14 +1484,28 @@ if (!prefersReduced && window.matchMedia('(hover: hover)').matches) {
       const y = (e.clientY - rect.top  - rect.height / 2) * 0.28;
       btn.style.transform = `translate(${x}px, ${y}px) scale(1.03)`;
     });
-    btn.addEventListener('mouseleave', () => {
-      btn.style.transform = '';
-    });
+    btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
   });
 }
 
+// ── Lenis smooth scroll ──
+if (!prefersReduced && typeof Lenis !== 'undefined') {
+  const lenis = new Lenis({
+    duration: 1.25,
+    easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: true,
+  });
+  if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(time => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+  } else {
+    (function loop(t) { lenis.raf(t); requestAnimationFrame(loop); })(0);
+  }
+}
+
 // ── Brief form → WhatsApp ──
-document.getElementById('brief-form').addEventListener('submit', function (e) {
+document.getElementById('brief-form').addEventListener('submit', function(e) {
   e.preventDefault();
   const fd = new FormData(this);
   const brand = fd.get('brand_name') || '';
@@ -1350,20 +1514,15 @@ document.getElementById('brief-form').addEventListener('submit', function (e) {
   const wa    = fd.get('whatsapp')   || '';
   const tier  = fd.get('tier')       || 'Not specified';
   const brief = fd.get('brief')      || '';
-
   const msg = [
-    '🎯 NEW CYBERTROOPER BRIEF',
-    '',
+    '🎯 NEW CYBERTROOPER BRIEF', '',
     'Brand: '         + brand,
     'Contact Name: '  + name,
     'Email: '         + email,
     'WhatsApp: '      + wa,
-    'Tier Interest: ' + tier,
-    '',
-    'Campaign Brief:',
-    brief,
+    'Tier Interest: ' + tier, '',
+    'Campaign Brief:', brief,
   ].join('\n');
-
   window.open('https://wa.me/8801631326245?text=' + encodeURIComponent(msg), '_blank', 'noopener');
   document.getElementById('form-success').classList.add('visible');
   this.style.display = 'none';
