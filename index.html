@@ -1509,9 +1509,11 @@ footer {
 const navEl = document.querySelector('nav');
 const scrollBar = document.getElementById('scroll-bar');
 window.addEventListener('scroll', () => {
-  navEl.classList.toggle('scrolled', window.scrollY > 60);
-  const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
-  scrollBar.style.width = Math.min(pct, 100) + '%';
+  if (navEl) navEl.classList.toggle('scrolled', window.scrollY > 60);
+  if (scrollBar) {
+    const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
+    scrollBar.style.width = Math.min(pct, 100) + '%';
+  }
 }, { passive: true });
 
 /* ─── Contact form ─── */
@@ -1519,23 +1521,25 @@ const briefForm   = document.getElementById('brief-form');
 const briefSubmit = document.getElementById('brief-submit');
 const briefStatus = document.getElementById('brief-status');
 
-// ── Hamburger / Drawer ──
+// ── Hamburger / Drawer (only if present — this layout has no mobile drawer) ──
 const hamburger = document.getElementById('hamburger');
 const drawer = document.getElementById('drawer');
-function openDrawer() {
-  drawer.classList.add('open');
-  hamburger.setAttribute('aria-expanded', 'true');
-  document.body.style.overflow = 'hidden';
+if (hamburger && drawer) {
+  const openDrawer = () => {
+    drawer.classList.add('open');
+    hamburger.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  };
+  const closeDrawer = () => {
+    drawer.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  };
+  hamburger.addEventListener('click', () => drawer.classList.contains('open') ? closeDrawer() : openDrawer());
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+  drawer.addEventListener('click', e => { if (e.target === drawer) closeDrawer(); });
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => closeDrawer()));
 }
-function closeDrawer() {
-  drawer.classList.remove('open');
-  hamburger.setAttribute('aria-expanded', 'false');
-  document.body.style.overflow = '';
-}
-hamburger.addEventListener('click', () => drawer.classList.contains('open') ? closeDrawer() : openDrawer());
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
-drawer.addEventListener('click', e => { if (e.target === drawer) closeDrawer(); });
-drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => closeDrawer()));
 
 // ── Scroll reveal (IntersectionObserver) ──
 const revealObserver = new IntersectionObserver((entries) => {
@@ -1955,7 +1959,8 @@ if (!prefersReduced && !isTouchDevice && typeof Lenis !== 'undefined') {
 })();
 
 // ── Brief form → WhatsApp ──
-document.getElementById('brief-form').addEventListener('submit', function(e) {
+const briefFormEl = document.getElementById('brief-form');
+if (briefFormEl) briefFormEl.addEventListener('submit', function(e) {
   e.preventDefault();
   const fd = new FormData(this);
   const brand = fd.get('brand_name') || '';
@@ -1974,7 +1979,8 @@ document.getElementById('brief-form').addEventListener('submit', function(e) {
     'Campaign Brief:', brief,
   ].join('\n');
   window.open('https://wa.me/8801631326245?text=' + encodeURIComponent(msg), '_blank', 'noopener');
-  document.getElementById('form-success').classList.add('visible');
+  const successEl = document.getElementById('form-success');
+  if (successEl) successEl.classList.add('visible');
   this.style.display = 'none';
 });
 </script>
