@@ -374,6 +374,24 @@ nav{
   font-size:1.8rem;font-weight:400;margin-bottom:8px;
 }
 .form-success p{font-size:.85rem;color:var(--muted);line-height:1.7}
+.pass-code{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  margin:24px auto;padding:20px 28px;max-width:300px;
+  border:1px solid var(--border);border-radius:var(--r);
+  background:linear-gradient(160deg,rgba(201,160,90,.10),rgba(123,95,201,.06));
+}
+.pass-code-label{
+  font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--muted);
+}
+.pass-code-value{
+  font-family:'DM Mono',monospace;font-size:1.7rem;letter-spacing:.14em;
+  color:var(--gold-light);font-weight:500;
+  text-shadow:0 0 24px rgba(201,160,90,.4);
+}
+.pass-code-hint{
+  font-size:.62rem;color:var(--muted);font-style:italic;
+}
 
 /* ── COMMUNITY PROOF ── */
 .proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:60px}
@@ -729,6 +747,11 @@ footer{
       <div class="form-success" id="formSuccess">
         <div class="form-success-icon">🌸</div>
         <h3>You're In, Season Family</h3>
+        <div class="pass-code" id="passCode" style="display:none">
+          <span class="pass-code-label">Your First Visit Pass</span>
+          <span class="pass-code-value" id="passCodeValue">SKL-------</span>
+          <span class="pass-code-hint">Screenshot this — show it at the door</span>
+        </div>
         <p>
           Your First Visit Pass is on its way to your WhatsApp.<br>
           Check your messages — your QR and arrival details will arrive shortly.<br><br>
@@ -854,8 +877,9 @@ footer{
     const instagram = document.getElementById('instagram').value.trim();
     const source    = document.getElementById('source').value.trim();
 
+    let passId = null;
     try {
-      /* 1 — call edge function to issue pass + notify via WhatsApp */
+      /* 1 — call edge function to issue pass + sync to Notion (CRM + Pass Tracker) */
       const res = await fetch(`${SUPABASE_URL}/functions/v1/issue-season-pass`, {
         method: 'POST',
         headers: {
@@ -865,6 +889,10 @@ footer{
         body: JSON.stringify({ name, whatsapp, instagram, source }),
         signal: AbortSignal.timeout(15000),
       });
+
+      if(res.ok){
+        try { passId = (await res.json()).pass_id || null; } catch(_) {}
+      }
 
       /* Fallback: if edge function not yet deployed, save directly to table */
       if(!res.ok){
@@ -887,6 +915,10 @@ footer{
         });
       }
 
+      if(passId){
+        document.getElementById('passCodeValue').textContent = passId;
+        document.getElementById('passCode').style.display = 'flex';
+      }
       form.style.display = 'none';
       successDiv.style.display = 'block';
     } catch(err) {
