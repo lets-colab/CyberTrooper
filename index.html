@@ -1660,8 +1660,8 @@ if (canvas && !prefersReduced && typeof THREE !== 'undefined') {
     let animRaf;
 
     function build() {
-      W = canvas.offsetWidth  || window.innerWidth;
-      H = canvas.offsetHeight || window.innerHeight;
+      W = window.innerWidth;
+      H = window.innerHeight;
       scene = new THREE.Scene();
       camera = new THREE.PerspectiveCamera(65, W / H, 0.1, 50);
       camera.position.set(0, 0, 5);
@@ -1812,7 +1812,7 @@ if (canvas && !prefersReduced && typeof THREE !== 'undefined') {
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => {
-        W = canvas.offsetWidth; H = canvas.offsetHeight;
+        W = window.innerWidth; H = window.innerHeight;
         if (!camera || !renderer) return;
         camera.aspect = W / H;
         camera.updateProjectionMatrix();
