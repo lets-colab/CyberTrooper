@@ -50,6 +50,8 @@ body {
   font-weight: 300;
   line-height: 1.65;
   overflow-x: hidden;
+  /* Ensure native scroll works on all devices */
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Noise grain overlay */
@@ -503,9 +505,9 @@ section { padding: var(--section-pad); position: relative; z-index: 1; }
 
 /* ── HOW IT WORKS ── */
 #how {
-  background: rgba(255,255,255,0.012);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  background: rgba(160,120,85,0.025);
+  border-top: 1px solid rgba(160,120,85,0.2);
+  border-bottom: 1px solid rgba(160,120,85,0.2);
 }
 
 .steps { display: flex; flex-direction: column; }
@@ -515,19 +517,21 @@ section { padding: var(--section-pad); position: relative; z-index: 1; }
   gap: 2rem;
   padding: 2.5rem 0 2.5rem 2rem;
   border-bottom: 1px solid var(--border);
-  border-left: 3px solid var(--gold);
+  border-left: 3px solid var(--mocha);
   align-items: flex-start;
 }
+.step:nth-child(odd) { border-left-color: var(--gold); }
 .step:last-child { border-bottom: none; }
 
 .step-num {
   font-family: 'DM Mono', monospace;
   font-size: 0.72rem;
-  color: var(--gold);
+  color: var(--mocha);
   letter-spacing: 0.1em;
   min-width: 2rem;
   padding-top: 0.25rem;
 }
+.step:nth-child(odd) .step-num { color: var(--gold); }
 
 .step-body h3 {
   font-family: 'Bebas Neue', sans-serif;
@@ -573,7 +577,7 @@ section { padding: var(--section-pad); position: relative; z-index: 1; }
 }
 
 /* ── TIERS ── */
-#tiers { border-top: 1px solid var(--border); }
+#tiers { border-top: 1px solid rgba(160,120,85,0.25); }
 
 .tiers-sub {
   font-size: 1rem;
@@ -963,16 +967,39 @@ footer {
 }
 
 /* ── ALICIA CHAT WIDGET ── */
-#alicia-btn {
+#alicia-widget {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
-  width: 60px; height: 60px;
-  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  z-index: 9000;
+}
+#alicia-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.48rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(6,6,14,0.85);
+  border: 1px solid rgba(232,168,62,0.3);
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  white-space: nowrap;
+  animation: aliciaLabelPulse 3s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes aliciaLabelPulse {
+  0%,100% { opacity: 0.9; }
+  50% { opacity: 0.55; }
+}
+#alicia-btn {
+  position: relative;
   background: var(--gold);
   border: none;
   cursor: pointer;
-  z-index: 9000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -995,7 +1022,7 @@ footer {
 
 #alicia-panel {
   position: fixed;
-  bottom: 6rem;
+  bottom: 7.5rem;
   right: 2rem;
   width: min(380px, calc(100vw - 2rem));
   height: 520px;
@@ -1265,7 +1292,7 @@ footer {
 
 <!-- HERO -->
 <section class="hero">
-  <canvas id="hero-canvas" aria-hidden="true"></canvas>
+  <canvas id="hero-canvas" aria-hidden="true" style="touch-action: none; pointer-events: none;"></canvas>
   <div class="hero-glow" aria-hidden="true"></div>
   <div class="hero-content">
     <span class="pantone-chip">Pantone 17-1230 · Mocha Mousse · 2025</span>
@@ -1459,9 +1486,13 @@ footer {
 </section>
 
 <!-- ALICIA AI CHAT WIDGET -->
-<button id="alicia-btn" aria-label="Chat with ALICIA" aria-expanded="false">
-  <img src="alicia-avatar.jpg" alt="ALICIA" />
-</button>
+<div id="alicia-widget">
+  <button id="alicia-btn" aria-label="Chat with ALICIA" aria-expanded="false">
+    <img src="alicia-avatar.jpg" alt="ALICIA" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+    <span id="alicia-btn-fallback" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:#06060E;letter-spacing:0.05em;">AI</span>
+  </button>
+  <div id="alicia-label">CHAT WITH ALICIA</div>
+</div>
 
 <div id="alicia-panel" role="dialog" aria-label="Chat with ALICIA" aria-modal="true">
   <div class="alicia-header">
