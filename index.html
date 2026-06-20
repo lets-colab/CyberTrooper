@@ -878,6 +878,326 @@ footer {
   transform: none;
 }
 
+/* ── RECRUIT BANNER ── */
+#recruit {
+  border-top: 1px solid var(--border);
+  background: rgba(232,168,62,0.03);
+}
+.recruit-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+}
+.recruit-left {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  flex: 1;
+  min-width: 260px;
+}
+.recruit-accent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding-top: 0.3rem;
+}
+.recruit-accent-bar {
+  width: 3px;
+  height: 48px;
+  background: linear-gradient(to bottom, var(--gold), var(--mocha));
+  border-radius: 2px;
+}
+.recruit-accent-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--mocha);
+}
+.recruit-text h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.4rem, 5vw, 4.2rem);
+  letter-spacing: 0.03em;
+  line-height: 1;
+  color: var(--text);
+  margin-bottom: 0.6rem;
+}
+.recruit-text p {
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  color: var(--chrome);
+  line-height: 1.65;
+  max-width: 420px;
+}
+.recruit-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1.4rem;
+  flex-shrink: 0;
+}
+.recruit-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: flex-end;
+}
+.recruit-chip {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(232,168,62,0.3);
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+@media (max-width: 768px) {
+  .recruit-right { align-items: flex-start; }
+  .recruit-chips { justify-content: flex-start; }
+}
+
+/* ── ALICIA CHAT WIDGET ── */
+#alicia-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: none;
+  cursor: pointer;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 24px rgba(232,168,62,0.45), 0 0 0 0 rgba(232,168,62,0.3);
+  animation: aliciaBtnPulse 3s ease-in-out infinite;
+  transition: transform 0.2s, box-shadow 0.2s;
+  overflow: hidden;
+}
+#alicia-btn:hover { transform: scale(1.08); box-shadow: 0 6px 32px rgba(232,168,62,0.6); }
+#alicia-btn img {
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 12%;
+}
+@keyframes aliciaBtnPulse {
+  0%,100% { box-shadow: 0 4px 24px rgba(232,168,62,0.4), 0 0 0 0 rgba(232,168,62,0.25); }
+  50%      { box-shadow: 0 4px 24px rgba(232,168,62,0.5), 0 0 0 10px rgba(232,168,62,0); }
+}
+
+#alicia-panel {
+  position: fixed;
+  bottom: 6rem;
+  right: 2rem;
+  width: min(380px, calc(100vw - 2rem));
+  height: 520px;
+  background: rgba(6,6,14,0.97);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(232,168,62,0.25);
+  border-radius: 16px;
+  z-index: 8999;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(232,168,62,0.08);
+  transform: translateY(16px) scale(0.97);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease;
+}
+#alicia-panel.open {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  pointer-events: all;
+}
+
+.alicia-header {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid rgba(232,168,62,0.15);
+  flex-shrink: 0;
+  background: rgba(232,168,62,0.04);
+}
+.alicia-avatar-wrap {
+  position: relative;
+  width: 44px; height: 44px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 4px 16px rgba(232,168,62,0.5));
+  animation: aliciaFloat 4s ease-in-out infinite;
+}
+@keyframes aliciaFloat {
+  0%,100% { transform: translateY(0) scale(1); }
+  50%      { transform: translateY(-3px) scale(1.03); }
+}
+.alicia-avatar-wrap img {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 12%;
+  box-shadow: 0 0 0 2px var(--gold), 0 0 16px rgba(232,168,62,0.5), 0 0 32px rgba(160,120,85,0.25);
+}
+.alicia-header-info { flex: 1; }
+.alicia-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  line-height: 1;
+}
+.alicia-role {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(192,200,216,0.5);
+}
+.alicia-status {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(192,200,216,0.4);
+  margin-top: 0.15rem;
+}
+.alicia-status-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 6px #4ade80;
+  flex-shrink: 0;
+}
+.alicia-close {
+  background: none;
+  border: none;
+  color: rgba(192,200,216,0.4);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  transition: color 0.2s;
+}
+.alicia-close:hover { color: var(--text); }
+
+.alicia-msgs {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(232,168,62,0.2) transparent;
+}
+.alicia-msgs::-webkit-scrollbar { width: 4px; }
+.alicia-msgs::-webkit-scrollbar-track { background: transparent; }
+.alicia-msgs::-webkit-scrollbar-thumb { background: rgba(232,168,62,0.2); border-radius: 2px; }
+
+.alicia-msg {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-end;
+  max-width: 88%;
+}
+.alicia-msg.from-user { align-self: flex-end; flex-direction: row-reverse; }
+.alicia-msg.from-alicia { align-self: flex-start; }
+
+.alicia-bubble {
+  padding: 0.65rem 0.9rem;
+  border-radius: 12px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  max-width: 100%;
+}
+.from-user .alicia-bubble {
+  background: var(--gold);
+  color: var(--bg);
+  border-bottom-right-radius: 4px;
+}
+.from-alicia .alicia-bubble {
+  background: rgba(255,255,255,0.06);
+  color: var(--chrome);
+  border: 1px solid rgba(192,200,216,0.1);
+  border-bottom-left-radius: 4px;
+}
+
+/* Typing dots */
+.alicia-typing {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.65rem 0.9rem;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(192,200,216,0.1);
+  border-radius: 12px;
+  border-bottom-left-radius: 4px;
+  width: fit-content;
+}
+.alicia-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--chrome);
+  opacity: 0.5;
+  animation: aliciaDot 1.4s ease-in-out infinite;
+}
+.alicia-dot:nth-child(2) { animation-delay: 0.2s; }
+.alicia-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes aliciaDot {
+  0%,80%,100% { transform: scale(1); opacity: 0.5; }
+  40%          { transform: scale(1.4); opacity: 1; }
+}
+
+.alicia-input-row {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.85rem 1rem;
+  border-top: 1px solid rgba(232,168,62,0.1);
+  flex-shrink: 0;
+  background: rgba(0,0,0,0.2);
+}
+#alicia-input {
+  flex: 1;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(192,200,216,0.12);
+  border-radius: 8px;
+  padding: 0.6rem 0.85rem;
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+#alicia-input::placeholder { color: rgba(192,200,216,0.25); }
+#alicia-input:focus { border-color: rgba(232,168,62,0.5); }
+#alicia-send {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  background: var(--gold);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: opacity 0.2s;
+  align-self: center;
+}
+#alicia-send:hover { opacity: 0.85; }
+#alicia-send svg { width: 15px; height: 15px; }
+
 /* ── REDUCED MOTION ── */
 @media (prefers-reduced-motion: reduce) {
   .hero-glow { animation: none; }
@@ -1062,6 +1382,32 @@ footer {
   </div>
 </section>
 
+<!-- CREATOR RECRUITMENT BANNER -->
+<section id="recruit">
+  <div class="recruit-inner section-inner">
+    <div class="recruit-left reveal">
+      <div class="recruit-accent">
+        <div class="recruit-accent-bar"></div>
+        <div class="recruit-accent-dot"></div>
+      </div>
+      <div class="recruit-text">
+        <h2>ARE YOU A<br>KL CREATOR?</h2>
+        <p>Join the Trooper network. Get briefed on real brand campaigns. Get paid to post in your own voice on Threads.</p>
+        <a href="become-a-trooper.html" class="btn-gold" style="margin-top:1.4rem;display:inline-block;">JOIN THE NETWORK →</a>
+      </div>
+    </div>
+    <div class="recruit-right reveal" style="transition-delay:0.15s">
+      <div class="recruit-chips">
+        <span class="recruit-chip">40+ Active Troopers</span>
+        <span class="recruit-chip">Weekly Payouts</span>
+        <span class="recruit-chip">KL-Only Network</span>
+        <span class="recruit-chip">Applications Every Monday</span>
+        <span class="recruit-chip">Your Voice. Their Brand.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- CONTACT -->
 <section id="contact">
   <div class="section-inner">
@@ -1110,6 +1456,38 @@ footer {
     </div>
   </div>
 </section>
+
+<!-- ALICIA AI CHAT WIDGET -->
+<button id="alicia-btn" aria-label="Chat with ALICIA" aria-expanded="false">
+  <img src="alicia-avatar.jpg" alt="ALICIA" />
+</button>
+
+<div id="alicia-panel" role="dialog" aria-label="Chat with ALICIA" aria-modal="true">
+  <div class="alicia-header">
+    <div class="alicia-avatar-wrap">
+      <img src="alicia-avatar.jpg" alt="ALICIA" />
+    </div>
+    <div class="alicia-header-info">
+      <div class="alicia-name">ALICIA</div>
+      <div class="alicia-role">AI Assistant · CyberTrooper</div>
+      <div class="alicia-status">
+        <span class="alicia-status-dot"></span>
+        Online now
+      </div>
+    </div>
+    <button class="alicia-close" aria-label="Close chat">×</button>
+  </div>
+  <div class="alicia-msgs" id="alicia-msgs"></div>
+  <div class="alicia-input-row">
+    <input type="text" id="alicia-input" placeholder="Ask me anything…" autocomplete="off" maxlength="400" />
+    <button id="alicia-send" aria-label="Send">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#06060E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="22" y1="2" x2="11" y2="13"></line>
+        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+      </svg>
+    </button>
+  </div>
+</div>
 
 <!-- FOOTER -->
 <footer>
@@ -1503,6 +1881,111 @@ if (!prefersReduced && typeof Lenis !== 'undefined') {
     (function loop(t) { lenis.raf(t); requestAnimationFrame(loop); })(0);
   }
 }
+
+// ── ALICIA AI Chat Widget ──
+(function() {
+  const EDGE_URL = 'https://nykukkccynnykbmxznhl.supabase.co/functions/v1/alicia-chat';
+  const btn   = document.getElementById('alicia-btn');
+  const panel = document.getElementById('alicia-panel');
+  const msgs  = document.getElementById('alicia-msgs');
+  const input = document.getElementById('alicia-input');
+  const send  = document.getElementById('alicia-send');
+  const closeBtn = panel.querySelector('.alicia-close');
+  const history = [];
+  let open = false;
+
+  function togglePanel() {
+    open = !open;
+    panel.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', String(open));
+    if (open) {
+      input.focus();
+      if (msgs.children.length === 0) addMsg('alicia', "Hi! I'm ALICIA — CyberTrooper's AI assistant. Ask me about our tiers, how it works, or how to join as a creator. ✦");
+    }
+  }
+
+  btn.addEventListener('click', togglePanel);
+  closeBtn.addEventListener('click', togglePanel);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && open) togglePanel(); });
+
+  function addMsg(from, text) {
+    const wrap = document.createElement('div');
+    wrap.className = `alicia-msg from-${from}`;
+    const bubble = document.createElement('div');
+    bubble.className = 'alicia-bubble';
+    bubble.textContent = text;
+    wrap.appendChild(bubble);
+    msgs.appendChild(wrap);
+    msgs.scrollTop = msgs.scrollHeight;
+    return wrap;
+  }
+
+  function showTyping() {
+    const wrap = document.createElement('div');
+    wrap.className = 'alicia-msg from-alicia';
+    wrap.innerHTML = '<div class="alicia-typing"><div class="alicia-dot"></div><div class="alicia-dot"></div><div class="alicia-dot"></div></div>';
+    msgs.appendChild(wrap);
+    msgs.scrollTop = msgs.scrollHeight;
+    return wrap;
+  }
+
+  // Keyword fallback when edge function is unavailable
+  function fallbackReply(msg) {
+    const m = msg.toLowerCase();
+    if (/price|cost|rate|rm|myr|how much/.test(m))
+      return "Our rates are tailored per brief — we don't publish pricing publicly. Submit a brief via the 'Brief Us' form and we'll come back to you within 48 hours.";
+    if (/join|creator|trooper|apply|sign up|signup/.test(m))
+      return "You can apply to become a Trooper at become-a-trooper.html. You'll need to be KL-based with an active Threads account. Applications are reviewed every Monday.";
+    if (/tier|seed|growth|elite|package|plan/.test(m))
+      return "We have 3 tiers: Seed (5 Troopers/month), Growth (15/month — most popular), and Elite (30/month). Each includes strategy, trooper activation, and a monthly report.";
+    if (/thread|platform|meta|social/.test(m))
+      return "We operate exclusively on Threads (by Meta) — KL's fastest-growing text-first social platform. Authentic posts from real locals outperform traditional ads 3–5×.";
+    if (/contact|brief|email|whatsapp|reach|talk/.test(m))
+      return "Use the 'Brief Us' form on this page to reach us — we respond within 48 hours. You can also WhatsApp us directly using the number in the form.";
+    if (/work|how|process|report/.test(m))
+      return "Simple: You send a brief → We deploy matched Troopers → They post in their own voice → You get a monthly campaign report with results.";
+    return "I'm ALICIA, CyberTrooper's AI assistant. I can answer questions about our tiers, how it works, how to join as a creator, or how to brief us. What would you like to know?";
+  }
+
+  async function sendMessage() {
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    input.disabled = true;
+    send.disabled = true;
+
+    addMsg('user', text);
+    const typingEl = showTyping();
+
+    let reply;
+    try {
+      const res = await fetch(EDGE_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text, history }),
+        signal: AbortSignal.timeout(12000),
+      });
+      if (!res.ok) throw new Error('edge fn error');
+      const data = await res.json();
+      reply = data.reply || fallbackReply(text);
+    } catch {
+      reply = fallbackReply(text);
+    }
+
+    typingEl.remove();
+    addMsg('alicia', reply);
+    history.push({ role: 'user', content: text });
+    history.push({ role: 'assistant', content: reply });
+    if (history.length > 14) history.splice(0, 2); // keep last 7 turns
+
+    input.disabled = false;
+    send.disabled = false;
+    input.focus();
+  }
+
+  send.addEventListener('click', sendMessage);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
+})();
 
 // ── Brief form → WhatsApp ──
 document.getElementById('brief-form').addEventListener('submit', function(e) {
