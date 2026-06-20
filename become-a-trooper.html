@@ -1384,13 +1384,14 @@ footer {
           <label for="area">Area in KL *</label>
           <select id="area" name="area" required>
             <option value="">Select your area</option>
-            <option value="KLCC">KLCC</option>
-            <option value="Bangsar">Bangsar</option>
-            <option value="Chow Kit">Chow Kit</option>
-            <option value="Damansara">Damansara</option>
-            <option value="PJ">Petaling Jaya (PJ)</option>
-            <option value="Subang">Subang</option>
-            <option value="Other">Other</option>
+            <option value="Kuala Lumpur">Kuala Lumpur (KLCC / Bangsar / Chow Kit)</option>
+            <option value="Petaling Jaya">Petaling Jaya (PJ)</option>
+            <option value="Subang Jaya">Subang Jaya</option>
+            <option value="Cheras">Cheras</option>
+            <option value="Ampang">Ampang</option>
+            <option value="Shah Alam">Shah Alam</option>
+            <option value="Klang">Klang</option>
+            <option value="Other Klang Valley">Other Klang Valley</option>
           </select>
           <span class="field-error">Please select your area.</span>
         </div>
@@ -1747,11 +1748,8 @@ function showStep(step) {
   if (!next) return;
 
   if (current && step > currentStep) {
-    current.classList.add('slide-left');
-    current.addEventListener('animationend', () => {
-      current.classList.remove('active', 'slide-left');
-      next.classList.add('active');
-    }, { once: true });
+    document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active', 'slide-left'));
+    next.classList.add('active');
   } else {
     document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active', 'slide-left'));
     next.classList.add('active');
