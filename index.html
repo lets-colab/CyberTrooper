@@ -994,30 +994,43 @@ footer {
 }
 #alicia-btn {
   position: relative;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: var(--gold);
+  width: 88px;
+  height: 100px;
+  border-radius: 0;
+  background: transparent;
   border: none;
   cursor: pointer;
+  padding: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-  box-shadow: 0 4px 24px rgba(232,168,62,0.45), 0 0 0 0 rgba(232,168,62,0.3);
-  animation: aliciaBtnPulse 3s ease-in-out infinite;
-  transition: transform 0.2s, box-shadow 0.2s;
-  overflow: hidden;
+  overflow: visible;
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.55)) drop-shadow(0 2px 24px rgba(232,168,62,0.45));
+  animation: aliciaFloat 4.5s ease-in-out infinite;
+  transition: transform 0.25s ease;
 }
-#alicia-btn:hover { transform: scale(1.08); box-shadow: 0 6px 32px rgba(232,168,62,0.6); }
+/* soft gold halo behind the cutout — sells the floating 3D look */
+#alicia-btn::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: 40%;
+  width: 76px; height: 76px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(232,168,62,0.55) 0%, rgba(232,168,62,0.14) 48%, transparent 72%);
+  border-radius: 50%;
+  z-index: -1;
+  animation: aliciaHalo 3s ease-in-out infinite;
+}
+#alicia-btn:hover { transform: scale(1.07) translateY(-3px); }
 #alicia-btn img {
   width: 100%; height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-  object-position: center 22%;
+  border-radius: 0;
+  object-fit: contain;
+  object-position: center bottom;
 }
-@keyframes aliciaBtnPulse {
-  0%,100% { box-shadow: 0 4px 24px rgba(232,168,62,0.4), 0 0 0 0 rgba(232,168,62,0.25); }
-  50%      { box-shadow: 0 4px 24px rgba(232,168,62,0.5), 0 0 0 10px rgba(232,168,62,0); }
+@keyframes aliciaHalo {
+  0%,100% { opacity: 0.85; transform: translate(-50%,-50%) scale(1); }
+  50%      { opacity: 1;    transform: translate(-50%,-50%) scale(1.12); }
 }
 
 #alicia-panel {
@@ -1058,21 +1071,31 @@ footer {
 }
 .alicia-avatar-wrap {
   position: relative;
-  width: 44px; height: 44px;
+  width: 50px; height: 56px;
   flex-shrink: 0;
-  filter: drop-shadow(0 4px 16px rgba(232,168,62,0.5));
+  filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5)) drop-shadow(0 0 14px rgba(232,168,62,0.5));
   animation: aliciaFloat 4s ease-in-out infinite;
 }
 @keyframes aliciaFloat {
   0%,100% { transform: translateY(0) scale(1); }
   50%      { transform: translateY(-3px) scale(1.03); }
 }
-.alicia-avatar-wrap img {
-  width: 44px; height: 44px;
+/* gold halo behind the header cutout */
+.alicia-avatar-wrap::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: 42%;
+  width: 46px; height: 46px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(232,168,62,0.5) 0%, rgba(232,168,62,0.12) 50%, transparent 72%);
   border-radius: 50%;
-  object-fit: cover;
-  object-position: center 22%;
-  box-shadow: 0 0 0 2px var(--gold), 0 0 16px rgba(232,168,62,0.5), 0 0 32px rgba(160,120,85,0.25);
+  z-index: -1;
+}
+.alicia-avatar-wrap img {
+  width: 100%; height: 100%;
+  border-radius: 0;
+  object-fit: contain;
+  object-position: center bottom;
 }
 .alicia-header-info { flex: 1; }
 .alicia-name {
@@ -1526,7 +1549,7 @@ footer {
     </div>
     <div class="alicia-header-info">
       <div class="alicia-name">ALICIA</div>
-      <div class="alicia-role">AI Assistant · CyberTrooper</div>
+      <div class="alicia-role">Your guide · CyberTrooper KL</div>
       <div class="alicia-status">
         <span class="alicia-status-dot"></span>
         Online now
@@ -1900,7 +1923,7 @@ if (!prefersReduced && !isTouchDevice && typeof Lenis !== 'undefined') {
     btn.setAttribute('aria-expanded', String(open));
     if (open) {
       input.focus();
-      if (msgs.children.length === 0) addMsg('alicia', "Hi! I'm ALICIA — CyberTrooper's AI assistant. Ask me about our tiers, how it works, or how to join as a creator. ✦");
+      if (msgs.children.length === 0) addMsg('alicia', "Hi, I'm Alicia 🌸 Lovely to meet you. Ask me anything — tiers, how it all works, getting your brand on Threads, or joining as a creator.");
     }
   }
 
@@ -1944,7 +1967,7 @@ if (!prefersReduced && !isTouchDevice && typeof Lenis !== 'undefined') {
       return "Use the 'Brief Us' form on this page to reach us — we respond within 48 hours. You can also WhatsApp us directly using the number in the form.";
     if (/work|how|process|report/.test(m))
       return "Simple: You send a brief → We deploy matched Troopers → They post in their own voice → You get a monthly campaign report with results.";
-    return "I'm ALICIA, CyberTrooper's AI assistant. I can answer questions about our tiers, how it works, how to join as a creator, or how to brief us. What would you like to know?";
+    return "I'm Alicia — happy to help with anything about CyberTrooper. Ask me about our tiers, how it works, getting your brand on Threads, or joining as a creator. What's on your mind?";
   }
 
   async function sendMessage() {
