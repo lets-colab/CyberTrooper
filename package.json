@@ -13,7 +13,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "jsdom": "^29.1.1"
+    "jsdom": "^29.1.1",
+    "playwright": "^1.61.0",
+    "playwright-core": "^1.61.0"
   },
   "private": true
 }
