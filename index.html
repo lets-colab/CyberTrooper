@@ -1289,6 +1289,107 @@ footer {
   .cta-group { flex-direction: column; }
   .btn-gold, .btn-ghost { text-align: center; }
 }
+
+/* ── SECTION SUB ── */
+.section-sub {
+  font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+  font-weight: 300;
+  color: var(--chrome);
+  max-width: 580px;
+  margin-bottom: 2.5rem;
+  line-height: 1.75;
+}
+
+/* ── TIER FEATURES ── */
+.tier-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+.tier-features li {
+  font-size: 0.92rem;
+  color: var(--chrome);
+  padding-left: 1.1rem;
+  position: relative;
+  line-height: 1.5;
+}
+.tier-features li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--mocha);
+  font-size: 0.75rem;
+}
+
+/* ── CONTACT SIDEBAR ── */
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-left: clamp(1rem, 3vw, 2.5rem);
+}
+.contact-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.contact-detail-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--mocha);
+}
+.contact-detail-value {
+  font-size: 0.98rem;
+  color: var(--text);
+}
+
+/* ── TROOPER BLOCK ── */
+.trooper-block {
+  background: rgba(232,168,62,0.05);
+  border: 1px solid rgba(232,168,62,0.2);
+  border-radius: 8px;
+  padding: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 0.5rem;
+}
+.trooper-block h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 0.06em;
+  color: var(--gold);
+}
+.trooper-block p {
+  font-size: 0.9rem;
+  color: var(--chrome);
+  line-height: 1.65;
+}
+
+/* ── BTN PRIMARY ── */
+.btn-primary {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.74rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: transparent;
+  border: 1px solid var(--gold);
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+  display: inline-block;
+}
+.btn-primary:hover {
+  background: var(--gold);
+  color: var(--bg);
+}
 </style>
 </head>
 <body>
@@ -1305,7 +1406,7 @@ footer {
     <li><a href="#tiers">Services</a></li>
     <li><a href="become-a-trooper.html">Join</a></li>
   </ul>
-  <a href="#contact" class="nav-cta">Brief Us</a>
+  <a href="#contact" class="nav-cta nav-pill">Brief Us</a>
 </nav>
 
 <!-- ── Scroll Container ── -->
@@ -1336,24 +1437,24 @@ footer {
   <!-- HOW IT WORKS -->
   <section id="how-it-works" aria-label="How It Works">
     <div class="section-inner">
-      <span class="section-eyebrow reveal">[THE SYSTEM]</span>
-      <h2 class="section-headline reveal">HOW WE BUILD YOUR GROWTH OS</h2>
+      <span class="eyebrow reveal">[THE SYSTEM]</span>
+      <h2 class="section-heading reveal">HOW WE BUILD YOUR GROWTH OS</h2>
       <p class="section-sub reveal">Three phases. One operating system. Built to run while you focus on what you do best.</p>
-      <div class="steps-grid">
-        <div class="step-card reveal">
-          <span class="step-number">01 / SIGNAL</span>
-          <h3 class="step-title">MAP THE FIELD</h3>
-          <p class="step-desc">CRM setup, crowd stream architecture, ambassador tiers, KOL tracking. We build your data layer before we activate a single creator.</p>
+      <div class="steps">
+        <div class="step reveal">
+          <span class="step-num">01 / SIGNAL</span>
+          <div class="step-body"><h3>MAP THE FIELD</h3>
+          <p>CRM setup, crowd stream architecture, ambassador tiers, KOL tracking. We build your data layer before we activate a single creator.</p></div>
         </div>
-        <div class="step-card reveal" style="transition-delay:0.1s">
-          <span class="step-number">02 / DEPLOY</span>
-          <h3 class="step-title">ACTIVATE TROOPERS</h3>
-          <p class="step-desc">Matched creators deploy content on Threads. First Visit Pass drives foot traffic. WhatsApp follow-up closes warm leads. Every move tracked in real time.</p>
+        <div class="step reveal" style="transition-delay:0.1s">
+          <span class="step-num">02 / DEPLOY</span>
+          <div class="step-body"><h3>ACTIVATE TROOPERS</h3>
+          <p>Matched creators deploy content on Threads. First Visit Pass drives foot traffic. WhatsApp follow-up closes warm leads. Every move tracked in real time.</p></div>
         </div>
-        <div class="step-card reveal" style="transition-delay:0.2s">
-          <span class="step-number">03 / GROW</span>
-          <h3 class="step-title">MEASURE &amp; SCALE</h3>
-          <p class="step-desc">Weekly performance dashboards. 300-pax forecasting. Real data, not vanity metrics. We adjust the system every 7 days until your venue is full.</p>
+        <div class="step reveal" style="transition-delay:0.2s">
+          <span class="step-num">03 / GROW</span>
+          <div class="step-body"><h3>MEASURE &amp; SCALE</h3>
+          <p>Weekly performance dashboards. 300-pax forecasting. Real data, not vanity metrics. We adjust the system every 7 days until your venue is full.</p></div>
         </div>
       </div>
     </div>
@@ -1365,25 +1466,25 @@ footer {
   <!-- WHY THREADS -->
   <section id="why-threads" aria-label="Why Threads">
     <div class="section-inner">
-      <span class="section-eyebrow reveal">[THE CHANNEL]</span>
-      <h2 class="section-headline reveal">WHY THREADS IN 2026</h2>
+      <span class="eyebrow reveal">[THE CHANNEL]</span>
+      <h2 class="section-heading reveal">WHY THREADS IN 2026</h2>
       <p class="section-sub reveal">Every growth channel gets saturated. Threads is early. We're already operating inside it.</p>
-      <div class="stats-grid">
+      <div class="stat-grid">
         <div class="stat-card reveal">
           <div class="stat-number">175M+</div>
-          <div class="stat-label">Monthly active users globally</div>
+          <div class="stat-card-label">Monthly active users globally</div>
         </div>
         <div class="stat-card reveal" style="transition-delay:0.08s">
           <div class="stat-number">3.2×</div>
-          <div class="stat-label">Higher engagement vs Instagram</div>
+          <div class="stat-card-label">Higher engagement vs Instagram</div>
         </div>
         <div class="stat-card reveal" style="transition-delay:0.16s">
           <div class="stat-number">KL-first</div>
-          <div class="stat-label">No competitor has activated this market</div>
+          <div class="stat-card-label">No competitor has activated this market</div>
         </div>
         <div class="stat-card reveal" style="transition-delay:0.24s">
           <div class="stat-number">0 ads</div>
-          <div class="stat-label">Organic reach still dominates the feed</div>
+          <div class="stat-card-label">Organic reach still dominates the feed</div>
         </div>
       </div>
     </div>
@@ -1395,8 +1496,8 @@ footer {
   <!-- TIERS -->
   <section id="tiers" aria-label="Service Tiers">
     <div class="section-inner">
-      <span class="section-eyebrow reveal">[THE PACKAGES]</span>
-      <h2 class="section-headline reveal">VENUE GROWTH OS TIERS</h2>
+      <span class="eyebrow reveal">[THE PACKAGES]</span>
+      <h2 class="section-heading reveal">VENUE GROWTH OS TIERS</h2>
       <p class="section-sub reveal">Pick your entry point. Scale when the system proves itself. No guesswork — results first.</p>
       <div class="tiers-grid">
         <div class="tier-card reveal">
@@ -1521,7 +1622,7 @@ footer {
         </div>
         <div class="contact-detail">
           <span class="contact-detail-label">WhatsApp</span>
-          <span class="contact-detail-value">+880 163 132 6245</span>
+          <span class="contact-detail-value">+60 163 132 6245</span>
         </div>
         <div class="contact-detail">
           <span class="contact-detail-label">Base</span>
@@ -2040,7 +2141,7 @@ if (briefFormEl) briefFormEl.addEventListener('submit', function(e) {
     'Tier Interest: ' + tier, '',
     'Campaign Brief:', brief,
   ].join('\n');
-  window.open('https://wa.me/8801631326245?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+  window.open('https://wa.me/601631326245?text=' + encodeURIComponent(msg), '_blank', 'noopener');
   const successEl = document.getElementById('form-success');
   if (successEl) successEl.classList.add('visible');
   this.style.display = 'none';
