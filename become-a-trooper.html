@@ -969,6 +969,12 @@ textarea { resize: vertical; min-height: 130px; }
 }
 .success-wa:hover { opacity: 0.85; }
 
+.success-steps{margin:16px 0 20px;text-align:left;}
+.success-step{font-size:.85rem;color:rgba(240,237,232,.7);margin:6px 0;letter-spacing:.04em;}
+
+.field-error-msg{font-size:.72rem;color:#ff6b6b;margin-top:4px;display:none;}
+.field.invalid .field-error-msg{display:block;}
+
 /* ── FOOTER ── */
 footer {
   border-top: 1px solid var(--border);
@@ -1368,17 +1374,20 @@ footer {
             <label for="full-name">Full Name *</label>
             <input type="text" id="full-name" name="full_name" placeholder="Ahmad Hafizi" required />
             <span class="field-error">Please enter your full name.</span>
+            <p class="field-error-msg">Please enter your full name</p>
           </div>
           <div class="field" id="field-phone">
             <label for="phone">Phone Number *</label>
             <input type="tel" id="phone" name="phone" placeholder="+60 12 345 6789" required />
             <span class="field-error">Please enter your phone number.</span>
+            <p class="field-error-msg">Enter your WhatsApp number (e.g. +60 12 345 6789)</p>
           </div>
         </div>
         <div class="field" id="field-email">
           <label for="app-email">Email *</label>
           <input type="email" id="app-email" name="email" placeholder="you@email.com" required />
           <span class="field-error">Please enter a valid email.</span>
+          <p class="field-error-msg">Enter a valid email address</p>
         </div>
         <div class="field" id="field-area">
           <label for="area">Area in KL *</label>
@@ -1407,27 +1416,19 @@ footer {
           <label for="handle">Threads Handle *</label>
           <input type="text" id="handle" name="threads_handle" placeholder="@yourhandle" required />
           <span class="field-error">Please enter your Threads handle.</span>
-        </div>
-        <div class="field" id="field-followers">
-          <label for="followers">Follower Count *</label>
-          <select id="followers" name="follower_count" required>
-            <option value="">Select range</option>
-            <option value="Under 1K">Under 1,000</option>
-            <option value="1K–5K">1,000 – 5,000</option>
-            <option value="5K–10K">5,000 – 10,000</option>
-            <option value="10K+">10,000+</option>
-          </select>
-          <span class="field-error">Please select your follower count.</span>
+          <p class="field-error-msg">Enter your Threads handle (e.g. @yourname)</p>
         </div>
         <div class="field" id="field-frequency">
-          <label for="frequency">How often do you post? *</label>
+          <label for="frequency">HOW OFTEN DO YOU POST ON THREADS?</label>
           <select id="frequency" name="post_frequency" required>
-            <option value="">Select frequency</option>
-            <option value="Daily">Daily</option>
-            <option value="3–5x/week">3–5 times a week</option>
-            <option value="1–2x/week">1–2 times a week</option>
+            <option value="" disabled selected>Select frequency</option>
+            <option value="daily">Daily</option>
+            <option value="3-4x">3–4 times a week</option>
+            <option value="1-2x">1–2 times a week</option>
+            <option value="starting">Just getting started</option>
           </select>
           <span class="field-error">Please select your posting frequency.</span>
+          <p class="field-error-msg">Please select your posting frequency</p>
         </div>
         <div class="step-nav">
           <button type="button" class="btn-back" onclick="prevStep(2)">← Back</button>
@@ -1443,6 +1444,7 @@ footer {
           <p class="field-sub">Write it like you'd actually post it on Threads. This is how we assess your voice.</p>
           <textarea id="sample-post" name="sample_post" rows="6" required minlength="50" placeholder="Tell us about a café or spot you genuinely love..."></textarea>
           <span class="field-error">Please write at least 50 characters in your own voice.</span>
+          <p class="field-error-msg">Write at least 50 characters about a KL spot you love</p>
         </div>
         <div class="field" id="field-payment">
           <label for="payment">Preferred Payment Method</label>
@@ -1487,6 +1489,11 @@ footer {
   <div class="success-box">
     <div class="success-icon">✅</div>
     <h2>You're In The Queue.</h2>
+    <div class="success-steps">
+      <p class="success-step">→ We review every Monday</p>
+      <p class="success-step">→ You'll hear back within 48 hours</p>
+      <p class="success-step">→ If approved, we send your private brief via WhatsApp</p>
+    </div>
     <p>Your application has been received and automatically logged. We review every Monday — you'll hear from us within 48 hours.</p>
     <span class="success-ref" id="success-ref">CT-2026-00000</span>
     <p id="success-status" style="font-size:0.82rem;color:rgba(159,200,168,0.5);margin-top:0.25rem;">Your details &amp; WhatsApp number have been saved. Tap below if you'd like to connect directly.</p>
@@ -1666,7 +1673,7 @@ document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 // ── Supabase config ──
 const SUPABASE_URL = 'https://nykukkccynnykbmxznhl.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im55a3Vra2NjeW5ueWtibXh6bmhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzNjEwMzksImV4cCI6MjA4ODkzNzAzOX0.pchGj0hZ2dbNUW9o6tnL2A8QnE2GwWvPlDzR1jCmu9Y';
-const WHATSAPP_NUMBER = '8801797068588';
+const WHATSAPP_NUMBER = '601797068588';
 
 // ── Offline queue ──
 const QUEUE_KEY = 'ct_offline_queue';
