@@ -57,9 +57,11 @@ nav{
   backdrop-filter:blur(2px);
 }
 .nav-logo{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.4rem;font-weight:500;letter-spacing:.12em;
-  color:var(--gold);text-decoration:none;
+  display:inline-flex;align-items:center;text-decoration:none;
+}
+.nav-logo img{
+  height:28px;width:auto;
+  filter: brightness(1.05);
 }
 .nav-cta{
   font-size:.72rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;
@@ -413,9 +415,11 @@ footer{
   position:relative;z-index:2;
 }
 .footer-logo{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.6rem;font-weight:300;letter-spacing:.15em;
-  color:var(--gold);margin-bottom:8px;
+  margin-bottom:12px;
+  display:flex;justify-content:center;
+}
+.footer-logo img{
+  height:36px;width:auto;
 }
 .footer-sub{font-size:.72rem;color:var(--muted);letter-spacing:.1em;margin-bottom:24px}
 .footer-links{display:flex;justify-content:center;gap:32px;flex-wrap:wrap}
@@ -453,7 +457,7 @@ footer{
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">Season KL</a>
+  <a href="#" class="nav-logo"><img src="season-logo.svg" alt="Season KL"></a>
   <a href="#claim" class="nav-cta">Claim Your Pass</a>
 </nav>
 
@@ -761,7 +765,7 @@ footer{
 
 <!-- ══ FOOTER ══ -->
 <footer>
-  <div class="footer-logo">Season KL</div>
+  <div class="footer-logo"><img src="season-logo.svg" alt="Season KL"></div>
   <div class="footer-sub">Every Friday & Saturday · TREC KL</div>
   <div class="footer-links">
     <a href="#pass">First Visit Pass</a>
