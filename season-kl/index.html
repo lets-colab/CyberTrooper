@@ -7,7 +7,7 @@
 <meta name="description" content="KL's most intentional nightlife experience. Claim your First Visit Pass and enter the Season family." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
@@ -92,9 +92,9 @@ nav{
   position:relative;z-index:2;
 }
 .hero-title{
-  font-family:'Cormorant Garamond',serif;
+  font-family:'Bodoni Moda',serif;
   font-size:clamp(3.5rem,10vw,8rem);
-  font-weight:300;line-height:.95;letter-spacing:-.02em;
+  font-weight:400;line-height:.95;letter-spacing:-.03em;
   position:relative;z-index:2;
   background:linear-gradient(145deg,#fff 0%,var(--gold-light) 40%,var(--bloom) 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
@@ -152,10 +152,25 @@ nav{
   font-size:.62rem;letter-spacing:.35em;text-transform:uppercase;
   color:var(--gold);opacity:.7;margin-bottom:16px;display:block;
 }
+/* ✦ logo star motif — used as section divider */
+.star-divider{
+  display:flex;align-items:center;gap:16px;margin:48px 0 40px;
+}
+.star-divider::before,.star-divider::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(to right,transparent,rgba(201,160,90,.35),transparent);
+}
+.star-divider-glyph{
+  font-size:1rem;color:var(--gold);opacity:.7;
+  font-family:'Bodoni Moda',serif;
+  animation:starSpin 8s linear infinite;
+  display:inline-block;
+}
+@keyframes starSpin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
 .section-title{
-  font-family:'Cormorant Garamond',serif;
+  font-family:'Bodoni Moda',serif;
   font-size:clamp(2rem,5vw,3.5rem);
-  font-weight:400;line-height:1.1;
+  font-weight:400;line-height:1.1;letter-spacing:-.02em;
 }
 .section-sub{
   font-size:1rem;color:var(--muted);max-width:540px;
@@ -188,8 +203,8 @@ nav{
   opacity:.6;margin-bottom:12px;position:relative;z-index:1;
 }
 .theme-name{
-  font-family:'Cormorant Garamond',serif;
-  font-size:2.8rem;font-weight:300;letter-spacing:.05em;
+  font-family:'Bodoni Moda',serif;
+  font-size:2.8rem;font-weight:400;letter-spacing:-.02em;
   position:relative;z-index:1;line-height:1;
 }
 .theme-bloom .theme-name{color:var(--bloom)}
@@ -225,17 +240,17 @@ nav{
   background:radial-gradient(circle,rgba(201,160,90,.12),transparent 70%);
 }
 .pass-card-label{
-  font-family:'Cormorant Garamond',serif;
+  font-family:'DM Mono',monospace;
   font-size:.7rem;letter-spacing:.4em;text-transform:uppercase;
   color:var(--gold);margin-bottom:24px;display:block;opacity:.8;
 }
 .pass-card-title{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.8rem;font-weight:400;line-height:1.2;
+  font-family:'Bodoni Moda',serif;
+  font-size:1.8rem;font-weight:400;line-height:1.2;letter-spacing:-.02em;
   margin-bottom:8px;
 }
 .pass-card-tagline{
-  font-family:'Cormorant Garamond',serif;
+  font-family:'Bodoni Moda',serif;
   font-size:1rem;font-style:italic;color:var(--bloom);
   margin-bottom:32px;
 }
@@ -254,9 +269,9 @@ nav{
   border-radius:12px;padding:20px;text-align:center;
 }
 .stat-num{
-  font-family:'Cormorant Garamond',serif;
-  font-size:2.2rem;font-weight:300;color:var(--gold);
-  line-height:1;
+  font-family:'Bodoni Moda',serif;
+  font-size:2.2rem;font-weight:400;color:var(--gold);
+  line-height:1;letter-spacing:-.02em;
 }
 .stat-label{font-size:.65rem;color:var(--muted);letter-spacing:.15em;text-transform:uppercase;margin-top:4px}
 
@@ -464,7 +479,7 @@ footer{
 <!-- ══ HERO ══ -->
 <section class="hero">
   <div class="hero-bg"></div>
-  <div class="hero-eyebrow">Kuala Lumpur · Est. 2026</div>
+  <div class="hero-eyebrow">Kuala Lumpur ✦ Est. 2026</div>
   <h1 class="hero-title">You've Been<br>Invited to Bloom</h1>
   <p class="hero-sub">KL's most intentional nightlife experience</p>
   <div class="hero-divider"></div>
@@ -483,7 +498,9 @@ footer{
 <!-- ══ COMMUNITY PROOF ══ -->
 <section class="section" style="padding-top:60px;padding-bottom:60px">
   <div class="section-inner">
-    <p class="reveal" style="text-align:center;font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-style:italic;color:var(--muted);letter-spacing:.04em;">3 Chapters. 3 Months. Every Friday &amp; Saturday.</p>
+    <div class="star-divider"><span class="star-divider-glyph">✦</span></div>
+    <p class="reveal" style="text-align:center;font-family:'Bodoni Moda',serif;font-size:1.5rem;font-style:italic;color:var(--muted);letter-spacing:-.01em;">3 Chapters. 3 Months. Every Friday &amp; Saturday.</p>
+    <div class="star-divider" style="margin-top:48px;margin-bottom:0"><span class="star-divider-glyph">✦</span></div>
   </div>
 </section>
 
