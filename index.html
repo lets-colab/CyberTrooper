@@ -1557,7 +1557,7 @@ footer {
     </div>
     <div class="alicia-header-info">
       <div class="alicia-name">ALICIA</div>
-      <div class="alicia-role">Your guide · CyberTrooper KL</div>
+      <div class="alicia-role">Your Consultant · CyberTrooper KL</div>
       <div class="alicia-status">
         <span class="alicia-status-dot"></span>
         Online now
@@ -1567,7 +1567,7 @@ footer {
   </div>
   <div class="alicia-msgs" id="alicia-msgs"></div>
   <div class="alicia-input-row">
-    <input type="text" id="alicia-input" placeholder="Ask me anything…" autocomplete="off" maxlength="400" />
+    <input type="text" id="alicia-input" placeholder="Tell me what you're working on…" autocomplete="off" maxlength="400" />
     <button id="alicia-send" aria-label="Send">
       <svg viewBox="0 0 24 24" fill="none" stroke="#06060E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <line x1="22" y1="2" x2="11" y2="13"></line>
@@ -1933,7 +1933,7 @@ if (!prefersReduced && !isTouchDevice && typeof Lenis !== 'undefined') {
     btn.setAttribute('aria-expanded', String(open));
     if (open) {
       input.focus();
-      if (msgs.children.length === 0) addMsg('alicia', "Hi, I'm Alicia 🌸 Lovely to meet you. Ask me anything — tiers, how it all works, getting your brand on Threads, or joining as a creator.");
+      if (msgs.children.length === 0) addMsg('alicia', "Hey, welcome 👋 I'm Alicia — your CyberTrooper consultant. Whether you're trying to grow your brand, figure out your next move on Threads, or just not sure where to start — tell me what's going on and let's work through it together.");
     }
   }
 
@@ -1977,7 +1977,7 @@ if (!prefersReduced && !isTouchDevice && typeof Lenis !== 'undefined') {
       return "Use the 'Brief Us' form on this page to reach us — we respond within 48 hours. You can also WhatsApp us directly using the number in the form.";
     if (/work|how|process|report/.test(m))
       return "Simple: You send a brief → We deploy matched Troopers → They post in their own voice → You get a monthly campaign report with results.";
-    return "I'm Alicia — happy to help with anything about CyberTrooper. Ask me about our tiers, how it works, getting your brand on Threads, or joining as a creator. What's on your mind?";
+    return "Tell me more about what you're trying to achieve — your brand, your goals, your challenges. I'll help you figure out the right strategy.";
   }
 
   async function sendMessage() {
