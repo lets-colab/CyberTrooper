@@ -42,7 +42,7 @@
   --section-pad: clamp(5rem,12vw,9rem) clamp(1.25rem,6vw,4.5rem);
 }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 /* Lenis handles smooth scroll on desktop — native scroll on touch */
 
 body {
@@ -54,6 +54,11 @@ body {
   overflow-x: hidden;
   /* Ensure native scroll works on all devices */
   -webkit-overflow-scrolling: touch;
+}
+
+#scroll-container {
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 /* Noise grain overlay */
@@ -2008,6 +2013,6 @@ if (briefFormEl) briefFormEl.addEventListener('submit', function(e) {
   this.style.display = 'none';
 });
 </script>
-
+</div><!-- end #scroll-container -->
 </body>
 </html>
