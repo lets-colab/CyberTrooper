@@ -103,6 +103,17 @@ nav.scrolled {
   border-bottom-color: var(--border);
 }
 
+/* Scroll progress bar */
+#scroll-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 0;
+  z-index: 200;
+  background: linear-gradient(to right, var(--mocha), var(--gold), var(--cloud));
+  pointer-events: none;
+}
+
 .nav-logo {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 1.5rem;
@@ -1246,6 +1257,9 @@ footer {
 </head>
 <body>
 
+<!-- Scroll progress bar -->
+<div id="scroll-bar" aria-hidden="true"></div>
+
 <!-- ── Nav ── -->
 <nav role="navigation" aria-label="Main navigation">
   <a href="#" class="nav-logo">CYBER<span>TROOPER</span></a>
@@ -1271,7 +1285,7 @@ footer {
     <p class="hero-sub">We deploy real KL locals to post about your brand authentically on Threads. No bots. No scripts. Real people, real accounts, real engagement.</p>
     <div class="cta-group">
       <a href="#contact" class="btn-gold">BRIEF US</a>
-      <a href="#how" class="btn-ghost">HOW IT WORKS</a>
+      <a href="#how-it-works" class="btn-ghost">HOW IT WORKS</a>
     </div>
     <div class="scroll-hint" aria-hidden="true">
       <span>Scroll</span>
@@ -1423,37 +1437,71 @@ footer {
     <p class="eyebrow">[Open Transmission]</p>
     <h2 class="section-heading">BRIEF US</h2>
     <p class="contact-sub">Tell us about your brand. We'll come back within 48 hours.</p>
-    <form id="brief-form" novalidate>
-      <div class="form-row">
-        <div class="field">
-          <label for="brand-name">Brand Name</label>
-          <input type="text" id="brand-name" name="brand_name" placeholder="Your brand" required />
+    <div class="form-row">
+      <form id="brief-form" novalidate>
+        <div class="form-row">
+          <div class="field">
+            <label for="brand-name">Brand Name</label>
+            <input type="text" id="brand-name" name="brand_name" placeholder="Your brand" required />
+          </div>
+          <div class="field">
+            <label for="your-name">Your Name</label>
+            <input type="text" id="your-name" name="your_name" placeholder="Full name" required />
+          </div>
         </div>
-        <div class="contact-info reveal">
-          <div class="contact-detail">
-            <span class="contact-detail-label">Email</span>
-            <span class="contact-detail-value">360cybertroopers@gmail.com</span>
+        <div class="form-row">
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@brand.com" required />
           </div>
-          <div class="contact-detail">
-            <span class="contact-detail-label">WhatsApp</span>
-            <span class="contact-detail-value">+880 163 132 6245</span>
+          <div class="field">
+            <label for="whatsapp">WhatsApp</label>
+            <input type="tel" id="whatsapp" name="whatsapp" placeholder="+60 12 345 6789" />
           </div>
-          <div class="contact-detail">
-            <span class="contact-detail-label">Base</span>
-            <span class="contact-detail-value">Kuala Lumpur, Malaysia</span>
-          </div>
-          <div class="contact-detail">
-            <span class="contact-detail-label">Response Time</span>
-            <span class="contact-detail-value">Within 48 hours</span>
-          </div>
-          <div class="trooper-block">
-            <h3>Are You a Creator?</h3>
-            <p>Join KL's first Threads creator network. Rates revealed after approval. Apply in 3 minutes.</p>
-            <a href="become-a-trooper.html" class="btn-primary" style="display:block;text-align:center;">Apply to be a Trooper →</a>
-          </div>
+        </div>
+        <div class="field" style="margin-top:1rem">
+          <label for="tier">Tier of Interest</label>
+          <select id="tier" name="tier">
+            <option value="Not sure yet" selected>Not sure yet — advise me</option>
+            <option value="Starter OS">Starter OS</option>
+            <option value="Growth OS">Growth OS</option>
+            <option value="Command OS">Command OS</option>
+          </select>
+        </div>
+        <div class="field" style="margin-top:1rem">
+          <label for="brief">Campaign Brief</label>
+          <textarea id="brief" name="brief" placeholder="Tell us about your brand, goals, and timeline…"></textarea>
+        </div>
+        <button type="submit" class="btn-gold" style="margin-top:1.5rem;width:100%;">SEND BRIEF →</button>
+        <div id="form-success" class="form-success">
+          <p>✓ Brief received — opening WhatsApp to finish sending. We'll reply within 48 hours.</p>
+        </div>
+      </form>
+      <div class="contact-info reveal">
+        <div class="contact-detail">
+          <span class="contact-detail-label">Email</span>
+          <span class="contact-detail-value">360cybertroopers@gmail.com</span>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-detail-label">WhatsApp</span>
+          <span class="contact-detail-value">+880 163 132 6245</span>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-detail-label">Base</span>
+          <span class="contact-detail-value">Kuala Lumpur, Malaysia</span>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-detail-label">Response Time</span>
+          <span class="contact-detail-value">Within 48 hours</span>
+        </div>
+        <div class="trooper-block">
+          <h3>Are You a Creator?</h3>
+          <p>Join KL's first Threads creator network. Rates revealed after approval. Apply in 3 minutes.</p>
+          <a href="become-a-trooper.html" class="btn-primary" style="display:block;text-align:center;">Apply to be a Trooper →</a>
         </div>
       </div>
     </div>
+  </div>
   </section>
 
 <!-- ALICIA AI CHAT WIDGET -->
@@ -1515,31 +1563,6 @@ window.addEventListener('scroll', () => {
     scrollBar.style.width = Math.min(pct, 100) + '%';
   }
 }, { passive: true });
-
-/* ─── Contact form ─── */
-const briefForm   = document.getElementById('brief-form');
-const briefSubmit = document.getElementById('brief-submit');
-const briefStatus = document.getElementById('brief-status');
-
-// ── Hamburger / Drawer (only if present — this layout has no mobile drawer) ──
-const hamburger = document.getElementById('hamburger');
-const drawer = document.getElementById('drawer');
-if (hamburger && drawer) {
-  const openDrawer = () => {
-    drawer.classList.add('open');
-    hamburger.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
-  };
-  const closeDrawer = () => {
-    drawer.classList.remove('open');
-    hamburger.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
-  };
-  hamburger.addEventListener('click', () => drawer.classList.contains('open') ? closeDrawer() : openDrawer());
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
-  drawer.addEventListener('click', e => { if (e.target === drawer) closeDrawer(); });
-  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => closeDrawer()));
-}
 
 // ── Scroll reveal (IntersectionObserver) ──
 const revealObserver = new IntersectionObserver((entries) => {
