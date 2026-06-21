@@ -973,6 +973,14 @@ footer {
   align-items: center;
   gap: 0.4rem;
   z-index: 9000;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+/* When the chat panel is open, get the floating launcher out of the way
+   so it can't overlap the input/send button and steal taps. */
+#alicia-widget.docked {
+  opacity: 0;
+  transform: translateY(12px) scale(0.85);
+  pointer-events: none;
 }
 #alicia-label {
   font-family: 'DM Mono', monospace;
@@ -1917,9 +1925,11 @@ if (!prefersReduced && !isTouchDevice && typeof Lenis !== 'undefined') {
   const history = [];
   let open = false;
 
+  const widget = document.getElementById('alicia-widget');
   function togglePanel() {
     open = !open;
     panel.classList.toggle('open', open);
+    if (widget) widget.classList.toggle('docked', open);
     btn.setAttribute('aria-expanded', String(open));
     if (open) {
       input.focus();
