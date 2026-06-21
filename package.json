@@ -1,0 +1,21 @@
+{
+  "name": "cybertrooper",
+  "version": "1.0.0",
+  "description": "CyberTrooper landing site + offline verification harness",
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lets-colab/CyberTrooper.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jsdom": "^29.1.1",
+    "playwright": "^1.61.0",
+    "playwright-core": "^1.61.0"
+  },
+  "private": true
+}

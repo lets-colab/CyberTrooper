@@ -746,17 +746,45 @@ footer{
 
       <div class="form-success" id="formSuccess">
         <div class="form-success-icon">🌸</div>
-        <h3>You're In, Season Family</h3>
+        <h3>You're In, <span id="successName">Season Family</span></h3>
+        <p class="form-sub" style="margin-bottom:24px">Welcome to Season KL. Your first night starts here.</p>
+
         <div class="pass-code" id="passCode" style="display:none">
           <span class="pass-code-label">Your First Visit Pass</span>
           <span class="pass-code-value" id="passCodeValue">SKL-------</span>
-          <span class="pass-code-hint">Screenshot this — show it at the door</span>
+          <span class="pass-code-hint">Show this at the door · TREC KL</span>
         </div>
-        <p>
-          Your First Visit Pass is on its way to your WhatsApp.<br>
-          Check your messages — your QR and arrival details will arrive shortly.<br><br>
-          <em style="color:var(--gold)">Welcome to Season KL.</em>
-        </p>
+
+        <div id="passActions" style="display:none;flex-direction:column;gap:12px;width:100%;margin-top:8px">
+          <a id="waPassBtn" href="#" target="_blank" rel="noopener" class="btn-primary" style="justify-content:center;text-decoration:none">
+            📲 Send to my WhatsApp
+          </a>
+          <p style="font-size:.72rem;color:var(--muted);text-align:center;margin:0">
+            Tap above → WhatsApp opens → Hit send → Pass saved to your chat
+          </p>
+        </div>
+
+        <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--border)">
+          <p style="font-size:.78rem;color:var(--muted);line-height:1.8;text-align:left">
+            <strong style="color:var(--text);font-weight:500">Your pass includes:</strong><br>
+            🍹 Bloom Potion welcome cocktail<br>
+            📸 Polaroid "My First Season" moment<br>
+            🪙 Season Token (collectible)<br>
+            🤝 Pass It On challenge with a bonus shot
+          </p>
+          <p style="font-size:.72rem;color:var(--muted);margin-top:12px;text-align:center">
+            Valid any <strong style="color:var(--gold)">Friday or Saturday</strong> · July – September 2026 · TREC KL
+          </p>
+        </div>
+
+        <div id="noPassNote" style="display:none;margin-top:20px">
+          <p style="font-size:.8rem;color:var(--muted);line-height:1.7;text-align:center">
+            Your pass is confirmed — we'll WhatsApp you shortly.<br>
+            <a href="https://wa.me/8801797068588?text=Hi%20Season%20KL%20%F0%9F%8C%B8%20I%20just%20signed%20up%20for%20my%20First%20Visit%20Pass%20but%20didn%27t%20receive%20a%20pass%20code.%20Can%20you%20help%3F" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:underline">
+              Tap here to message us on WhatsApp
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -867,6 +895,32 @@ footer{
   const submitBtn  = document.getElementById('submitBtn');
   const successDiv = document.getElementById('formSuccess');
 
+  function showSuccess({ name, whatsapp, passId }) {
+    // Personalise heading
+    const firstName = name.split(' ')[0];
+    document.getElementById('successName').textContent = firstName || 'Season Family';
+
+    if (passId) {
+      document.getElementById('passCodeValue').textContent = passId;
+      document.getElementById('passCode').style.display = 'flex';
+
+      // Build wa.me deeplink addressed to the guest's own number
+      const cleaned = (whatsapp || '').replace(/\D/g, '');
+      const num = cleaned.startsWith('60') ? cleaned : '60' + cleaned.replace(/^0/, '');
+      const msg = encodeURIComponent(
+        `🌸 My Season KL First Visit Pass\n\nPass Code: ${passId}\n\nShow this at the door on any Friday or Saturday at TREC KL.\n\nWhat I get:\n✦ Bloom Potion welcome cocktail\n✦ Polaroid "My First Season" moment\n✦ Season Token (collectible)\n\nValid: July – September 2026 · TREC KL\n\nSee you at Season 🌸`
+      );
+      const waBtn = document.getElementById('waPassBtn');
+      waBtn.href = `https://wa.me/${num}?text=${msg}`;
+      document.getElementById('passActions').style.display = 'flex';
+    } else {
+      document.getElementById('noPassNote').style.display = 'block';
+    }
+
+    form.style.display = 'none';
+    successDiv.style.display = 'block';
+  }
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     submitBtn.disabled = true;
@@ -915,17 +969,10 @@ footer{
         });
       }
 
-      if(passId){
-        document.getElementById('passCodeValue').textContent = passId;
-        document.getElementById('passCode').style.display = 'flex';
-      }
-      form.style.display = 'none';
-      successDiv.style.display = 'block';
+      showSuccess({ name, whatsapp, passId });
     } catch(err) {
-      /* Still show success — we never leave someone hanging */
-      form.style.display = 'none';
-      successDiv.style.display = 'block';
       console.error('Pass issue error:', err);
+      showSuccess({ name, whatsapp, passId: null });
     }
   });
 })();

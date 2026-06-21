@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
 <!-- Three.js WebGL + GSAP ScrollTrigger + Lenis -->
-<script src="https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
@@ -42,7 +42,7 @@
   --section-pad: clamp(5rem,12vw,9rem) clamp(1.25rem,6vw,4.5rem);
 }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 /* Lenis handles smooth scroll on desktop — native scroll on touch */
 
 body {
@@ -54,6 +54,11 @@ body {
   overflow-x: hidden;
   /* Ensure native scroll works on all devices */
   -webkit-overflow-scrolling: touch;
+}
+
+#scroll-container {
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 /* Noise grain overlay */
@@ -101,6 +106,17 @@ nav.scrolled {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom-color: var(--border);
+}
+
+/* Scroll progress bar */
+#scroll-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 0;
+  z-index: 200;
+  background: linear-gradient(to right, var(--mocha), var(--gold), var(--cloud));
+  pointer-events: none;
 }
 
 .nav-logo {
@@ -398,39 +414,6 @@ body.cursor-hover .cursor-ring {
 }
 @keyframes spinBorder {
   to { --border-angle: 360deg; }
-}
-
-/* Pantone accent chips */
-.pantone-chips {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  margin-bottom: 1rem;
-}
-.pantone-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-family: 'DM Mono', monospace;
-  font-size: 0.52rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(160,120,85,0.7);
-}
-.pantone-chip::before {
-  content: '';
-  display: block;
-  width: 8px; height: 8px;
-  border-radius: 2px;
-  background: var(--mocha);
-  flex-shrink: 0;
-}
-.pantone-chip.cloud {
-  color: rgba(240,237,230,0.5);
-}
-.pantone-chip.cloud::before {
-  background: var(--cloud);
-  border: 1px solid rgba(192,200,216,0.2);
 }
 
 /* ── NUMBER COUNTER ── */
@@ -990,6 +973,14 @@ footer {
   align-items: center;
   gap: 0.4rem;
   z-index: 9000;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+/* When the chat panel is open, get the floating launcher out of the way
+   so it can't overlap the input/send button and steal taps. */
+#alicia-widget.docked {
+  opacity: 0;
+  transform: translateY(12px) scale(0.85);
+  pointer-events: none;
 }
 #alicia-label {
   font-family: 'DM Mono', monospace;
@@ -1011,30 +1002,43 @@ footer {
 }
 #alicia-btn {
   position: relative;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: var(--gold);
+  width: 88px;
+  height: 100px;
+  border-radius: 0;
+  background: transparent;
   border: none;
   cursor: pointer;
+  padding: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-  box-shadow: 0 4px 24px rgba(232,168,62,0.45), 0 0 0 0 rgba(232,168,62,0.3);
-  animation: aliciaBtnPulse 3s ease-in-out infinite;
-  transition: transform 0.2s, box-shadow 0.2s;
-  overflow: hidden;
+  overflow: visible;
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.55)) drop-shadow(0 2px 24px rgba(232,168,62,0.45));
+  animation: aliciaFloat 4.5s ease-in-out infinite;
+  transition: transform 0.25s ease;
 }
-#alicia-btn:hover { transform: scale(1.08); box-shadow: 0 6px 32px rgba(232,168,62,0.6); }
+/* soft gold halo behind the cutout — sells the floating 3D look */
+#alicia-btn::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: 40%;
+  width: 76px; height: 76px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(232,168,62,0.55) 0%, rgba(232,168,62,0.14) 48%, transparent 72%);
+  border-radius: 50%;
+  z-index: -1;
+  animation: aliciaHalo 3s ease-in-out infinite;
+}
+#alicia-btn:hover { transform: scale(1.07) translateY(-3px); }
 #alicia-btn img {
   width: 100%; height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-  object-position: center 22%;
+  border-radius: 0;
+  object-fit: contain;
+  object-position: center bottom;
 }
-@keyframes aliciaBtnPulse {
-  0%,100% { box-shadow: 0 4px 24px rgba(232,168,62,0.4), 0 0 0 0 rgba(232,168,62,0.25); }
-  50%      { box-shadow: 0 4px 24px rgba(232,168,62,0.5), 0 0 0 10px rgba(232,168,62,0); }
+@keyframes aliciaHalo {
+  0%,100% { opacity: 0.85; transform: translate(-50%,-50%) scale(1); }
+  50%      { opacity: 1;    transform: translate(-50%,-50%) scale(1.12); }
 }
 
 #alicia-panel {
@@ -1075,21 +1079,31 @@ footer {
 }
 .alicia-avatar-wrap {
   position: relative;
-  width: 44px; height: 44px;
+  width: 50px; height: 56px;
   flex-shrink: 0;
-  filter: drop-shadow(0 4px 16px rgba(232,168,62,0.5));
+  filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5)) drop-shadow(0 0 14px rgba(232,168,62,0.5));
   animation: aliciaFloat 4s ease-in-out infinite;
 }
 @keyframes aliciaFloat {
   0%,100% { transform: translateY(0) scale(1); }
   50%      { transform: translateY(-3px) scale(1.03); }
 }
-.alicia-avatar-wrap img {
-  width: 44px; height: 44px;
+/* gold halo behind the header cutout */
+.alicia-avatar-wrap::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: 42%;
+  width: 46px; height: 46px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(232,168,62,0.5) 0%, rgba(232,168,62,0.12) 50%, transparent 72%);
   border-radius: 50%;
-  object-fit: cover;
-  object-position: center 22%;
-  box-shadow: 0 0 0 2px var(--gold), 0 0 16px rgba(232,168,62,0.5), 0 0 32px rgba(160,120,85,0.25);
+  z-index: -1;
+}
+.alicia-avatar-wrap img {
+  width: 100%; height: 100%;
+  border-radius: 0;
+  object-fit: contain;
+  object-position: center bottom;
 }
 .alicia-header-info { flex: 1; }
 .alicia-name {
@@ -1275,39 +1289,113 @@ footer {
   .cta-group { flex-direction: column; }
   .btn-gold, .btn-ghost { text-align: center; }
 }
+
+/* ── SECTION SUB ── */
+.section-sub {
+  font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+  font-weight: 300;
+  color: var(--chrome);
+  max-width: 580px;
+  margin-bottom: 2.5rem;
+  line-height: 1.75;
+}
+
+/* ── TIER FEATURES ── */
+.tier-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+.tier-features li {
+  font-size: 0.92rem;
+  color: var(--chrome);
+  padding-left: 1.1rem;
+  position: relative;
+  line-height: 1.5;
+}
+.tier-features li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--mocha);
+  font-size: 0.75rem;
+}
+
+/* ── CONTACT SIDEBAR ── */
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-left: clamp(1rem, 3vw, 2.5rem);
+}
+.contact-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.contact-detail-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--mocha);
+}
+.contact-detail-value {
+  font-size: 0.98rem;
+  color: var(--text);
+}
+
+/* ── TROOPER BLOCK ── */
+.trooper-block {
+  background: rgba(232,168,62,0.05);
+  border: 1px solid rgba(232,168,62,0.2);
+  border-radius: 8px;
+  padding: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 0.5rem;
+}
+.trooper-block h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 0.06em;
+  color: var(--gold);
+}
+.trooper-block p {
+  font-size: 0.9rem;
+  color: var(--chrome);
+  line-height: 1.65;
+}
+
+/* ── BTN PRIMARY ── */
+.btn-primary {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.74rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: transparent;
+  border: 1px solid var(--gold);
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+  display: inline-block;
+}
+.btn-primary:hover {
+  background: var(--gold);
+  color: var(--bg);
+}
 </style>
 </head>
 <body>
 
-<!-- WebGL Canvas -->
-<canvas id="webgl-canvas" aria-hidden="true"></canvas>
-
-<!-- Static SVG Fallback -->
-<div id="webgl-fallback" aria-hidden="true">
-  <svg width="100%" height="100%" viewBox="0 0 900 700" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <radialGradient id="grd" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#C0C8D8" stop-opacity="0.18"/>
-        <stop offset="100%" stop-color="#06060E" stop-opacity="0"/>
-      </radialGradient>
-    </defs>
-    <circle cx="450" cy="350" r="320" fill="url(#grd)"/>
-    <circle cx="450" cy="350" r="70" fill="none" stroke="#C0C8D8" stroke-width="1.2" opacity="0.5"/>
-    <circle cx="450" cy="350" r="95" fill="none" stroke="#E8A83E" stroke-width="0.6" opacity="0.25" stroke-dasharray="4 6"/>
-    <g opacity="0.4" stroke="#E8A83E" stroke-width="0.7">
-      <line x1="450" y1="350" x2="210" y2="190"/><circle cx="210" cy="190" r="5" fill="#E8A83E"/>
-      <line x1="450" y1="350" x2="650" y2="170"/><circle cx="650" cy="170" r="5" fill="#E8A83E"/>
-      <line x1="450" y1="350" x2="720" y2="360"/><circle cx="720" cy="360" r="5" fill="#E8A83E"/>
-      <line x1="450" y1="350" x2="640" y2="510"/><circle cx="640" cy="510" r="5" fill="#E8A83E"/>
-      <line x1="450" y1="350" x2="260" y2="500"/><circle cx="260" cy="500" r="5" fill="#E8A83E"/>
-      <line x1="450" y1="350" x2="175" y2="360"/><circle cx="175" cy="360" r="5" fill="#E8A83E"/>
-      <line x1="450" y1="350" x2="380" y2="160"/><circle cx="380" cy="160" r="4" fill="#E8A83E"/>
-      <line x1="450" y1="350" x2="520" y2="555"/><circle cx="520" cy="555" r="4" fill="#E8A83E"/>
-    </g>
-  </svg>
-</div>
-
-<div id="vignette" aria-hidden="true"></div>
+<!-- Scroll progress bar -->
+<div id="scroll-bar" aria-hidden="true"></div>
 
 <!-- ── Nav ── -->
 <nav role="navigation" aria-label="Main navigation">
@@ -1318,7 +1406,7 @@ footer {
     <li><a href="#tiers">Services</a></li>
     <li><a href="become-a-trooper.html">Join</a></li>
   </ul>
-  <a href="#contact" class="nav-cta">Brief Us</a>
+  <a href="#contact" class="nav-cta nav-pill">Brief Us</a>
 </nav>
 
 <!-- ── Scroll Container ── -->
@@ -1329,22 +1417,19 @@ footer {
   <canvas id="hero-canvas" aria-hidden="true" style="touch-action: none; pointer-events: none;"></canvas>
   <div class="hero-glow" aria-hidden="true"></div>
   <div class="hero-content">
-    <div class="pantone-chips">
-      <span class="pantone-chip">Pantone 17-1230 · Mocha Mousse · 2025</span>
-      <span class="pantone-chip cloud">Pantone 11-4201 · Cloud Dancer · 2026</span>
-    </div>
     <p class="eyebrow">[KL's First Threads Creator Network]</p>
     <h1 id="hero-h1">YOUR BRAND.<br>THEIR VOICE.<br>REAL REACH.</h1>
     <p class="hero-sub">We deploy real KL locals to post about your brand authentically on Threads. No bots. No scripts. Real people, real accounts, real engagement.</p>
     <div class="cta-group">
       <a href="#contact" class="btn-gold">BRIEF US</a>
-      <a href="#how" class="btn-ghost">HOW IT WORKS</a>
+      <a href="#how-it-works" class="btn-ghost">HOW IT WORKS</a>
     </div>
     <div class="scroll-hint" aria-hidden="true">
       <span>Scroll</span>
       <div class="scroll-line"></div>
     </div>
-  </section>
+  </div>
+</section>
 
   <!-- Spacer 1: Hero → How It Works transition -->
   <div class="scroll-spacer" aria-hidden="true"></div>
@@ -1352,24 +1437,24 @@ footer {
   <!-- HOW IT WORKS -->
   <section id="how-it-works" aria-label="How It Works">
     <div class="section-inner">
-      <span class="section-eyebrow reveal">[THE SYSTEM]</span>
-      <h2 class="section-headline reveal">HOW WE BUILD YOUR GROWTH OS</h2>
+      <span class="eyebrow reveal">[THE SYSTEM]</span>
+      <h2 class="section-heading reveal">HOW WE BUILD YOUR GROWTH OS</h2>
       <p class="section-sub reveal">Three phases. One operating system. Built to run while you focus on what you do best.</p>
-      <div class="steps-grid">
-        <div class="step-card reveal">
-          <span class="step-number">01 / SIGNAL</span>
-          <h3 class="step-title">MAP THE FIELD</h3>
-          <p class="step-desc">CRM setup, crowd stream architecture, ambassador tiers, KOL tracking. We build your data layer before we activate a single creator.</p>
+      <div class="steps">
+        <div class="step reveal">
+          <span class="step-num">01 / SIGNAL</span>
+          <div class="step-body"><h3>MAP THE FIELD</h3>
+          <p>CRM setup, crowd stream architecture, ambassador tiers, KOL tracking. We build your data layer before we activate a single creator.</p></div>
         </div>
-        <div class="step-card reveal" style="transition-delay:0.1s">
-          <span class="step-number">02 / DEPLOY</span>
-          <h3 class="step-title">ACTIVATE TROOPERS</h3>
-          <p class="step-desc">Matched creators deploy content on Threads. First Visit Pass drives foot traffic. WhatsApp follow-up closes warm leads. Every move tracked in real time.</p>
+        <div class="step reveal" style="transition-delay:0.1s">
+          <span class="step-num">02 / DEPLOY</span>
+          <div class="step-body"><h3>ACTIVATE TROOPERS</h3>
+          <p>Matched creators deploy content on Threads. First Visit Pass drives foot traffic. WhatsApp follow-up closes warm leads. Every move tracked in real time.</p></div>
         </div>
-        <div class="step-card reveal" style="transition-delay:0.2s">
-          <span class="step-number">03 / GROW</span>
-          <h3 class="step-title">MEASURE &amp; SCALE</h3>
-          <p class="step-desc">Weekly performance dashboards. 300-pax forecasting. Real data, not vanity metrics. We adjust the system every 7 days until your venue is full.</p>
+        <div class="step reveal" style="transition-delay:0.2s">
+          <span class="step-num">03 / GROW</span>
+          <div class="step-body"><h3>MEASURE &amp; SCALE</h3>
+          <p>Weekly performance dashboards. 300-pax forecasting. Real data, not vanity metrics. We adjust the system every 7 days until your venue is full.</p></div>
         </div>
       </div>
     </div>
@@ -1381,25 +1466,25 @@ footer {
   <!-- WHY THREADS -->
   <section id="why-threads" aria-label="Why Threads">
     <div class="section-inner">
-      <span class="section-eyebrow reveal">[THE CHANNEL]</span>
-      <h2 class="section-headline reveal">WHY THREADS IN 2026</h2>
+      <span class="eyebrow reveal">[THE CHANNEL]</span>
+      <h2 class="section-heading reveal">WHY THREADS IN 2026</h2>
       <p class="section-sub reveal">Every growth channel gets saturated. Threads is early. We're already operating inside it.</p>
-      <div class="stats-grid">
+      <div class="stat-grid">
         <div class="stat-card reveal">
           <div class="stat-number">175M+</div>
-          <div class="stat-label">Monthly active users globally</div>
+          <div class="stat-card-label">Monthly active users globally</div>
         </div>
         <div class="stat-card reveal" style="transition-delay:0.08s">
           <div class="stat-number">3.2×</div>
-          <div class="stat-label">Higher engagement vs Instagram</div>
+          <div class="stat-card-label">Higher engagement vs Instagram</div>
         </div>
         <div class="stat-card reveal" style="transition-delay:0.16s">
           <div class="stat-number">KL-first</div>
-          <div class="stat-label">No competitor has activated this market</div>
+          <div class="stat-card-label">No competitor has activated this market</div>
         </div>
         <div class="stat-card reveal" style="transition-delay:0.24s">
           <div class="stat-number">0 ads</div>
-          <div class="stat-label">Organic reach still dominates the feed</div>
+          <div class="stat-card-label">Organic reach still dominates the feed</div>
         </div>
       </div>
     </div>
@@ -1411,8 +1496,8 @@ footer {
   <!-- TIERS -->
   <section id="tiers" aria-label="Service Tiers">
     <div class="section-inner">
-      <span class="section-eyebrow reveal">[THE PACKAGES]</span>
-      <h2 class="section-headline reveal">VENUE GROWTH OS TIERS</h2>
+      <span class="eyebrow reveal">[THE PACKAGES]</span>
+      <h2 class="section-heading reveal">VENUE GROWTH OS TIERS</h2>
       <p class="section-sub reveal">Pick your entry point. Scale when the system proves itself. No guesswork — results first.</p>
       <div class="tiers-grid">
         <div class="tier-card reveal">
@@ -1490,37 +1575,71 @@ footer {
     <p class="eyebrow">[Open Transmission]</p>
     <h2 class="section-heading">BRIEF US</h2>
     <p class="contact-sub">Tell us about your brand. We'll come back within 48 hours.</p>
-    <form id="brief-form" novalidate>
-      <div class="form-row">
-        <div class="field">
-          <label for="brand-name">Brand Name</label>
-          <input type="text" id="brand-name" name="brand_name" placeholder="Your brand" required />
+    <div class="form-row">
+      <form id="brief-form" novalidate>
+        <div class="form-row">
+          <div class="field">
+            <label for="brand-name">Brand Name</label>
+            <input type="text" id="brand-name" name="brand_name" placeholder="Your brand" required />
+          </div>
+          <div class="field">
+            <label for="your-name">Your Name</label>
+            <input type="text" id="your-name" name="your_name" placeholder="Full name" required />
+          </div>
         </div>
-        <div class="contact-info reveal">
-          <div class="contact-detail">
-            <span class="contact-detail-label">Email</span>
-            <span class="contact-detail-value">360cybertroopers@gmail.com</span>
+        <div class="form-row">
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@brand.com" required />
           </div>
-          <div class="contact-detail">
-            <span class="contact-detail-label">WhatsApp</span>
-            <span class="contact-detail-value">+880 163 132 6245</span>
+          <div class="field">
+            <label for="whatsapp">WhatsApp</label>
+            <input type="tel" id="whatsapp" name="whatsapp" placeholder="+60 12 345 6789" />
           </div>
-          <div class="contact-detail">
-            <span class="contact-detail-label">Base</span>
-            <span class="contact-detail-value">Kuala Lumpur, Malaysia</span>
-          </div>
-          <div class="contact-detail">
-            <span class="contact-detail-label">Response Time</span>
-            <span class="contact-detail-value">Within 48 hours</span>
-          </div>
-          <div class="trooper-block">
-            <h3>Are You a Creator?</h3>
-            <p>Join KL's first Threads creator network. Rates revealed after approval. Apply in 3 minutes.</p>
-            <a href="become-a-trooper.html" class="btn-primary" style="display:block;text-align:center;">Apply to be a Trooper →</a>
-          </div>
+        </div>
+        <div class="field" style="margin-top:1rem">
+          <label for="tier">Tier of Interest</label>
+          <select id="tier" name="tier">
+            <option value="Not sure yet" selected>Not sure yet — advise me</option>
+            <option value="Starter OS">Starter OS</option>
+            <option value="Growth OS">Growth OS</option>
+            <option value="Command OS">Command OS</option>
+          </select>
+        </div>
+        <div class="field" style="margin-top:1rem">
+          <label for="brief">Campaign Brief</label>
+          <textarea id="brief" name="brief" placeholder="Tell us about your brand, goals, and timeline…"></textarea>
+        </div>
+        <button type="submit" class="btn-gold" style="margin-top:1.5rem;width:100%;">SEND BRIEF →</button>
+        <div id="form-success" class="form-success">
+          <p>✓ Brief received — opening WhatsApp to finish sending. We'll reply within 48 hours.</p>
+        </div>
+      </form>
+      <div class="contact-info reveal">
+        <div class="contact-detail">
+          <span class="contact-detail-label">Email</span>
+          <span class="contact-detail-value">360cybertroopers@gmail.com</span>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-detail-label">WhatsApp</span>
+          <span class="contact-detail-value">+880 179 706 8588</span>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-detail-label">Base</span>
+          <span class="contact-detail-value">Kuala Lumpur, Malaysia</span>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-detail-label">Response Time</span>
+          <span class="contact-detail-value">Within 48 hours</span>
+        </div>
+        <div class="trooper-block">
+          <h3>Are You a Creator?</h3>
+          <p>Join KL's first Threads creator network. Rates revealed after approval. Apply in 3 minutes.</p>
+          <a href="become-a-trooper.html" class="btn-primary" style="display:block;text-align:center;">Apply to be a Trooper →</a>
         </div>
       </div>
     </div>
+  </div>
   </section>
 
 <!-- ALICIA AI CHAT WIDGET -->
@@ -1539,7 +1658,7 @@ footer {
     </div>
     <div class="alicia-header-info">
       <div class="alicia-name">ALICIA</div>
-      <div class="alicia-role">AI Assistant · CyberTrooper</div>
+      <div class="alicia-role">Your Consultant · CyberTrooper KL</div>
       <div class="alicia-status">
         <span class="alicia-status-dot"></span>
         Online now
@@ -1549,7 +1668,7 @@ footer {
   </div>
   <div class="alicia-msgs" id="alicia-msgs"></div>
   <div class="alicia-input-row">
-    <input type="text" id="alicia-input" placeholder="Ask me anything…" autocomplete="off" maxlength="400" />
+    <input type="text" id="alicia-input" placeholder="Tell me what you're working on…" autocomplete="off" maxlength="400" />
     <button id="alicia-send" aria-label="Send">
       <svg viewBox="0 0 24 24" fill="none" stroke="#06060E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <line x1="22" y1="2" x2="11" y2="13"></line>
@@ -1576,39 +1695,12 @@ footer {
 const navEl = document.querySelector('nav');
 const scrollBar = document.getElementById('scroll-bar');
 window.addEventListener('scroll', () => {
-  navEl.classList.toggle('scrolled', window.scrollY > 60);
-  const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
-  scrollBar.style.width = Math.min(pct, 100) + '%';
+  if (navEl) navEl.classList.toggle('scrolled', window.scrollY > 60);
+  if (scrollBar) {
+    const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
+    scrollBar.style.width = Math.min(pct, 100) + '%';
+  }
 }, { passive: true });
-
-/* ─── Supabase ─── */
-const _supabase = window.supabase.createClient(
-  'https://nykukkccynnykbmxznhl.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im55a3Vra2NjeW5ueWtibXh6bmhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzNjEwMzksImV4cCI6MjA4ODkzNzAzOX0.pchGj0hZ2dbNUW9o6tnL2A8QnE2GwWvPlDzR1jCmu9Y'
-);
-
-/* ─── Contact form ─── */
-const briefForm   = document.getElementById('brief-form');
-const briefSubmit = document.getElementById('brief-submit');
-const briefStatus = document.getElementById('brief-status');
-
-// ── Hamburger / Drawer ──
-const hamburger = document.getElementById('hamburger');
-const drawer = document.getElementById('drawer');
-function openDrawer() {
-  drawer.classList.add('open');
-  hamburger.setAttribute('aria-expanded', 'true');
-  document.body.style.overflow = 'hidden';
-}
-function closeDrawer() {
-  drawer.classList.remove('open');
-  hamburger.setAttribute('aria-expanded', 'false');
-  document.body.style.overflow = '';
-}
-hamburger.addEventListener('click', () => drawer.classList.contains('open') ? closeDrawer() : openDrawer());
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
-drawer.addEventListener('click', e => { if (e.target === drawer) closeDrawer(); });
-drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => closeDrawer()));
 
 // ── Scroll reveal (IntersectionObserver) ──
 const revealObserver = new IntersectionObserver((entries) => {
@@ -1660,7 +1752,8 @@ if (canvas && !prefersReduced && typeof THREE !== 'undefined') {
     let animRaf;
 
     function build() {
-      W = canvas.offsetWidth; H = canvas.offsetHeight;
+      W = window.innerWidth;
+      H = window.innerHeight;
       scene = new THREE.Scene();
       camera = new THREE.PerspectiveCamera(65, W / H, 0.1, 50);
       camera.position.set(0, 0, 5);
@@ -1811,7 +1904,7 @@ if (canvas && !prefersReduced && typeof THREE !== 'undefined') {
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => {
-        W = canvas.offsetWidth; H = canvas.offsetHeight;
+        W = window.innerWidth; H = window.innerHeight;
         if (!camera || !renderer) return;
         camera.aspect = W / H;
         camera.updateProjectionMatrix();
@@ -1826,8 +1919,7 @@ if (canvas && !prefersReduced && typeof THREE !== 'undefined') {
     }, { threshold: 0.01 });
     heroObs.observe(canvas.closest('section'));
 
-    build();
-    frame();
+    requestAnimationFrame(() => { build(); frame(); });
   })();
 
 } else if (canvas && !prefersReduced) {
@@ -1934,13 +2026,15 @@ if (!prefersReduced && !isTouchDevice && typeof Lenis !== 'undefined') {
   const history = [];
   let open = false;
 
+  const widget = document.getElementById('alicia-widget');
   function togglePanel() {
     open = !open;
     panel.classList.toggle('open', open);
+    if (widget) widget.classList.toggle('docked', open);
     btn.setAttribute('aria-expanded', String(open));
     if (open) {
       input.focus();
-      if (msgs.children.length === 0) addMsg('alicia', "Hi! I'm ALICIA — CyberTrooper's AI assistant. Ask me about our tiers, how it works, or how to join as a creator. ✦");
+      if (msgs.children.length === 0) addMsg('alicia', "Hey, welcome 👋 I'm Alicia — your CyberTrooper consultant. Whether you're trying to grow your brand, figure out your next move on Threads, or just not sure where to start — tell me what's going on and let's work through it together.");
     }
   }
 
@@ -1984,7 +2078,7 @@ if (!prefersReduced && !isTouchDevice && typeof Lenis !== 'undefined') {
       return "Use the 'Brief Us' form on this page to reach us — we respond within 48 hours. You can also WhatsApp us directly using the number in the form.";
     if (/work|how|process|report/.test(m))
       return "Simple: You send a brief → We deploy matched Troopers → They post in their own voice → You get a monthly campaign report with results.";
-    return "I'm ALICIA, CyberTrooper's AI assistant. I can answer questions about our tiers, how it works, how to join as a creator, or how to brief us. What would you like to know?";
+    return "Tell me more about what you're trying to achieve — your brand, your goals, your challenges. I'll help you figure out the right strategy.";
   }
 
   async function sendMessage() {
@@ -2028,7 +2122,8 @@ if (!prefersReduced && !isTouchDevice && typeof Lenis !== 'undefined') {
 })();
 
 // ── Brief form → WhatsApp ──
-document.getElementById('brief-form').addEventListener('submit', function(e) {
+const briefFormEl = document.getElementById('brief-form');
+if (briefFormEl) briefFormEl.addEventListener('submit', function(e) {
   e.preventDefault();
   const fd = new FormData(this);
   const brand = fd.get('brand_name') || '';
@@ -2046,321 +2141,12 @@ document.getElementById('brief-form').addEventListener('submit', function(e) {
     'Tier Interest: ' + tier, '',
     'Campaign Brief:', brief,
   ].join('\n');
-  window.open('https://wa.me/8801631326245?text=' + encodeURIComponent(msg), '_blank', 'noopener');
-  document.getElementById('form-success').classList.add('visible');
+  window.open('https://wa.me/8801797068588?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+  const successEl = document.getElementById('form-success');
+  if (successEl) successEl.classList.add('visible');
   this.style.display = 'none';
 });
-
-/* ─── Lenis + GSAP ─── */
-gsap.registerPlugin(ScrollTrigger);
-
-const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-if (!prefersReduced) {
-  const lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
-  lenis.on('scroll', ScrollTrigger.update);
-  gsap.ticker.add((t) => lenis.raf(t * 1000));
-  gsap.ticker.lagSmoothing(0);
-}
-
-/* ─── Scroll reveal ─── */
-const revealObs = new IntersectionObserver((entries) => {
-  entries.forEach((en, i) => {
-    if (en.isIntersecting) {
-      const delay = parseFloat(en.target.style.transitionDelay) || 0;
-      setTimeout(() => en.target.classList.add('visible'), delay * 1000 + i * 40);
-      revealObs.unobserve(en.target);
-    }
-  });
-}, { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
-
-/* ─── Hero entrance ─── */
-if (!prefersReduced) {
-  gsap.timeline({ delay: 0.25 })
-    .to('#hero-eyebrow',  { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' })
-    .to('#hero-headline', { opacity: 1, y: 0, duration: 0.85, ease: 'power3.out' }, '-=0.35')
-    .to('#hero-sub',      { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' }, '-=0.5')
-    .to('#hero-actions',  { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' }, '-=0.35');
-} else {
-  ['#hero-eyebrow','#hero-headline','#hero-sub','#hero-actions'].forEach(sel => {
-    const el = document.querySelector(sel);
-    if (el) { el.style.opacity = '1'; el.style.transform = 'none'; }
-  });
-}
-
-/* ─────────────────────────────────────────
-   THREE.JS SCENE
-───────────────────────────────────────── */
-(function() {
-  const canvas    = document.getElementById('webgl-canvas');
-  const isMobile  = window.innerWidth < 768;
-  const N         = isMobile ? 45 : 80;  // node count
-  const P         = isMobile ? 80 : 180; // particle count
-
-  let renderer, scene, camera;
-  let sphere, nodesMesh, particlesMesh;
-  let holUniforms;
-  const lineMeshes  = [];
-  const clock       = new THREE.Clock();
-  const dummy       = new THREE.Object3D();
-  const scrollProg  = { v: 0 };
-
-  // ── Pre-compute node positions for 4 states ──
-  const posRadial  = new Float32Array(N * 3);
-  const posLinear  = new Float32Array(N * 3);
-  const posScatter = new Float32Array(N * 3);
-  const posRing    = new Float32Array(N * 3);
-  const posCurrent = new Float32Array(N * 3);
-
-  (function precompute() {
-    const phi = Math.PI * (3 - Math.sqrt(5));
-    for (let i = 0; i < N; i++) {
-      const t = i / N;
-      // Radial — fibonacci sphere
-      const y  = 1 - t * 2;
-      const r  = Math.sqrt(1 - y * y);
-      const th = phi * i;
-      const R  = 2.6 + (Math.random() - 0.5) * 0.6;
-      posRadial[i*3]   = r * Math.cos(th) * R;
-      posRadial[i*3+1] = y * R;
-      posRadial[i*3+2] = r * Math.sin(th) * R;
-
-      // Linear — 3-column grid
-      const col = i % 3;
-      const row = Math.floor(i / 3);
-      posLinear[i*3]   = (col - 1) * 2.8 + (Math.random() - 0.5) * 0.35;
-      posLinear[i*3+1] = 1.6 - row * 0.52 + (Math.random() - 0.5) * 0.1;
-      posLinear[i*3+2] = -0.4 + Math.random() * 0.5;
-
-      // Scatter — deep background
-      posScatter[i*3]   = (Math.random() - 0.5) * 9;
-      posScatter[i*3+1] = (Math.random() - 0.5) * 6;
-      posScatter[i*3+2] = -3 - Math.random() * 6;
-
-      // Ring
-      const angle = (i / N) * Math.PI * 2;
-      const rr    = 2.5 + Math.sin(i * 0.7) * 0.35;
-      posRing[i*3]   = Math.cos(angle) * rr;
-      posRing[i*3+1] = Math.sin(angle * 0.5) * 0.45;
-      posRing[i*3+2] = Math.sin(angle) * rr;
-
-      // Start current at radial
-      posCurrent[i*3]   = posRadial[i*3];
-      posCurrent[i*3+1] = posRadial[i*3+1];
-      posCurrent[i*3+2] = posRadial[i*3+2];
-    }
-  })();
-
-  // ── WebGL init ──
-  try {
-    renderer = new THREE.WebGLRenderer({
-      canvas, antialias: !isMobile, alpha: true, powerPreference: 'high-performance'
-    });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1 : 2));
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0, 0);
-  } catch (e) {
-    document.body.classList.add('no-webgl');
-    return;
-  }
-
-  // ── Scene ──
-  scene  = new THREE.Scene();
-  camera = new THREE.PerspectiveCamera(52, window.innerWidth / window.innerHeight, 0.1, 100);
-  camera.position.set(0, 0.5, 6.5);
-
-  // ── Holographic sphere shader ──
-  const holVert = `
-    varying vec3 vNormal;
-    varying vec3 vViewPos;
-    varying vec2 vUv;
-    void main(){
-      vNormal  = normalize(normalMatrix * normal);
-      vViewPos = (modelViewMatrix * vec4(position,1.0)).xyz;
-      vUv      = uv;
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
-    }
-  `;
-  const holFrag = `
-    uniform float uTime;
-    uniform vec3  uColor;
-    uniform float uBrightness;
-    varying vec3  vNormal;
-    varying vec3  vViewPos;
-    varying vec2  vUv;
-
-    void main(){
-      vec3 viewDir = normalize(vViewPos);
-      float fres = pow(1.0 - max(dot(vNormal, -viewDir), 0.0), 2.8);
-
-      // Horizontal scanlines
-      float scan = pow(sin(vUv.y * 480.0 - uTime * 2.2) * 0.5 + 0.5, 3.0) * 0.45;
-
-      // Vertical signal ripple
-      float ripple = sin(vUv.x * 12.0 + uTime * 0.6) * 0.04 + 1.0;
-
-      // Flicker
-      float flicker = sin(uTime * 5.3) * 0.025 + sin(uTime * 13.7) * 0.012 + 1.0;
-
-      float alpha = (fres * 0.9 + scan * 0.5) * uBrightness * flicker * ripple;
-      gl_FragColor = vec4(uColor * uBrightness * flicker, clamp(alpha, 0.0, 0.92));
-    }
-  `;
-  holUniforms = {
-    uTime:       { value: 0.0 },
-    uColor:      { value: new THREE.Color('#C0C8D8') },
-    uBrightness: { value: 1.5 },
-  };
-  const holMat = new THREE.ShaderMaterial({
-    vertexShader: holVert, fragmentShader: holFrag,
-    uniforms: holUniforms, transparent: true,
-    side: THREE.DoubleSide, depthWrite: false,
-  });
-  sphere = new THREE.Mesh(new THREE.IcosahedronGeometry(0.88, 6), holMat);
-  scene.add(sphere);
-
-  // ── Node InstancedMesh (1 draw call) ──
-  const nodeMat = new THREE.MeshBasicMaterial({ color: 0xE8A83E, transparent: true, opacity: 0.88 });
-  nodesMesh = new THREE.InstancedMesh(new THREE.SphereGeometry(0.04, 6, 6), nodeMat, N);
-  nodesMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
-  for (let i = 0; i < N; i++) {
-    dummy.position.set(posRadial[i*3], posRadial[i*3+1], posRadial[i*3+2]);
-    dummy.updateMatrix();
-    nodesMesh.setMatrixAt(i, dummy.matrix);
-  }
-  nodesMesh.instanceMatrix.needsUpdate = true;
-  scene.add(nodesMesh);
-
-  // ── Connection lines ──
-  const lineMat = new THREE.MeshBasicMaterial({ color: 0xE8A83E, transparent: true, opacity: 0.11 });
-  for (let i = 0; i < N; i++) {
-    const s = new THREE.Vector3(0,0,0);
-    const e = new THREE.Vector3(posRadial[i*3], posRadial[i*3+1], posRadial[i*3+2]);
-    const tube = new THREE.TubeGeometry(new THREE.LineCurve3(s,e), 1, 0.0025, 3, false);
-    const m = new THREE.Mesh(tube, lineMat.clone());
-    scene.add(m);
-    lineMeshes.push(m);
-  }
-
-  // ── Particle drift InstancedMesh ──
-  const pMat = new THREE.MeshBasicMaterial({ color: 0xE8A83E, transparent: true, opacity: 0 });
-  particlesMesh = new THREE.InstancedMesh(new THREE.SphereGeometry(0.016, 4, 4), pMat, P);
-  particlesMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
-  for (let i = 0; i < P; i++) {
-    dummy.position.set(
-      (Math.random() - 0.5) * 12,
-      (Math.random() - 0.5) * 9,
-      (Math.random() - 0.5) * 5 - 2
-    );
-    dummy.scale.setScalar(Math.random() * 0.7 + 0.3);
-    dummy.updateMatrix();
-    particlesMesh.setMatrixAt(i, dummy.matrix);
-  }
-  particlesMesh.instanceMatrix.needsUpdate = true;
-  scene.add(particlesMesh);
-
-  // Subtle ambient
-  scene.add(new THREE.AmbientLight(0xffffff, 0.35));
-  const dLight = new THREE.DirectionalLight(0xC0C8D8, 0.7);
-  dLight.position.set(3, 5, 2);
-  scene.add(dLight);
-
-  // ── GSAP scroll timeline ──
-  if (!prefersReduced) {
-    gsap.timeline({
-      scrollTrigger: {
-        trigger: '#scroll-container',
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: 2.0,
-        onUpdate: self => { scrollProg.v = self.progress; }
-      }
-    })
-    .to(camera.position, { z: 5, y: 0.3, duration: 1 }, 0)
-    .to(camera.position, { z: 5.5, y: 1.8, duration: 1 }, 1)
-    .to(camera.position, { z: 9, y: 0.8, duration: 1 }, 2)
-    .to(sphere.scale,    { x: 0.42, y: 0.42, z: 0.42, duration: 1 }, 1)
-    .to(sphere.scale,    { x: 0.7, y: 0.7, z: 0.7, duration: 1 }, 2)
-    .to(holUniforms.uBrightness, { value: 2.5, duration: 0.5 }, 2.6);
-  }
-
-  // ── Node lerp helper ──
-  function lerpNodes(target, alpha) {
-    const a = Math.min(alpha, 1);
-    for (let i = 0; i < N; i++) {
-      const ix = i*3;
-      posCurrent[ix]   += (target[ix]   - posCurrent[ix])   * a;
-      posCurrent[ix+1] += (target[ix+1] - posCurrent[ix+1]) * a;
-      posCurrent[ix+2] += (target[ix+2] - posCurrent[ix+2]) * a;
-      dummy.position.set(posCurrent[ix], posCurrent[ix+1], posCurrent[ix+2]);
-      dummy.updateMatrix();
-      nodesMesh.setMatrixAt(i, dummy.matrix);
-    }
-    nodesMesh.instanceMatrix.needsUpdate = true;
-  }
-
-  // ── Render loop ──
-  let frameId;
-  function animate() {
-    frameId = requestAnimationFrame(animate);
-    const t = clock.getElapsedTime();
-    const p = scrollProg.v;
-
-    holUniforms.uTime.value = t;
-
-    // Sphere slow rotation
-    sphere.rotation.y = t * 0.16;
-    sphere.rotation.x = Math.sin(t * 0.08) * 0.1;
-
-    // Node state transitions
-    const LERP = 0.055;
-    if      (p < 0.28) lerpNodes(posRadial,  LERP);
-    else if (p < 0.55) lerpNodes(posLinear,  LERP);
-    else if (p < 0.78) lerpNodes(posScatter, LERP);
-    else               lerpNodes(posRing,    LERP);
-
-    // Update line geometries (cheaply)
-    const lineOpacity = p < 0.55 ? 0.11 : Math.max(0, 0.11 * (1 - (p - 0.55) * 4));
-    for (let i = 0; i < N; i++) {
-      const lm = lineMeshes[i];
-      lm.material.opacity = lineOpacity;
-      if (lineOpacity > 0.003) {
-        lm.geometry.dispose();
-        const e = new THREE.Vector3(posCurrent[i*3], posCurrent[i*3+1], posCurrent[i*3+2]);
-        lm.geometry = new THREE.TubeGeometry(
-          new THREE.LineCurve3(new THREE.Vector3(0,0,0), e), 1, 0.0025, 3, false
-        );
-      }
-    }
-
-    // Particles visible in scatter phase
-    const pOp = (p > 0.5 && p < 0.85) ? Math.min(1,(p-0.5)/0.2) * 0.25 : 0;
-    particlesMesh.material.opacity = pOp;
-    if (pOp > 0.005) {
-      for (let i = 0; i < P; i++) {
-        particlesMesh.getMatrixAt(i, dummy.matrix);
-        dummy.matrix.decompose(dummy.position, dummy.quaternion, dummy.scale);
-        dummy.position.y += 0.004;
-        if (dummy.position.y > 5.5) dummy.position.y = -4.5;
-        dummy.updateMatrix();
-        particlesMesh.setMatrixAt(i, dummy.matrix);
-      }
-      particlesMesh.instanceMatrix.needsUpdate = true;
-    }
-
-    renderer.render(scene, camera);
-  }
-
-  animate();
-
-  window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  });
-})();
 </script>
-
+</div><!-- end #scroll-container -->
 </body>
 </html>
