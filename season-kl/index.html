@@ -906,7 +906,11 @@ footer{
 
       // Build wa.me deeplink addressed to the guest's own number
       const cleaned = (whatsapp || '').replace(/\D/g, '');
-      const num = cleaned.startsWith('60') ? cleaned : '60' + cleaned.replace(/^0/, '');
+      // Only apply Malaysian prefix logic for numbers that look Malaysian (start with 0 or 60)
+      let num;
+      if (cleaned.startsWith('60'))      num = cleaned;
+      else if (cleaned.startsWith('0'))  num = '60' + cleaned.slice(1);
+      else                               num = cleaned; // international — use as-is
       const msg = encodeURIComponent(
         `🌸 My Season KL First Visit Pass\n\nPass Code: ${passId}\n\nShow this at the door on any Friday or Saturday at TREC KL.\n\nWhat I get:\n✦ Bloom Potion welcome cocktail\n✦ Polaroid "My First Season" moment\n✦ Season Token (collectible)\n\nValid: July – September 2026 · TREC KL\n\nSee you at Season 🌸`
       );
@@ -931,6 +935,11 @@ footer{
     const instagram = document.getElementById('instagram').value.trim();
     const source    = document.getElementById('source').value.trim();
 
+    // Generate a client-side pass ID as fallback — server will override with its own
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let localPassId = 'SKL-';
+    for (let i = 0; i < 6; i++) localPassId += chars[Math.floor(Math.random() * chars.length)];
+
     let passId = null;
     try {
       /* 1 — call edge function to issue pass + sync to Notion (CRM + Pass Tracker) */
@@ -948,8 +957,9 @@ footer{
         try { passId = (await res.json()).pass_id || null; } catch(_) {}
       }
 
-      /* Fallback: if edge function not yet deployed, save directly to table */
+      /* Fallback: save directly to table with client-generated pass ID */
       if(!res.ok){
+        passId = localPassId;
         await fetch(`${SUPABASE_URL}/rest/v1/season_passes`, {
           method: 'POST',
           headers: {
@@ -959,6 +969,7 @@ footer{
             'Prefer': 'return=minimal',
           },
           body: JSON.stringify({
+            pass_id: passId,
             guest_name: name,
             whatsapp,
             instagram_handle: instagram,
