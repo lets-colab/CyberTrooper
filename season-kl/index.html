@@ -7,7 +7,7 @@
 <meta name="description" content="KL's most intentional nightlife experience. Claim your First Visit Pass and enter the Season family." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
@@ -57,9 +57,11 @@ nav{
   backdrop-filter:blur(2px);
 }
 .nav-logo{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.4rem;font-weight:500;letter-spacing:.12em;
-  color:var(--gold);text-decoration:none;
+  display:inline-flex;align-items:center;text-decoration:none;
+}
+.nav-logo img{
+  height:28px;width:auto;
+  filter: brightness(1.05);
 }
 .nav-cta{
   font-size:.72rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;
@@ -90,9 +92,9 @@ nav{
   position:relative;z-index:2;
 }
 .hero-title{
-  font-family:'Cormorant Garamond',serif;
+  font-family:'Bodoni Moda',serif;
   font-size:clamp(3.5rem,10vw,8rem);
-  font-weight:300;line-height:.95;letter-spacing:-.02em;
+  font-weight:400;line-height:.95;letter-spacing:-.03em;
   position:relative;z-index:2;
   background:linear-gradient(145deg,#fff 0%,var(--gold-light) 40%,var(--bloom) 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
@@ -150,10 +152,25 @@ nav{
   font-size:.62rem;letter-spacing:.35em;text-transform:uppercase;
   color:var(--gold);opacity:.7;margin-bottom:16px;display:block;
 }
+/* ✦ logo star motif — used as section divider */
+.star-divider{
+  display:flex;align-items:center;gap:16px;margin:48px 0 40px;
+}
+.star-divider::before,.star-divider::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(to right,transparent,rgba(201,160,90,.35),transparent);
+}
+.star-divider-glyph{
+  font-size:1rem;color:var(--gold);opacity:.7;
+  font-family:'Bodoni Moda',serif;
+  animation:starSpin 8s linear infinite;
+  display:inline-block;
+}
+@keyframes starSpin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
 .section-title{
-  font-family:'Cormorant Garamond',serif;
+  font-family:'Bodoni Moda',serif;
   font-size:clamp(2rem,5vw,3.5rem);
-  font-weight:400;line-height:1.1;
+  font-weight:400;line-height:1.1;letter-spacing:-.02em;
 }
 .section-sub{
   font-size:1rem;color:var(--muted);max-width:540px;
@@ -186,8 +203,8 @@ nav{
   opacity:.6;margin-bottom:12px;position:relative;z-index:1;
 }
 .theme-name{
-  font-family:'Cormorant Garamond',serif;
-  font-size:2.8rem;font-weight:300;letter-spacing:.05em;
+  font-family:'Bodoni Moda',serif;
+  font-size:2.8rem;font-weight:400;letter-spacing:-.02em;
   position:relative;z-index:1;line-height:1;
 }
 .theme-bloom .theme-name{color:var(--bloom)}
@@ -223,17 +240,17 @@ nav{
   background:radial-gradient(circle,rgba(201,160,90,.12),transparent 70%);
 }
 .pass-card-label{
-  font-family:'Cormorant Garamond',serif;
+  font-family:'DM Mono',monospace;
   font-size:.7rem;letter-spacing:.4em;text-transform:uppercase;
   color:var(--gold);margin-bottom:24px;display:block;opacity:.8;
 }
 .pass-card-title{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.8rem;font-weight:400;line-height:1.2;
+  font-family:'Bodoni Moda',serif;
+  font-size:1.8rem;font-weight:400;line-height:1.2;letter-spacing:-.02em;
   margin-bottom:8px;
 }
 .pass-card-tagline{
-  font-family:'Cormorant Garamond',serif;
+  font-family:'Bodoni Moda',serif;
   font-size:1rem;font-style:italic;color:var(--bloom);
   margin-bottom:32px;
 }
@@ -252,9 +269,9 @@ nav{
   border-radius:12px;padding:20px;text-align:center;
 }
 .stat-num{
-  font-family:'Cormorant Garamond',serif;
-  font-size:2.2rem;font-weight:300;color:var(--gold);
-  line-height:1;
+  font-family:'Bodoni Moda',serif;
+  font-size:2.2rem;font-weight:400;color:var(--gold);
+  line-height:1;letter-spacing:-.02em;
 }
 .stat-label{font-size:.65rem;color:var(--muted);letter-spacing:.15em;text-transform:uppercase;margin-top:4px}
 
@@ -413,9 +430,11 @@ footer{
   position:relative;z-index:2;
 }
 .footer-logo{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.6rem;font-weight:300;letter-spacing:.15em;
-  color:var(--gold);margin-bottom:8px;
+  margin-bottom:12px;
+  display:flex;justify-content:center;
+}
+.footer-logo img{
+  height:36px;width:auto;
 }
 .footer-sub{font-size:.72rem;color:var(--muted);letter-spacing:.1em;margin-bottom:24px}
 .footer-links{display:flex;justify-content:center;gap:32px;flex-wrap:wrap}
@@ -453,14 +472,14 @@ footer{
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">Season KL</a>
+  <a href="#" class="nav-logo"><img src="season-logo.svg" alt="Season KL" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span style=\'font-family:Georgia,serif;letter-spacing:.12em;font-size:1.2rem;color:#F5EDD6\'>SEASON KL</span>')"></a>
   <a href="#claim" class="nav-cta">Claim Your Pass</a>
 </nav>
 
 <!-- ══ HERO ══ -->
 <section class="hero">
   <div class="hero-bg"></div>
-  <div class="hero-eyebrow">Kuala Lumpur · Est. 2026</div>
+  <div class="hero-eyebrow">Kuala Lumpur ✦ Est. 2026</div>
   <h1 class="hero-title">You've Been<br>Invited to Bloom</h1>
   <p class="hero-sub">KL's most intentional nightlife experience</p>
   <div class="hero-divider"></div>
@@ -479,20 +498,9 @@ footer{
 <!-- ══ COMMUNITY PROOF ══ -->
 <section class="section" style="padding-top:60px;padding-bottom:60px">
   <div class="section-inner">
-    <div class="proof-grid reveal">
-      <div class="proof-card">
-        <div class="proof-num">300</div>
-        <div class="proof-label">PAX target every Friday & Saturday by September 2026</div>
-      </div>
-      <div class="proof-card">
-        <div class="proof-num">3</div>
-        <div class="proof-label">Themed chapters — Bloom, Pulse & Glow — July through September</div>
-      </div>
-      <div class="proof-card">
-        <div class="proof-num">7</div>
-        <div class="proof-label">Crowd streams running simultaneously every night</div>
-      </div>
-    </div>
+    <div class="star-divider"><span class="star-divider-glyph">✦</span></div>
+    <p class="reveal" style="text-align:center;font-family:'Bodoni Moda',serif;font-size:1.5rem;font-style:italic;color:var(--muted);letter-spacing:-.01em;">3 Chapters. 3 Months. Every Friday &amp; Saturday.</p>
+    <div class="star-divider" style="margin-top:48px;margin-bottom:0"><span class="star-divider-glyph">✦</span></div>
   </div>
 </section>
 
@@ -548,24 +556,6 @@ footer{
         <span class="section-label">The Pass</span>
         <h2 class="section-title">Your First Visit Pass</h2>
         <p class="section-sub">A trackable experience designed to spread. Every pass is unique. Every pass has a story.</p>
-        <div class="pass-stats" style="margin-top:32px">
-          <div class="stat-box">
-            <div class="stat-num">40–60%</div>
-            <div class="stat-label">Redemption Rate Target</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-num">30%</div>
-            <div class="stat-label">Repeat Visit Conversion</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-num">2K+</div>
-            <div class="stat-label">Reach per shared pass</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-num">1</div>
-            <div class="stat-label">Unique QR per guest</div>
-          </div>
-        </div>
       </div>
       <div class="pass-card reveal">
         <span class="pass-card-label">Season KL · First Visit Pass</span>
@@ -751,7 +741,7 @@ footer{
 
         <div class="pass-code" id="passCode" style="display:none">
           <span class="pass-code-label">Your First Visit Pass</span>
-          <span class="pass-code-value" id="passCodeValue">SKL-------</span>
+          <span class="pass-code-value" id="passCodeValue"></span>
           <span class="pass-code-hint">Show this at the door · TREC KL</span>
         </div>
 
@@ -780,7 +770,7 @@ footer{
         <div id="noPassNote" style="display:none;margin-top:20px">
           <p style="font-size:.8rem;color:var(--muted);line-height:1.7;text-align:center">
             Your pass is confirmed — we'll WhatsApp you shortly.<br>
-            <a href="https://wa.me/8801797068588?text=Hi%20Season%20KL%20%F0%9F%8C%B8%20I%20just%20signed%20up%20for%20my%20First%20Visit%20Pass%20but%20didn%27t%20receive%20a%20pass%20code.%20Can%20you%20help%3F" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:underline">
+            <a href="https://wa.me/601797068588?text=Hi%20Season%20KL%20%F0%9F%8C%B8%20I%20just%20signed%20up%20for%20my%20First%20Visit%20Pass%20but%20didn%27t%20receive%20a%20pass%20code.%20Can%20you%20help%3F" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:underline">
               Tap here to message us on WhatsApp
             </a>
           </p>
@@ -792,7 +782,7 @@ footer{
 
 <!-- ══ FOOTER ══ -->
 <footer>
-  <div class="footer-logo">Season KL</div>
+  <div class="footer-logo"><img src="season-logo.svg" alt="Season KL" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span style=\'font-family:Georgia,serif;letter-spacing:.12em;font-size:1.2rem;color:#F5EDD6\'>SEASON KL</span>')"></div>
   <div class="footer-sub">Every Friday & Saturday · TREC KL</div>
   <div class="footer-links">
     <a href="#pass">First Visit Pass</a>
