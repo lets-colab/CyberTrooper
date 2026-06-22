@@ -1177,6 +1177,10 @@ footer {
   .btn-next { order: 1; }
 }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
 </head>
 <body>
 
@@ -1209,6 +1213,7 @@ footer {
 
 <!-- HERO -->
 <section class="hero">
+  <canvas id="hero-canvas" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;touch-action:none;pointer-events:none;"></canvas>
   <div class="hero-mesh" aria-hidden="true"></div>
   <div class="hero-overlay" aria-hidden="true"></div>
   <div class="hero-particles" aria-hidden="true" id="hero-particles"></div>
@@ -1875,6 +1880,121 @@ document.getElementById('success-overlay').addEventListener('click', function (e
     document.body.style.overflow = '';
   }
 });
+// Lenis smooth scroll (desktop only)
+if(!('ontouchstart' in window) && typeof Lenis !== 'undefined'){
+  new Lenis({ autoRaf: true, lerp: 0.1 });
+}
+
+// Three.js green particle constellation
+(function(){
+  if(typeof THREE === 'undefined') return;
+  const canvas = document.getElementById('hero-canvas');
+  if(!canvas) return;
+  const PARTICLE_COUNT = window.innerWidth < 768 ? 50 : 90;
+  const particles = [];
+  const mouse = { x: 0, y: 0 };
+  const dummy = new THREE.Object3D();
+  let W, H, scene, camera, renderer, chromeInst, goldInst, mochaInst, lineSegs, lineBuf;
+
+  function build(){
+    W = canvas.offsetWidth || window.innerWidth;
+    H = canvas.offsetHeight || window.innerHeight;
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(50, W/H, 0.1, 100);
+    camera.position.z = 5;
+    renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(W, H);
+    renderer.setClearColor(0x000000, 0);
+
+    const nodeSph = new THREE.SphereGeometry(0.035, 6, 6);
+    const chromeMat = new THREE.MeshBasicMaterial({ color: new THREE.Color(0.133, 0.773, 0.373) });
+    chromeInst = new THREE.InstancedMesh(nodeSph, chromeMat, PARTICLE_COUNT);
+    chromeInst.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+    scene.add(chromeInst);
+    const goldMat = new THREE.MeshBasicMaterial({ color: new THREE.Color(0.294, 0.867, 0.502) });
+    goldInst = new THREE.InstancedMesh(nodeSph, goldMat, 3);
+    goldInst.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+    scene.add(goldInst);
+    const mochaMat = new THREE.MeshBasicMaterial({ color: new THREE.Color(0.525, 0.937, 0.675) });
+    mochaInst = new THREE.InstancedMesh(nodeSph, mochaMat, 5);
+    mochaInst.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+    scene.add(mochaInst);
+
+    const maxLines = PARTICLE_COUNT * 4;
+    lineBuf = new THREE.BufferGeometry();
+    const posArr = new Float32Array(maxLines * 2 * 3);
+    const colArr = new Float32Array(maxLines * 2 * 3);
+    lineBuf.setAttribute('position', new THREE.BufferAttribute(posArr, 3));
+    lineBuf.setAttribute('color', new THREE.BufferAttribute(colArr, 3));
+    lineBuf.setDrawRange(0, 0);
+    lineSegs = new THREE.LineSegments(lineBuf, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.35 }));
+    scene.add(lineSegs);
+
+    for(let i = 0; i < PARTICLE_COUNT; i++){
+      const t = Math.random() < 0.05 ? 'gold' : Math.random() < 0.08 ? 'mocha' : 'chrome';
+      particles.push({ x:(Math.random()-.5)*8, y:(Math.random()-.5)*5, z:(Math.random()-.5)*2,
+        vx:(Math.random()-.5)*.004, vy:(Math.random()-.5)*.004, vz:(Math.random()-.5)*.002, type:t });
+    }
+  }
+
+  function frame(){
+    requestAnimationFrame(frame);
+    const mx = mouse.x*4, my = mouse.y*2.5;
+    let gi=0, mi=0;
+    for(let i=0;i<particles.length;i++){
+      const p=particles[i];
+      const dx=mx-p.x, dy=my-p.y, d=Math.sqrt(dx*dx+dy*dy);
+      if(d<2){p.vx+=dx*.00015;p.vy+=dy*.00015;}
+      p.x+=p.vx;p.y+=p.vy;p.z+=p.vz;
+      p.vx*=.998;p.vy*=.998;p.vz*=.998;
+      if(p.x>4)p.x=-4;if(p.x<-4)p.x=4;
+      if(p.y>2.5)p.y=-2.5;if(p.y<-2.5)p.y=2.5;
+      if(Math.abs(p.z)>1)p.vz*=-1;
+      dummy.position.set(p.x,p.y,p.z);dummy.updateMatrix();
+      if(p.type==='gold'&&gi<3){goldInst.setMatrixAt(gi++,dummy.matrix);}
+      else if(p.type==='mocha'&&mi<5){mochaInst.setMatrixAt(mi++,dummy.matrix);}
+      else{chromeInst.setMatrixAt(i,dummy.matrix);}
+    }
+    chromeInst.instanceMatrix.needsUpdate=true;
+    goldInst.instanceMatrix.needsUpdate=true;
+    mochaInst.instanceMatrix.needsUpdate=true;
+
+    const pos=lineBuf.attributes.position.array, col=lineBuf.attributes.color.array;
+    let lv=0;
+    for(let i=0;i<particles.length&&lv<PARTICLE_COUNT*4-2;i++){
+      for(let j=i+1;j<particles.length&&lv<PARTICLE_COUNT*4-2;j++){
+        const p1=particles[i],p2=particles[j];
+        const dx=p1.x-p2.x,dy=p1.y-p2.y,dz=p1.z-p2.z;
+        const d=Math.sqrt(dx*dx+dy*dy+dz*dz);
+        if(d<1.5){
+          const b=lv*6;
+          pos[b]=p1.x;pos[b+1]=p1.y;pos[b+2]=p1.z;
+          pos[b+3]=p2.x;pos[b+4]=p2.y;pos[b+5]=p2.z;
+          col[b]=.133;col[b+1]=.773;col[b+2]=.373;
+          col[b+3]=.294;col[b+4]=.867;col[b+5]=.502;
+          lv+=2;
+        }
+      }
+    }
+    lineBuf.setDrawRange(0,lv);
+    lineBuf.attributes.position.needsUpdate=true;
+    lineBuf.attributes.color.needsUpdate=true;
+    renderer.render(scene,camera);
+  }
+
+  window.addEventListener('resize',()=>{
+    W=canvas.offsetWidth||window.innerWidth;H=canvas.offsetHeight||window.innerHeight;
+    camera.aspect=W/H;camera.updateProjectionMatrix();renderer.setSize(W,H);
+  });
+  const heroSec=canvas.closest('section');
+  if(heroSec) heroSec.addEventListener('mousemove',e=>{
+    const r=canvas.getBoundingClientRect();
+    mouse.x=((e.clientX-r.left)/r.width)*2-1;
+    mouse.y=-((e.clientY-r.top)/r.height)*2+1;
+  });
+  requestAnimationFrame(()=>{build();frame();});
+})();
 </script>
 </body>
 </html>
