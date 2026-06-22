@@ -1,0 +1,2182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>CYBERTROOPER — KL's First Threads Creator Network</title>
+<meta name="description" content="We deploy real KL locals to post about your brand authentically on Threads. No bots. No scripts. Real people, real accounts, real engagement." />
+<meta property="og:title" content="CYBERTROOPER — KL's First Threads Creator Network" />
+<meta property="og:description" content="We deploy real KL locals to post about your brand on Threads. Real people. Real engagement. Monthly reports." />
+<meta property="og:type" content="website" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2306060E'/%3E%3Ctext x='3' y='24' font-family='Arial Black,sans-serif' font-weight='900' font-size='18' fill='%23E8A83E'%3ECT%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<!-- Three.js WebGL + GSAP ScrollTrigger + Lenis -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+<style>
+/* ── CSS HOUDINI — animated border property ── */
+@property --border-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #06060E;
+  --gold: #C9A05A;
+  --chrome: #C0C8D8;
+  --text: #F2F0EA;
+  /* Pantone Color of the Year 2025 — Mocha Mousse 17-1230 */
+  --mocha: #A07855;
+  /* Pantone Color of the Year 2026 — Cloud Dancer 11-4201 */
+  --cloud: #F0EDE6;
+  --gold-dim: rgba(201,160,90,0.12);
+  --gold-glow: rgba(201,160,90,0.22);
+  --border: rgba(192,200,216,0.1);
+  --section-pad: clamp(5rem,12vw,9rem) clamp(1.25rem,6vw,4.5rem);
+}
+
+html { scroll-behavior: smooth; overflow-x: hidden; }
+/* Lenis handles smooth scroll on desktop — native scroll on touch */
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 300;
+  line-height: 1.65;
+  overflow-x: hidden;
+  /* Ensure native scroll works on all devices */
+  -webkit-overflow-scrolling: touch;
+}
+
+#scroll-container {
+  overflow-x: clip;
+  max-width: 100%;
+}
+
+/* Noise grain overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.038;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Fine grid overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(192,200,216,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(192,200,216,0.025) 1px, transparent 1px);
+  background-size: 56px 56px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem clamp(1.25rem,5vw,4rem);
+  padding-top: max(1rem, env(safe-area-inset-top));
+  background: rgba(6,6,14,0.1);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  border-bottom: 1px solid transparent;
+  transition: background 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease;
+}
+nav.scrolled {
+  background: rgba(6,6,14,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom-color: var(--border);
+}
+
+/* Scroll progress bar */
+#scroll-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 0;
+  z-index: 200;
+  background: linear-gradient(to right, var(--mocha), var(--gold), var(--cloud));
+  pointer-events: none;
+}
+
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.8rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--chrome);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--text); }
+
+.nav-pill {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--gold);
+  border: none;
+  padding: 0.45rem 1.1rem;
+  border-radius: 999px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.2s;
+  display: inline-block;
+}
+.nav-pill:hover { opacity: 0.85; }
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 101;
+}
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: transform 0.25s, opacity 0.25s;
+}
+.hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile drawer */
+.nav-drawer {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: rgba(6,6,14,0.97);
+  padding: 5.5rem 2rem 2rem;
+  flex-direction: column;
+  gap: 0;
+}
+.nav-drawer.open { display: flex; }
+.nav-drawer a {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.4rem;
+  letter-spacing: 0.05em;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 0;
+  transition: color 0.2s;
+  display: block;
+}
+.nav-drawer a:hover { color: var(--gold); }
+.nav-drawer .drawer-cta {
+  display: inline-block;
+  margin-top: 1.5rem;
+  color: var(--bg);
+  background: var(--gold);
+  padding: 0.8rem 1.8rem;
+  border-radius: 999px;
+  font-size: 1.5rem;
+  border: none;
+}
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+}
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--section-pad);
+  padding-top: calc(clamp(4rem,10vw,7rem) + 80px);
+  overflow: hidden;
+  z-index: 1;
+}
+
+.hero-glow {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(1000px, 160vw);
+  height: min(700px, 130vw);
+  background: radial-gradient(ellipse at center,
+    rgba(232,168,62,0.16) 0%,
+    rgba(232,168,62,0.05) 45%,
+    transparent 72%);
+  border-radius: 50%;
+  animation: glowPulse 7s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.65; transform: translate(-50%,-50%) scale(1); }
+  50%       { opacity: 1;    transform: translate(-50%,-50%) scale(1.07); }
+}
+
+.hero-content { position: relative; z-index: 1; max-width: 920px; }
+
+/* ── WORD REVEAL ── */
+.word-wrap {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  line-height: 0.92;
+}
+.word {
+  display: inline-block;
+  transform: translateY(110%);
+  opacity: 0;
+  animation: wordReveal 0.9s cubic-bezier(0.16,1,0.3,1) forwards;
+  animation-delay: var(--wd, 0s);
+}
+@keyframes wordReveal {
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* ── SCROLL HINT ── */
+.scroll-hint {
+  position: absolute;
+  bottom: 2.8rem;
+  left: clamp(1.25rem,6vw,4.5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.55rem;
+  z-index: 2;
+  pointer-events: none;
+}
+.scroll-hint span {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(192,200,216,0.4);
+  writing-mode: horizontal-tb;
+}
+.scroll-line {
+  width: 1px;
+  height: 44px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  transform-origin: top;
+  animation: scrollDrop 2s ease-in-out infinite;
+}
+@keyframes scrollDrop {
+  0%   { transform: scaleY(0); opacity: 1; }
+  50%  { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(1); opacity: 0; }
+}
+
+/* ── SOCIAL PROOF BAR ── */
+.proof-bar {
+  position: relative;
+  z-index: 1;
+  background: rgba(232,168,62,0.04);
+  border-top: 1px solid rgba(232,168,62,0.12);
+  border-bottom: 1px solid rgba(232,168,62,0.12);
+  padding: 0.95rem clamp(1.25rem,6vw,4.5rem);
+  overflow: hidden;
+}
+.proof-bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(160,120,85,0.06), transparent);
+  animation: proofShimmer 4s ease-in-out infinite;
+}
+@keyframes proofShimmer {
+  0%, 100% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+}
+.proof-inner {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.proof-item {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  color: rgba(192,200,216,0.65);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.proof-item strong {
+  color: var(--gold);
+  font-weight: 500;
+}
+.proof-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--mocha);
+  opacity: 0.7;
+}
+
+/* ── CUSTOM CURSOR ── */
+#ct-cursor {
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 10000;
+  mix-blend-mode: normal;
+}
+.cursor-ring {
+  position: absolute;
+  width: 36px; height: 36px;
+  border: 1.5px solid rgba(232,168,62,0.5);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.12s ease, width 0.2s ease, height 0.2s ease, border-color 0.2s;
+}
+.cursor-dot {
+  position: absolute;
+  width: 5px; height: 5px;
+  background: var(--gold);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.05s linear;
+}
+body.cursor-hover .cursor-ring {
+  width: 52px; height: 52px;
+  border-color: rgba(160,120,85,0.9);
+}
+
+/* ── ANIMATED BORDER — featured tier card (Mocha Mousse + Gold) ── */
+.tier-card.featured {
+  --border-angle: 0deg;
+  background:
+    linear-gradient(rgba(6,6,14,0.95), rgba(6,6,14,0.9)) padding-box,
+    conic-gradient(from var(--border-angle),
+      rgba(160,120,85,0) 0deg,
+      var(--mocha) 40deg,
+      var(--gold) 80deg,
+      rgba(232,168,62,0) 120deg,
+      rgba(160,120,85,0) 240deg,
+      var(--gold) 280deg,
+      var(--mocha) 320deg,
+      rgba(160,120,85,0) 360deg
+    ) border-box;
+  border: 1.5px solid transparent;
+  animation: spinBorder 4s linear infinite;
+  box-shadow: 0 0 48px rgba(160,120,85,0.12), 0 0 2px rgba(232,168,62,0.08);
+}
+@keyframes spinBorder {
+  to { --border-angle: 360deg; }
+}
+
+/* ── NUMBER COUNTER ── */
+.stat-num[data-target] { display: block; }
+
+.eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(0.62rem, 1.1vw, 0.78rem);
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+  opacity: 0.9;
+}
+
+.hero h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(72px, 14vw, 180px);
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  color: var(--cloud);
+  margin-bottom: 1.8rem;
+}
+
+.hero-sub {
+  font-size: clamp(1rem, 1.7vw, 1.2rem);
+  font-weight: 300;
+  color: var(--chrome);
+  max-width: 560px;
+  margin-bottom: 2.8rem;
+  line-height: 1.75;
+}
+
+.cta-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-gold {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.76rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--gold);
+  border: none;
+  padding: 0.9rem 2.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.2s, transform 0.15s;
+  display: inline-block;
+}
+.btn-gold:hover { opacity: 0.85; transform: translateY(-1px); }
+
+.btn-ghost {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.76rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid rgba(242,240,234,0.28);
+  padding: 0.9rem 2.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color 0.2s, transform 0.15s;
+  display: inline-block;
+}
+.btn-ghost:hover { border-color: var(--text); transform: translateY(-1px); }
+
+/* ── SECTIONS ── */
+section { padding: var(--section-pad); position: relative; z-index: 1; }
+.section-inner { max-width: 1100px; margin: 0 auto; }
+
+.section-heading {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.8rem, 6.5vw, 5.5rem);
+  letter-spacing: 0.03em;
+  line-height: 1;
+  color: var(--cloud);
+  margin-bottom: 2.5rem;
+}
+
+/* ── HOW IT WORKS ── */
+#how {
+  background: rgba(160,120,85,0.025);
+  border-top: 1px solid rgba(160,120,85,0.2);
+  border-bottom: 1px solid rgba(160,120,85,0.2);
+}
+
+.steps { display: flex; flex-direction: column; }
+
+.step {
+  display: flex;
+  gap: 2rem;
+  padding: 2.5rem 0 2.5rem 2rem;
+  border-bottom: 1px solid var(--border);
+  border-left: 3px solid var(--mocha);
+  align-items: flex-start;
+}
+.step:nth-child(odd) { border-left-color: var(--gold); }
+.step:last-child { border-bottom: none; }
+
+.step-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--mocha);
+  letter-spacing: 0.1em;
+  min-width: 2rem;
+  padding-top: 0.25rem;
+}
+.step:nth-child(odd) .step-num { color: var(--gold); }
+
+.step-body h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.65rem;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.step-body p {
+  font-size: 1rem;
+  color: var(--chrome);
+  max-width: 580px;
+  line-height: 1.75;
+}
+
+/* ── WHY THREADS ── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.stat-card-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  display: block;
+  margin-bottom: 0.5rem;
+  line-height: 1;
+}
+
+.stat-card p {
+  font-size: clamp(0.92rem, 1.5vw, 1.05rem);
+  line-height: 1.65;
+  color: var(--chrome);
+}
+
+@media (max-width: 600px) {
+  .stat-grid { grid-template-columns: 1fr; }
+}
+
+/* ── TIERS ── */
+#tiers { border-top: 1px solid rgba(160,120,85,0.25); }
+
+.tiers-sub {
+  font-size: 1rem;
+  color: var(--chrome);
+  max-width: 520px;
+  margin-bottom: 3rem;
+  margin-top: -1.5rem;
+  line-height: 1.75;
+}
+
+.tiers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+}
+
+.tier-card.featured {
+  border-color: var(--gold);
+  background: rgba(232,168,62,0.05);
+  box-shadow: 0 0 48px rgba(232,168,62,0.1);
+}
+
+.tier-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--gold);
+  padding: 0.28rem 0.65rem;
+  border-radius: 999px;
+  display: inline-block;
+  align-self: flex-start;
+}
+
+.tier-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.4rem;
+  letter-spacing: 0.05em;
+  color: var(--text);
+  line-height: 1;
+}
+
+.tier-count {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+.tier-desc {
+  font-size: 0.95rem;
+  color: var(--chrome);
+  line-height: 1.65;
+  flex: 1;
+}
+
+.tier-rate {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: rgba(192,200,216,0.4);
+  text-transform: uppercase;
+  border-top: 1px solid var(--border);
+  padding-top: 0.9rem;
+}
+
+.tier-cta{
+  display:inline-block;padding:11px 26px;
+  border:1px solid var(--gold);color:var(--gold);
+  font-size:.72rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+  text-decoration:none;border-radius:100px;
+  transition:background .2s,color .2s;margin-top:20px;
+}
+.tier-cta:hover{background:var(--gold);color:var(--bg);}
+
+@media (max-width: 768px) {
+  .tiers-grid { grid-template-columns: 1fr; max-width: 480px; }
+}
+
+/* ── CONTACT ── */
+#contact { border-top: 1px solid var(--border); }
+
+.contact-sub {
+  font-size: 1rem;
+  color: var(--chrome);
+  margin-bottom: 2.5rem;
+  margin-top: -1.5rem;
+  line-height: 1.75;
+}
+
+form { display: grid; gap: 1rem; max-width: 640px; }
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.field { display: flex; flex-direction: column; gap: 0.4rem; }
+
+.field label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--chrome);
+}
+
+.field input,
+.field select,
+.field textarea {
+  font-size: 16px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 300;
+  color: var(--text);
+  background: rgba(255,255,255,0.035);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C0C8D8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-color: rgba(255,255,255,0.035);
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+.field input::placeholder,
+.field textarea::placeholder { color: rgba(192,200,216,0.3); }
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus { border-color: var(--mocha); }
+
+.field option { background: #0f0f1e; color: var(--text); }
+
+textarea { resize: vertical; min-height: 130px; }
+
+.form-success {
+  display: none;
+  background: rgba(160,120,85,0.07);
+  border: 1px solid rgba(160,120,85,0.4);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+.form-success.visible { display: block; }
+.form-success p {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 2.5rem clamp(1.25rem,5vw,4rem);
+  padding-bottom: max(2.5rem, calc(2.5rem + env(safe-area-inset-bottom)));
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+
+.footer-brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  display: block;
+  text-decoration: none;
+  margin-bottom: 0.25rem;
+}
+
+.footer-by {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  color: rgba(192,200,216,0.4);
+  text-transform: uppercase;
+}
+
+.footer-right { display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem; }
+
+.footer-right a {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--chrome);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-right a:hover { color: var(--gold); }
+
+.footer-copy {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  color: rgba(192,200,216,0.28);
+  text-transform: uppercase;
+}
+
+/* ── SCROLL PROGRESS BAR ── */
+#scroll-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: linear-gradient(to right, var(--mocha), var(--gold), var(--cloud));
+  z-index: 1001;
+  width: 0%;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 10px rgba(232,168,62,0.55), 0 0 3px rgba(160,120,85,0.7);
+  pointer-events: none;
+}
+
+/* ── HERO CANVAS ── */
+#hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── GLASSMORPHISM 2.0 stat cards ── */
+.stat-card {
+  background: rgba(6,6,14,0.45);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(192,200,216,0.13);
+  border-radius: 12px;
+  padding: 2rem 1.8rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+.stat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.032;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+.stat-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(160,120,85,0.05) 0%, transparent 60%);
+  pointer-events: none;
+}
+.stat-card:hover {
+  border-color: rgba(160,120,85,0.35);
+  box-shadow: 0 0 40px rgba(160,120,85,0.08), 0 8px 32px rgba(0,0,0,0.4);
+  transform: translateY(-3px);
+}
+
+/* ── 3D TILT CARDS ── */
+.tier-card {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2.2rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+  position: relative;
+  overflow: hidden;
+}
+.tier-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 60%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.tier-card:hover::before { opacity: 1; }
+
+/* ── SCROLL REVEAL ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.75s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── RECRUIT BANNER ── */
+#recruit {
+  border-top: 1px solid var(--border);
+  background: rgba(232,168,62,0.03);
+}
+.recruit-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+}
+.recruit-left {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  flex: 1;
+  min-width: 260px;
+}
+.recruit-accent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding-top: 0.3rem;
+}
+.recruit-accent-bar {
+  width: 3px;
+  height: 48px;
+  background: linear-gradient(to bottom, var(--gold), var(--mocha));
+  border-radius: 2px;
+}
+.recruit-accent-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--mocha);
+}
+.recruit-text h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.4rem, 5vw, 4.2rem);
+  letter-spacing: 0.03em;
+  line-height: 1;
+  color: var(--text);
+  margin-bottom: 0.6rem;
+}
+.recruit-text p {
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  color: var(--chrome);
+  line-height: 1.65;
+  max-width: 420px;
+}
+.recruit-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1.4rem;
+  flex-shrink: 0;
+}
+.recruit-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: flex-end;
+}
+.recruit-chip {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(232,168,62,0.3);
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+@media (max-width: 768px) {
+  .recruit-right { align-items: flex-start; }
+  .recruit-chips { justify-content: flex-start; }
+}
+
+/* ── ALICIA CHAT WIDGET ── */
+#alicia-widget {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  z-index: 9000;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+/* When the chat panel is open, get the floating launcher out of the way
+   so it can't overlap the input/send button and steal taps. */
+#alicia-widget.docked {
+  opacity: 0;
+  transform: translateY(12px) scale(0.85);
+  pointer-events: none;
+}
+#alicia-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.48rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(6,6,14,0.85);
+  border: 1px solid rgba(232,168,62,0.3);
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  white-space: nowrap;
+  animation: aliciaLabelPulse 3s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes aliciaLabelPulse {
+  0%,100% { opacity: 0.9; }
+  50% { opacity: 0.55; }
+}
+#alicia-btn {
+  position: relative;
+  width: 88px;
+  height: 100px;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: visible;
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.55)) drop-shadow(0 2px 24px rgba(232,168,62,0.45));
+  animation: aliciaFloat 4.5s ease-in-out infinite;
+  transition: transform 0.25s ease;
+}
+/* soft gold halo behind the cutout — sells the floating 3D look */
+#alicia-btn::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: 40%;
+  width: 76px; height: 76px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(232,168,62,0.55) 0%, rgba(232,168,62,0.14) 48%, transparent 72%);
+  border-radius: 50%;
+  z-index: -1;
+  animation: aliciaHalo 3s ease-in-out infinite;
+}
+#alicia-btn:hover { transform: scale(1.07) translateY(-3px); }
+#alicia-btn img {
+  width: 100%; height: 100%;
+  border-radius: 0;
+  object-fit: contain;
+  object-position: center bottom;
+}
+@keyframes aliciaHalo {
+  0%,100% { opacity: 0.85; transform: translate(-50%,-50%) scale(1); }
+  50%      { opacity: 1;    transform: translate(-50%,-50%) scale(1.12); }
+}
+
+#alicia-panel {
+  position: fixed;
+  bottom: 7.5rem;
+  right: 2rem;
+  width: min(380px, calc(100vw - 2rem));
+  height: 520px;
+  background: rgba(6,6,14,0.97);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(232,168,62,0.25);
+  border-radius: 16px;
+  z-index: 8999;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(232,168,62,0.08);
+  transform: translateY(16px) scale(0.97);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease;
+}
+#alicia-panel.open {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  pointer-events: all;
+}
+
+.alicia-header {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid rgba(232,168,62,0.15);
+  flex-shrink: 0;
+  background: rgba(232,168,62,0.04);
+}
+.alicia-avatar-wrap {
+  position: relative;
+  width: 50px; height: 56px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5)) drop-shadow(0 0 14px rgba(232,168,62,0.5));
+  animation: aliciaFloat 4s ease-in-out infinite;
+}
+@keyframes aliciaFloat {
+  0%,100% { transform: translateY(0) scale(1); }
+  50%      { transform: translateY(-3px) scale(1.03); }
+}
+/* gold halo behind the header cutout */
+.alicia-avatar-wrap::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: 42%;
+  width: 46px; height: 46px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(232,168,62,0.5) 0%, rgba(232,168,62,0.12) 50%, transparent 72%);
+  border-radius: 50%;
+  z-index: -1;
+}
+.alicia-avatar-wrap img {
+  width: 100%; height: 100%;
+  border-radius: 0;
+  object-fit: contain;
+  object-position: center bottom;
+}
+.alicia-header-info { flex: 1; }
+.alicia-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  line-height: 1;
+}
+.alicia-role {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(192,200,216,0.5);
+}
+.alicia-status {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(192,200,216,0.4);
+  margin-top: 0.15rem;
+}
+.alicia-status-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 6px #4ade80;
+  flex-shrink: 0;
+}
+.alicia-close {
+  background: none;
+  border: none;
+  color: rgba(192,200,216,0.4);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  transition: color 0.2s;
+}
+.alicia-close:hover { color: var(--text); }
+
+.alicia-msgs {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(232,168,62,0.2) transparent;
+}
+.alicia-msgs::-webkit-scrollbar { width: 4px; }
+.alicia-msgs::-webkit-scrollbar-track { background: transparent; }
+.alicia-msgs::-webkit-scrollbar-thumb { background: rgba(232,168,62,0.2); border-radius: 2px; }
+
+.alicia-msg {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-end;
+  max-width: 88%;
+}
+.alicia-msg.from-user { align-self: flex-end; flex-direction: row-reverse; }
+.alicia-msg.from-alicia { align-self: flex-start; }
+
+.alicia-bubble {
+  padding: 0.65rem 0.9rem;
+  border-radius: 12px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  max-width: 100%;
+}
+.from-user .alicia-bubble {
+  background: var(--gold);
+  color: var(--bg);
+  border-bottom-right-radius: 4px;
+}
+.from-alicia .alicia-bubble {
+  background: rgba(255,255,255,0.06);
+  color: var(--chrome);
+  border: 1px solid rgba(192,200,216,0.1);
+  border-bottom-left-radius: 4px;
+}
+
+/* Typing dots */
+.alicia-typing {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.65rem 0.9rem;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(192,200,216,0.1);
+  border-radius: 12px;
+  border-bottom-left-radius: 4px;
+  width: fit-content;
+}
+.alicia-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--chrome);
+  opacity: 0.5;
+  animation: aliciaDot 1.4s ease-in-out infinite;
+}
+.alicia-dot:nth-child(2) { animation-delay: 0.2s; }
+.alicia-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes aliciaDot {
+  0%,80%,100% { transform: scale(1); opacity: 0.5; }
+  40%          { transform: scale(1.4); opacity: 1; }
+}
+
+.alicia-input-row {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.85rem 1rem;
+  border-top: 1px solid rgba(232,168,62,0.1);
+  flex-shrink: 0;
+  background: rgba(0,0,0,0.2);
+}
+#alicia-input {
+  flex: 1;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(192,200,216,0.12);
+  border-radius: 8px;
+  padding: 0.6rem 0.85rem;
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+#alicia-input::placeholder { color: rgba(192,200,216,0.25); }
+#alicia-input:focus { border-color: rgba(232,168,62,0.5); }
+#alicia-send {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  background: var(--gold);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: opacity 0.2s;
+  align-self: center;
+}
+#alicia-send:hover { opacity: 0.85; }
+#alicia-send svg { width: 15px; height: 15px; }
+
+/* ── REDUCED MOTION ── */
+@media (prefers-reduced-motion: reduce) {
+  .hero-glow { animation: none; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+/* ── TOUCH ── */
+@media (hover: none) {
+  .btn-gold:hover,
+  .btn-ghost:hover { transform: none; }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .hero h1 { font-size: clamp(64px, 18vw, 120px); }
+  /* Scroll hint overlaps the CTA buttons on short mobile heroes — hide it */
+  .scroll-hint { display: none; }
+  footer { flex-direction: column; }
+  .footer-right { align-items: flex-start; }
+  .form-row { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .cta-group { flex-direction: column; }
+  .btn-gold, .btn-ghost { text-align: center; }
+}
+
+/* ── SECTION SUB ── */
+.section-sub {
+  font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+  font-weight: 300;
+  color: var(--chrome);
+  max-width: 580px;
+  margin-bottom: 2.5rem;
+  line-height: 1.75;
+}
+
+/* ── TIER FEATURES ── */
+.tier-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+.tier-features li {
+  font-size: 0.92rem;
+  color: var(--chrome);
+  padding-left: 1.1rem;
+  position: relative;
+  line-height: 1.5;
+}
+.tier-features li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--mocha);
+  font-size: 0.75rem;
+}
+
+/* ── CONTACT SIDEBAR ── */
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.contact-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.contact-detail-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--mocha);
+}
+.contact-detail-value {
+  font-size: 0.98rem;
+  color: var(--text);
+}
+
+/* ── TROOPER BLOCK ── */
+.trooper-block {
+  background: rgba(232,168,62,0.05);
+  border: 1px solid rgba(232,168,62,0.2);
+  border-radius: 8px;
+  padding: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 0.5rem;
+}
+.trooper-block h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 0.06em;
+  color: var(--gold);
+}
+.trooper-block p {
+  font-size: 0.9rem;
+  color: var(--chrome);
+  line-height: 1.65;
+}
+
+/* ── BTN PRIMARY ── */
+.btn-primary {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.74rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: transparent;
+  border: 1px solid var(--gold);
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+  display: inline-block;
+}
+.btn-primary:hover {
+  background: var(--gold);
+  color: var(--bg);
+}
+</style>
+</head>
+<body>
+
+<!-- Scroll progress bar -->
+<div id="scroll-bar" aria-hidden="true"></div>
+
+<!-- ── Nav ── -->
+<nav role="navigation" aria-label="Main navigation">
+  <a href="#" class="nav-logo">CYBER<span>TROOPER</span></a>
+  <ul class="nav-links">
+    <li><a href="#how-it-works">System</a></li>
+    <li><a href="#why-threads">Why Threads</a></li>
+    <li><a href="#tiers">Services</a></li>
+    <li><a href="become-a-trooper.html">Join</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta nav-pill">Brief Us</a>
+</nav>
+
+<!-- ── Scroll Container ── -->
+<div id="scroll-container">
+
+<!-- HERO -->
+<section class="hero">
+  <canvas id="hero-canvas" aria-hidden="true" style="touch-action: none; pointer-events: none;"></canvas>
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="hero-content">
+    <p class="eyebrow">[KL's First Threads Creator Network]</p>
+    <h1 id="hero-h1">YOUR BRAND.<br>THEIR VOICE.<br>REAL REACH.</h1>
+    <p class="hero-sub">Real KL creators post about your brand on Threads. We handle the matching, the briefs, and the results — you just show up.</p>
+    <div class="cta-group">
+      <a href="#contact" class="btn-gold">BRIEF US</a>
+      <a href="#how-it-works" class="btn-ghost">HOW IT WORKS</a>
+    </div>
+    <div class="scroll-hint" aria-hidden="true">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </div>
+</section>
+
+  <!-- Spacer 1: Hero → How It Works transition -->
+  <div class="scroll-spacer" aria-hidden="true"></div>
+
+  <!-- HOW IT WORKS -->
+  <section id="how-it-works" aria-label="How It Works">
+    <div class="section-inner">
+      <span class="eyebrow reveal">[THE SYSTEM]</span>
+      <h2 class="section-heading reveal">HOW WE BUILD YOUR GROWTH OS</h2>
+      <p class="section-sub reveal">Three phases. One operating system. Built to run while you focus on what you do best.</p>
+      <div class="steps">
+        <div class="step reveal">
+          <span class="step-num">01 / SIGNAL</span>
+          <div class="step-body"><h3>MAP THE FIELD</h3>
+          <p>We map your audience, set up your tracking, and build the creator team before a single post goes out.</p></div>
+        </div>
+        <div class="step reveal" style="transition-delay:0.1s">
+          <span class="step-num">02 / DEPLOY</span>
+          <div class="step-body"><h3>ACTIVATE TROOPERS</h3>
+          <p>Matched creators post on Threads. First Visit Passes drive foot traffic. WhatsApp follow-up keeps guests coming back.</p></div>
+        </div>
+        <div class="step reveal" style="transition-delay:0.2s">
+          <span class="step-num">03 / GROW</span>
+          <div class="step-body"><h3>MEASURE &amp; SCALE</h3>
+          <p>Weekly dashboards. Real numbers. We tune the system every 7 days until your venue is consistently full.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Spacer 2: How It Works → Why Threads -->
+  <div class="scroll-spacer" aria-hidden="true"></div>
+
+  <!-- WHY THREADS -->
+  <section id="why-threads" aria-label="Why Threads">
+    <div class="section-inner">
+      <span class="eyebrow reveal">[THE CHANNEL]</span>
+      <h2 class="section-heading reveal">WHY THREADS IN 2026</h2>
+      <p class="section-sub reveal">Every growth channel gets saturated. Threads is early. We're already operating inside it.</p>
+      <div class="stat-grid">
+        <div class="stat-card reveal">
+          <div class="stat-number">175M+</div>
+          <div class="stat-card-label">Monthly active users globally</div>
+        </div>
+        <div class="stat-card reveal" style="transition-delay:0.08s">
+          <div class="stat-number">3.2×</div>
+          <div class="stat-card-label">Higher engagement vs Instagram</div>
+        </div>
+        <div class="stat-card reveal" style="transition-delay:0.16s">
+          <div class="stat-number">KL-first</div>
+          <div class="stat-card-label">No competitor has activated this market</div>
+        </div>
+        <div class="stat-card reveal" style="transition-delay:0.24s">
+          <div class="stat-number">0 ads</div>
+          <div class="stat-card-label">Organic reach still dominates the feed</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Spacer 3: Why Threads → Tiers -->
+  <div class="scroll-spacer" aria-hidden="true"></div>
+
+  <!-- TIERS -->
+  <section id="tiers" aria-label="Service Tiers">
+    <div class="section-inner">
+      <span class="eyebrow reveal">[THE PACKAGES]</span>
+      <h2 class="section-heading reveal">VENUE GROWTH OS TIERS</h2>
+      <p class="section-sub reveal">Three tiers. One system. Start where you are, scale when it works.</p>
+      <div class="tiers-grid">
+        <div class="tier-card reveal">
+          <div class="tier-name">STARTER OS</div>
+          <div class="tier-tagline">For brands ready to test the Threads channel with real creator reach and a live CRM.</div>
+          <ul class="tier-features">
+            <li>Guest CRM</li>
+            <li>Content calendar</li>
+            <li>Weekly report</li>
+            <li>Onboarding checklist</li>
+            <li>Basic dashboard</li>
+          </ul>
+          <a href="#contact" class="tier-cta">Brief Us →</a>
+        </div>
+        <div class="tier-card featured reveal" style="transition-delay:0.1s">
+          <div class="tier-badge">Most Popular</div>
+          <div class="tier-name">GROWTH OS</div>
+          <div class="tier-tagline">Full ambassador stack, KOL tracking, foot traffic forecasting, and weekly data review.</div>
+          <ul class="tier-features">
+            <li>Everything in Starter OS</li>
+            <li>Ambassador tracker</li>
+            <li>KOL manager</li>
+            <li>First Visit Pass tracker</li>
+            <li>WhatsApp follow-up map</li>
+            <li>300-pax forecast</li>
+            <li>Event calendar</li>
+          </ul>
+          <a href="#contact" class="tier-cta">Brief Us →</a>
+        </div>
+        <div class="tier-card reveal" style="transition-delay:0.2s">
+          <div class="tier-name">COMMAND OS</div>
+          <div class="tier-tagline">Full-stack Growth OS with automation, VIP layer, and weekly strategy calls with our team.</div>
+          <ul class="tier-features">
+            <li>Everything in Growth OS</li>
+            <li>Automation map</li>
+            <li>VIP tracker</li>
+            <li>Community partnerships</li>
+            <li>Weekly strategy calls</li>
+            <li>Monthly review</li>
+            <li>Client-safe dashboard</li>
+            <li>Case study reporting</li>
+          </ul>
+          <a href="#contact" class="tier-cta">Brief Us →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- CREATOR RECRUITMENT BANNER -->
+<section id="recruit">
+  <div class="recruit-inner section-inner">
+    <div class="recruit-left reveal">
+      <div class="recruit-accent">
+        <div class="recruit-accent-bar"></div>
+        <div class="recruit-accent-dot"></div>
+      </div>
+      <div class="recruit-text">
+        <h2>ARE YOU A<br>KL CREATOR?</h2>
+        <p>Join the Trooper network. Get briefed on real brand campaigns. Get paid to post in your own voice on Threads.</p>
+        <a href="become-a-trooper.html" class="btn-gold" style="margin-top:1.4rem;display:inline-block;">JOIN THE NETWORK →</a>
+      </div>
+    </div>
+    <div class="recruit-right reveal" style="transition-delay:0.15s">
+      <div class="recruit-chips">
+        <span class="recruit-chip">40+ Active Troopers</span>
+        <span class="recruit-chip">Weekly Payouts</span>
+        <span class="recruit-chip">KL-Only Network</span>
+        <span class="recruit-chip">Applications Every Monday</span>
+        <span class="recruit-chip">Your Voice. Their Brand.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <p class="eyebrow">[GET STARTED]</p>
+    <h2 class="section-heading">BRIEF US</h2>
+    <p class="contact-sub">Send us your brand details. We'll follow up within 48 hours.</p>
+    <div class="form-row">
+      <form id="brief-form" novalidate>
+        <div class="form-row">
+          <div class="field">
+            <label for="brand-name">Brand Name</label>
+            <input type="text" id="brand-name" name="brand_name" placeholder="Your brand" required />
+          </div>
+          <div class="field">
+            <label for="your-name">Your Name</label>
+            <input type="text" id="your-name" name="your_name" placeholder="Full name" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@brand.com" required />
+          </div>
+          <div class="field">
+            <label for="whatsapp">WhatsApp</label>
+            <input type="tel" id="whatsapp" name="whatsapp" placeholder="+60 12 345 6789" />
+          </div>
+        </div>
+        <div class="field" style="margin-top:1rem">
+          <label for="tier">Tier of Interest</label>
+          <select id="tier" name="tier">
+            <option value="Not sure yet" selected>Not sure yet — advise me</option>
+            <option value="Starter OS">Starter OS</option>
+            <option value="Growth OS">Growth OS</option>
+            <option value="Command OS">Command OS</option>
+          </select>
+        </div>
+        <div class="field" style="margin-top:1rem">
+          <label for="brief">Campaign Brief</label>
+          <textarea id="brief" name="brief" placeholder="Tell us about your brand, goals, and timeline…"></textarea>
+        </div>
+        <button type="submit" class="btn-gold" style="margin-top:1.5rem;width:100%;">SEND BRIEF →</button>
+        <div id="form-success" class="form-success">
+          <p>✓ Brief received — opening WhatsApp to finish sending. We'll reply within 48 hours.</p>
+        </div>
+      </form>
+      <div class="contact-info reveal">
+        <div class="contact-detail">
+          <span class="contact-detail-label">Email</span>
+          <span class="contact-detail-value">360cybertroopers@gmail.com</span>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-detail-label">WhatsApp</span>
+          <span class="contact-detail-value">+60 179 706 8588</span>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-detail-label">Base</span>
+          <span class="contact-detail-value">Kuala Lumpur, Malaysia</span>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-detail-label">Response Time</span>
+          <span class="contact-detail-value">Within 48 hours</span>
+        </div>
+        <div class="trooper-block">
+          <h3>Are You a Creator?</h3>
+          <p>Join KL's first Threads creator network. Rates revealed after approval. Apply in 3 minutes.</p>
+          <a href="become-a-trooper.html" class="btn-primary" style="display:block;text-align:center;">Apply to be a Trooper →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  </section>
+
+<!-- ALICIA AI CHAT WIDGET -->
+<div id="alicia-widget">
+  <button id="alicia-btn" aria-label="Chat with ALICIA" aria-expanded="false">
+    <img src="alicia-avatar.png" alt="ALICIA" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+    <span id="alicia-btn-fallback" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:#06060E;letter-spacing:0.05em;">AI</span>
+  </button>
+  <div id="alicia-label">CHAT WITH ALICIA</div>
+</div>
+
+<div id="alicia-panel" role="dialog" aria-label="Chat with ALICIA" aria-modal="true">
+  <div class="alicia-header">
+    <div class="alicia-avatar-wrap">
+      <img src="alicia-avatar.png" alt="ALICIA" />
+    </div>
+    <div class="alicia-header-info">
+      <div class="alicia-name">ALICIA</div>
+      <div class="alicia-role">Your Consultant · CyberTrooper KL</div>
+      <div class="alicia-status">
+        <span class="alicia-status-dot"></span>
+        Online now
+      </div>
+    </div>
+    <button class="alicia-close" aria-label="Close chat">×</button>
+  </div>
+  <div class="alicia-msgs" id="alicia-msgs"></div>
+  <div class="alicia-input-row">
+    <input type="text" id="alicia-input" placeholder="Tell me what you're working on…" autocomplete="off" maxlength="400" />
+    <button id="alicia-send" aria-label="Send">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#06060E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="22" y1="2" x2="11" y2="13"></line>
+        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <a href="/" class="footer-brand">CYBERTROOPER</a>
+    <span class="footer-by">by 3Sixty Marketing</span>
+  </div>
+  <div class="footer-right">
+    <a href="become-a-trooper.html">Are you a creator? Join the network →</a>
+    <span class="footer-copy">© 2026 CYBERTROOPER</span>
+  </div>
+</footer>
+
+<script>
+// ── Nav scroll state ──
+const navEl = document.querySelector('nav');
+const scrollBar = document.getElementById('scroll-bar');
+window.addEventListener('scroll', () => {
+  if (navEl) navEl.classList.toggle('scrolled', window.scrollY > 60);
+  if (scrollBar) {
+    const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
+    scrollBar.style.width = Math.min(pct, 100) + '%';
+  }
+}, { passive: true });
+
+// ── Scroll reveal (IntersectionObserver) ──
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// ── Number counter animation ──
+function animateCounter(el) {
+  const target = parseInt(el.dataset.target, 10);
+  const suffix = el.dataset.suffix || '';
+  const prefix = el.dataset.prefix || '';
+  if (!target) return;
+  const duration = 1800;
+  const start = performance.now();
+  function tick(now) {
+    const p = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = prefix + Math.floor(eased * target) + suffix;
+    if (p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+const counterObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { animateCounter(e.target); counterObserver.unobserve(e.target); }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.stat-num[data-target]').forEach(el => counterObserver.observe(el));
+
+// ── Three.js WebGL particle constellation ──
+// Palette: chrome + gold + Pantone Mocha Mousse 17-1230 (#A07855)
+const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const canvas = document.getElementById('hero-canvas');
+
+if (canvas && !prefersReduced && typeof THREE !== 'undefined') {
+  (function() {
+    const isMobile = window.innerWidth < 768;
+    let W = canvas.offsetWidth, H = canvas.offsetHeight;
+    let scene, camera, renderer, chromeInst, goldInst, mochaInst, lineSegs;
+    const dummy = new THREE.Object3D();
+    let pts = [];
+    const mouse = { x: 0, y: 0 };
+    let animRaf;
+
+    function build() {
+      W = window.innerWidth;
+      H = window.innerHeight;
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(65, W / H, 0.1, 50);
+      camera.position.set(0, 0, 5);
+
+      try {
+        renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: !isMobile, powerPreference: 'high-performance' });
+      } catch(e) { return; }
+
+      renderer.setPixelRatio(Math.min(devicePixelRatio, isMobile ? 1 : 2));
+      renderer.setSize(W, H, false);
+      renderer.setClearColor(0x000000, 0);
+
+      const NUM      = isMobile ? 50 : 90;
+      const N_GOLD   = 3;  // gold anchor nodes
+      const N_MOCHA  = 5;  // Mocha Mousse accent nodes
+
+      const nodeGeo  = new THREE.SphereGeometry(0.021, 5, 5);
+      const goldGeo  = new THREE.SphereGeometry(0.042, 7, 7);
+      const mochaGeo = new THREE.SphereGeometry(0.032, 6, 6);
+
+      const chromeMat = new THREE.MeshBasicMaterial({ color: 0xC0C8D8, transparent: true, opacity: 0.50 });
+      const goldMat   = new THREE.MeshBasicMaterial({ color: 0xE8A83E, transparent: true, opacity: 0.88 });
+      const mochaMat  = new THREE.MeshBasicMaterial({ color: 0xA07855, transparent: true, opacity: 0.70 });
+
+      chromeInst = new THREE.InstancedMesh(nodeGeo,  chromeMat, NUM - N_GOLD - N_MOCHA);
+      goldInst   = new THREE.InstancedMesh(goldGeo,  goldMat,   N_GOLD);
+      mochaInst  = new THREE.InstancedMesh(mochaGeo, mochaMat,  N_MOCHA);
+
+      chromeInst.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+      goldInst.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+      mochaInst.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+
+      scene.add(chromeInst); scene.add(goldInst); scene.add(mochaInst);
+
+      // Line buffer
+      const MAX_SEGS = NUM * (NUM - 1) / 2;
+      const lineGeo = new THREE.BufferGeometry();
+      const lp = new Float32Array(MAX_SEGS * 6);
+      const lc = new Float32Array(MAX_SEGS * 6);
+      lineGeo.setAttribute('position', new THREE.BufferAttribute(lp, 3).setUsage(THREE.DynamicDrawUsage));
+      lineGeo.setAttribute('color',    new THREE.BufferAttribute(lc, 3).setUsage(THREE.DynamicDrawUsage));
+      lineGeo.setDrawRange(0, 0);
+      lineSegs = new THREE.LineSegments(lineGeo, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 1 }));
+      scene.add(lineSegs);
+
+      const sx = isMobile ? 3.0 : 4.8, sy = sx * (H / W) * 0.78, sz = 1.3;
+      pts = Array.from({ length: NUM }, (_, i) => ({
+        x: (Math.random() - 0.5) * sx,
+        y: (Math.random() - 0.5) * sy,
+        z: (Math.random() - 0.5) * sz,
+        vx: (Math.random() - 0.5) * 0.003,
+        vy: (Math.random() - 0.5) * 0.003,
+        vz: (Math.random() - 0.5) * 0.0007,
+        type: i < N_GOLD ? 'gold' : i < N_GOLD + N_MOCHA ? 'mocha' : 'chrome',
+      }));
+
+      // Scroll-driven camera zoom via GSAP ScrollTrigger
+      if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.to(camera.position, {
+          z: 3.8,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: canvas.closest('section'),
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 1.5,
+          },
+        });
+      }
+    }
+
+    // Color tables [r,g,b] normalised
+    const C = {
+      gold:   [0.910, 0.659, 0.243],
+      mocha:  [0.627, 0.471, 0.333],
+      chrome: [0.753, 0.784, 0.847],
+    };
+
+    function frame() {
+      const NUM = pts.length;
+      const MAX_D = isMobile ? 1.5 : 1.9;
+      const bx = isMobile ? 1.5 : 2.4, by = bx * (H / W) * 0.78, bz = 0.65;
+
+      // Subtle camera lean toward mouse
+      camera.position.x += (mouse.x * 0.20 - camera.position.x) * 0.032;
+      camera.position.y += (mouse.y * 0.11 - camera.position.y) * 0.032;
+      camera.lookAt(0, 0, 0);
+
+      const lp = lineSegs.geometry.attributes.position.array;
+      const lc = lineSegs.geometry.attributes.color.array;
+      let seg = 0, ci = 0, gi = 0, mi = 0;
+
+      for (let i = 0; i < NUM; i++) {
+        const p = pts[i];
+        // Mouse pull in world coords
+        const wx = mouse.x * 2.0, wy = mouse.y * 1.1;
+        const mdx = wx - p.x, mdy = wy - p.y, md = Math.hypot(mdx, mdy);
+        if (md < 1.4 && md > 0.01) { p.vx += (mdx / md) * 0.00006; p.vy += (mdy / md) * 0.00006; }
+        p.vx *= 0.997; p.vy *= 0.997; p.vz *= 0.997;
+        p.x += p.vx; p.y += p.vy; p.z += p.vz;
+        if (p.x >  bx) p.x = -bx; if (p.x < -bx) p.x =  bx;
+        if (p.y >  by) p.y = -by; if (p.y < -by) p.y =  by;
+        if (p.z >  bz || p.z < -bz) p.vz *= -1;
+
+        dummy.position.set(p.x, p.y, p.z); dummy.updateMatrix();
+        if      (p.type === 'gold')   goldInst.setMatrixAt(gi++, dummy.matrix);
+        else if (p.type === 'mocha')  mochaInst.setMatrixAt(mi++, dummy.matrix);
+        else                          chromeInst.setMatrixAt(ci++, dummy.matrix);
+
+        for (let j = i + 1; j < NUM; j++) {
+          const q = pts[j];
+          const d = Math.hypot(p.x - q.x, p.y - q.y, p.z - q.z);
+          if (d < MAX_D) {
+            const t   = 1 - d / MAX_D;
+            const col = (p.type !== 'chrome' || q.type !== 'chrome')
+              ? (p.type === 'gold' || q.type === 'gold' ? C.gold : C.mocha)
+              : C.chrome;
+            const a = (p.type !== 'chrome' || q.type !== 'chrome') ? t * 0.55 : t * 0.17;
+            const b = seg * 6;
+            lp[b]=p.x; lp[b+1]=p.y; lp[b+2]=p.z;
+            lp[b+3]=q.x; lp[b+4]=q.y; lp[b+5]=q.z;
+            lc[b]=col[0]*a; lc[b+1]=col[1]*a; lc[b+2]=col[2]*a;
+            lc[b+3]=col[0]*a; lc[b+4]=col[1]*a; lc[b+5]=col[2]*a;
+            seg++;
+          }
+        }
+      }
+
+      chromeInst.count = ci; chromeInst.instanceMatrix.needsUpdate = true;
+      goldInst.count   = gi; goldInst.instanceMatrix.needsUpdate   = true;
+      mochaInst.count  = mi; mochaInst.instanceMatrix.needsUpdate  = true;
+      lineSegs.geometry.setDrawRange(0, seg * 2);
+      lineSegs.geometry.attributes.position.needsUpdate = true;
+      lineSegs.geometry.attributes.color.needsUpdate    = true;
+
+      renderer.render(scene, camera);
+      animRaf = requestAnimationFrame(frame);
+    }
+
+    canvas.addEventListener('mousemove', e => {
+      const r = canvas.getBoundingClientRect();
+      mouse.x =  ((e.clientX - r.left) / r.width  - 0.5) * 2;
+      mouse.y = -((e.clientY - r.top)  / r.height - 0.5) * 2;
+    });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        W = window.innerWidth; H = window.innerHeight;
+        if (!camera || !renderer) return;
+        camera.aspect = W / H;
+        camera.updateProjectionMatrix();
+        renderer.setSize(W, H, false);
+      }, 200);
+    });
+
+    // Pause animation when hero scrolls out of viewport
+    const heroObs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { if (!animRaf) frame(); }
+      else { cancelAnimationFrame(animRaf); animRaf = null; }
+    }, { threshold: 0.01 });
+    heroObs.observe(canvas.closest('section'));
+
+    requestAnimationFrame(() => { build(); frame(); });
+  })();
+
+} else if (canvas && !prefersReduced) {
+  // Fallback 2D canvas if Three.js unavailable
+  const ctx = canvas.getContext('2d');
+  let W, H, particles, mouse = { x: 0, y: 0 }, raf;
+  function resize() { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight; }
+  function initParticles() {
+    const NUM = W > 768 ? 90 : 50;
+    particles = Array.from({ length: NUM }, (_, i) => ({
+      x: Math.random()*W, y: Math.random()*H,
+      vx: (Math.random()-0.5)*0.28, vy: (Math.random()-0.5)*0.28,
+      r: i===0?4:Math.random()*1.6+0.5,
+      type: i<3?'gold':i<8?'mocha':'chrome',
+    }));
+  }
+  function drawFrame() {
+    ctx.clearRect(0,0,W,H);
+    const MAX_D = W>768?150:100;
+    for (let i=0;i<particles.length;i++) {
+      const p=particles[i];
+      const mdx=mouse.x-p.x, mdy=mouse.y-p.y, md=Math.hypot(mdx,mdy);
+      if(md<250&&md>0){p.vx+=(mdx/md)*0.006;p.vy+=(mdy/md)*0.006;}
+      p.vx*=0.995;p.vy*=0.995;p.x+=p.vx;p.y+=p.vy;
+      if(p.x<-5)p.x=W+5;if(p.x>W+5)p.x=-5;
+      if(p.y<-5)p.y=H+5;if(p.y>H+5)p.y=-5;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.type==='gold'?'rgba(232,168,62,0.85)':p.type==='mocha'?'rgba(160,120,85,0.75)':'rgba(192,200,216,0.55)';
+      ctx.fill();
+      for(let j=i+1;j<particles.length;j++){
+        const q=particles[j];
+        const dx=p.x-q.x,dy=p.y-q.y,d=Math.hypot(dx,dy);
+        if(d<MAX_D){
+          const alpha=(1-d/MAX_D)*0.2;
+          ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);
+          const isAccent=p.type!=='chrome'||q.type!=='chrome';
+          ctx.strokeStyle=isAccent
+            ?(p.type==='gold'||q.type==='gold'?`rgba(232,168,62,${alpha*1.4})`:`rgba(160,120,85,${alpha*1.2})`)
+            :`rgba(192,200,216,${alpha})`;
+          ctx.lineWidth=isAccent?1.1:0.7;ctx.stroke();
+        }
+      }
+    }
+    raf=requestAnimationFrame(drawFrame);
+  }
+  canvas.addEventListener('mousemove',e=>{const r=canvas.getBoundingClientRect();mouse.x=e.clientX-r.left;mouse.y=e.clientY-r.top;});
+  let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{resize();initParticles();},200);});
+  const hObs=new IntersectionObserver(([e])=>{if(e.isIntersecting){resize();initParticles();if(raf)cancelAnimationFrame(raf);drawFrame();}else if(raf){cancelAnimationFrame(raf);raf=null;}},{threshold:0.01});
+  hObs.observe(canvas.closest('section'));
+}
+
+// ── 3D Tilt on cards (desktop only) ──
+if (!prefersReduced && window.matchMedia('(hover: hover)').matches) {
+  document.querySelectorAll('.tier-card, .stat-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width  - 0.5;
+      const y = (e.clientY - rect.top)  / rect.height - 0.5;
+      const depth = card.classList.contains('tier-card') ? 12 : 8;
+      card.style.transform = `perspective(900px) rotateX(${-y * depth}deg) rotateY(${x * depth}deg) translateZ(8px)`;
+    });
+    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+  });
+
+  // ── Magnetic buttons ──
+  document.querySelectorAll('.btn-gold').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+      const rect = btn.getBoundingClientRect();
+      const x = (e.clientX - rect.left - rect.width  / 2) * 0.28;
+      const y = (e.clientY - rect.top  - rect.height / 2) * 0.28;
+      btn.style.transform = `translate(${x}px, ${y}px) scale(1.03)`;
+    });
+    btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+  });
+}
+
+// ── Lenis smooth scroll — desktop only (touch devices use native scroll) ──
+const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+if (!prefersReduced && !isTouchDevice && typeof Lenis !== 'undefined') {
+  const lenis = new Lenis({
+    duration: 1.25,
+    easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: true,
+    touchMultiplier: 0,
+  });
+  if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(time => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+  } else {
+    (function loop(t) { lenis.raf(t); requestAnimationFrame(loop); })(0);
+  }
+}
+
+// ── ALICIA AI Chat Widget ──
+(function() {
+  const EDGE_URL = 'https://nykukkccynnykbmxznhl.supabase.co/functions/v1/alicia-chat';
+  const btn   = document.getElementById('alicia-btn');
+  const panel = document.getElementById('alicia-panel');
+  const msgs  = document.getElementById('alicia-msgs');
+  const input = document.getElementById('alicia-input');
+  const send  = document.getElementById('alicia-send');
+  const closeBtn = panel.querySelector('.alicia-close');
+  const history = [];
+  let open = false;
+
+  const widget = document.getElementById('alicia-widget');
+  function togglePanel() {
+    open = !open;
+    panel.classList.toggle('open', open);
+    if (widget) widget.classList.toggle('docked', open);
+    btn.setAttribute('aria-expanded', String(open));
+    if (open) {
+      input.focus();
+      if (msgs.children.length === 0) addMsg('alicia', "Hey, welcome 👋 I'm Alicia — your CyberTrooper consultant. Whether you're trying to grow your brand, figure out your next move on Threads, or just not sure where to start — tell me what's going on and let's work through it together.");
+    }
+  }
+
+  btn.addEventListener('click', togglePanel);
+  closeBtn.addEventListener('click', togglePanel);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && open) togglePanel(); });
+
+  function addMsg(from, text) {
+    const wrap = document.createElement('div');
+    wrap.className = `alicia-msg from-${from}`;
+    const bubble = document.createElement('div');
+    bubble.className = 'alicia-bubble';
+    bubble.textContent = text;
+    wrap.appendChild(bubble);
+    msgs.appendChild(wrap);
+    msgs.scrollTop = msgs.scrollHeight;
+    return wrap;
+  }
+
+  function showTyping() {
+    const wrap = document.createElement('div');
+    wrap.className = 'alicia-msg from-alicia';
+    wrap.innerHTML = '<div class="alicia-typing"><div class="alicia-dot"></div><div class="alicia-dot"></div><div class="alicia-dot"></div></div>';
+    msgs.appendChild(wrap);
+    msgs.scrollTop = msgs.scrollHeight;
+    return wrap;
+  }
+
+  // Keyword fallback when edge function is unavailable
+  function aliciaFallback(msg) {
+    const m = msg.toLowerCase();
+    if (/price|cost|rate|rm|myr|fee|how much|payment|pay/.test(m))
+      return "Pricing is revealed after you submit a brief — we tailor it to your venue size and campaign goals. Head to the Brief Us section and we'll follow up within 48 hours.";
+    if (/how.*(work|start|begin|run)|what.*process|steps|system/.test(m))
+      return "Here's how it works: you submit a brief → we match you with KL creators → they post on Threads → you get a weekly dashboard. Three tiers: Starter OS, Growth OS, Command OS. Want to start? Hit Brief Us above.";
+    if (/what is threads|threads.*platform|why threads|threads vs|instagram/.test(m))
+      return "Threads is Meta's text-first platform — fastest growing in Southeast Asia right now. Organic reach still dominates the feed, meaning your brand gets real eyeballs without paying for ads.";
+    if (/join|apply|creator|trooper|become|sign up|recruit/.test(m))
+      return "To join as a creator, apply at become-a-trooper.html. We look for KL-based Threads users with an authentic voice — follower count doesn't matter. Applications reviewed every Monday.";
+    if (/contact|brief|email|whatsapp|reach|talk|speak/.test(m))
+      return "You can reach us via the Brief Us form on this page, or WhatsApp directly at +60 179 706 8588. We respond within 48 hours.";
+    if (/kl only|malaysia|other city|outside|johor|penang|singapore|kuala lumpur/.test(m))
+      return "We're KL-first right now — our creator network is built here. If you're outside KL, submit a brief anyway and we'll let you know when we expand.";
+    if (/how many trooper|network size|creator|how big/.test(m))
+      return "We have an active and growing network of KL creators across areas like KLCC, Bangsar, Chow Kit and TREC. Exact numbers stay private — we match based on fit, not headcount.";
+    if (/how long|timeline|when|result|how fast|quick/.test(m))
+      return "Most brands see measurable foot traffic impact within 2–4 weeks of launch. We send weekly dashboards so you can track it in real time.";
+    if (/what.*post|content|type of|brief|topic/.test(m))
+      return "Creators post authentic Threads content about your venue — honest reviews, atmosphere, events, specials. We brief them but they write in their own voice. No scripts.";
+    if (/result|guarantee|roi|return|outcome|prove/.test(m))
+      return "We don't guarantee viral. We guarantee consistency — matched creators, weekly reporting, and system adjustments every 7 days. Results depend on your venue; we give you the infrastructure to grow.";
+    if (/contract|lock|commit|cancel|exit|term/.test(m))
+      return "We work monthly — no long lock-ins. Details are shared after your brief is reviewed. Submit via the Brief Us form and we'll walk you through everything.";
+    if (/season kl|season pass|trec|friday|saturday|pass/.test(m))
+      return "Season KL is our venue partner — a weekly nightlife experience at TREC KL every Friday and Saturday, July–September 2026. Claim a free First Visit Pass at the Season KL page.";
+    if (/starter|growth|command|tier|package|plan|difference/.test(m))
+      return "Starter OS: core CRM + content calendar + weekly reports. Growth OS: adds ambassador tracker, KOL manager, First Visit Pass tracking, WhatsApp follow-up. Command OS: full automation, VIP tracker, strategy calls, case study reporting. Brief Us and we'll recommend the right tier.";
+    if (/refund|money back|cancel/.test(m))
+      return "Refund terms are covered in the brief agreement. We work monthly so you're never locked in long-term. Submit a brief and we'll go through the details.";
+    if (/next step|get started|begin|start now|ready/.test(m))
+      return "Hit the Brief Us button at the top of the page, fill in your brand details, and we'll follow up within 48 hours with a proposal tailored to your venue.";
+    return "I'm Alicia, your CyberTrooper consultant 🌸 Ask me about tiers, how it works, joining as a creator, or getting started. Or tap Brief Us to talk to the team directly.";
+  }
+  function fallbackReply(msg) { return aliciaFallback(msg); }
+
+  async function sendMessage() {
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    input.disabled = true;
+    send.disabled = true;
+
+    addMsg('user', text);
+    const typingEl = showTyping();
+
+    let reply;
+    try {
+      const res = await fetch(EDGE_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text, history }),
+        signal: AbortSignal.timeout(12000),
+      });
+      if (!res.ok) throw new Error('edge fn error');
+      const data = await res.json();
+      reply = data.reply || fallbackReply(text);
+    } catch {
+      reply = fallbackReply(text);
+    }
+
+    typingEl.remove();
+    addMsg('alicia', reply);
+    history.push({ role: 'user', content: text });
+    history.push({ role: 'assistant', content: reply });
+    if (history.length > 14) history.splice(0, 2); // keep last 7 turns
+
+    input.disabled = false;
+    send.disabled = false;
+    input.focus();
+  }
+
+  send.addEventListener('click', sendMessage);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
+})();
+
+// ── Brief form → WhatsApp ──
+const briefFormEl = document.getElementById('brief-form');
+if (briefFormEl) briefFormEl.addEventListener('submit', function(e) {
+  e.preventDefault();
+  const fd = new FormData(this);
+  const brand = fd.get('brand_name') || '';
+  const name  = fd.get('your_name')  || '';
+  const email = fd.get('email')      || '';
+  const wa    = fd.get('whatsapp')   || '';
+  const tier  = fd.get('tier')       || 'Not specified';
+  const brief = fd.get('brief')      || '';
+  const msg = [
+    '🎯 NEW CYBERTROOPER BRIEF', '',
+    'Brand: '         + brand,
+    'Contact Name: '  + name,
+    'Email: '         + email,
+    'WhatsApp: '      + wa,
+    'Tier Interest: ' + tier, '',
+    'Campaign Brief:', brief,
+  ].join('\n');
+  window.open('https://wa.me/601797068588?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+  const successEl = document.getElementById('form-success');
+  if (successEl) successEl.classList.add('visible');
+  this.style.display = 'none';
+});
+</script>
+</div><!-- end #scroll-container -->
+</body>
+</html>

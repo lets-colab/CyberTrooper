@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Season KL — You've Been Invited to Bloom</title>
+<meta name="description" content="KL's most intentional nightlife experience. Claim your First Visit Pass and enter the Season family." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:        #06000D;
+  --bg2:       #0D0617;
+  --gold:      #C9A05A;
+  --gold-light:#E2BF7A;
+  --gold-dim:  rgba(201,160,90,0.15);
+  --bloom:     #C97BA8;
+  --pulse:     #7B5FC9;
+  --glow:      #C9A05A;
+  --chrome:    #D4D8E8;
+  --text:      #F0EDE8;
+  --muted:     rgba(240,237,232,0.5);
+  --border:    rgba(201,160,90,0.18);
+  --r:         16px;
+}
+
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Outfit',sans-serif;
+  font-weight:300;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+
+/* ── NOISE TEXTURE ── */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:.4;
+}
+
+/* ── PETAL CANVAS ── */
+#petals{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.35}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 40px;
+  background:linear-gradient(to bottom,rgba(6,0,13,.9) 0%,transparent 100%);
+  backdrop-filter:blur(2px);
+}
+.nav-logo{
+  display:inline-flex;align-items:center;text-decoration:none;
+}
+.nav-logo img{
+  height:28px;width:auto;
+  filter: brightness(1.05);
+}
+.nav-cta{
+  font-size:.72rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--bg);background:var(--gold);
+  padding:10px 22px;border-radius:100px;text-decoration:none;
+  transition:opacity .2s;
+}
+.nav-cta:hover{opacity:.85}
+
+/* ── HERO ── */
+.hero{
+  position:relative;min-height:100svh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:120px 24px 80px;
+  overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 30%, rgba(121,68,162,.28) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 30% 70%, rgba(201,123,168,.12) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 80% 60%, rgba(201,160,90,.08) 0%, transparent 50%);
+}
+.hero-eyebrow{
+  font-family:'DM Mono',monospace;
+  font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--gold);opacity:.8;margin-bottom:24px;
+  position:relative;z-index:2;
+}
+.hero-title{
+  font-family:'Bodoni Moda',serif;
+  font-size:clamp(3.5rem,10vw,8rem);
+  font-weight:400;line-height:.95;letter-spacing:-.03em;
+  position:relative;z-index:2;
+  background:linear-gradient(145deg,#fff 0%,var(--gold-light) 40%,var(--bloom) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.1rem,2.5vw,1.6rem);
+  font-style:italic;font-weight:300;
+  color:var(--muted);margin-top:16px;
+  position:relative;z-index:2;
+}
+.hero-divider{
+  width:1px;height:60px;
+  background:linear-gradient(to bottom,transparent,var(--gold),transparent);
+  margin:40px auto;position:relative;z-index:2;
+}
+.hero-desc{
+  max-width:480px;font-size:1rem;color:var(--muted);
+  position:relative;z-index:2;line-height:1.8;
+  margin-bottom:40px;
+}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:.75rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--bg);background:linear-gradient(135deg,var(--gold-light),var(--gold));
+  padding:16px 36px;border-radius:100px;text-decoration:none;
+  position:relative;z-index:2;
+  box-shadow:0 0 40px rgba(201,160,90,.3);
+  transition:all .3s;border:none;cursor:pointer;font-family:'Outfit',sans-serif;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 50px rgba(201,160,90,.45)}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:.75rem;font-weight:400;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold);border:1px solid var(--border);
+  padding:15px 32px;border-radius:100px;text-decoration:none;
+  position:relative;z-index:2;
+  transition:all .3s;background:transparent;cursor:pointer;font-family:'Outfit',sans-serif;
+}
+.btn-ghost:hover{background:var(--gold-dim);border-color:var(--gold)}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;position:relative;z-index:2}
+
+.hero-scroll{
+  position:absolute;bottom:32px;left:50%;transform:translateX(-50%);
+  z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;
+}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollPulse 2s ease-in-out infinite}
+@keyframes scrollPulse{0%,100%{opacity:.3;transform:scaleY(1)}50%{opacity:1;transform:scaleY(1.2)}}
+
+/* ── SECTION WRAPPER ── */
+.section{position:relative;z-index:2;padding:100px 24px}
+.section-inner{max-width:1100px;margin:0 auto}
+.section-label{
+  font-family:'DM Mono',monospace;
+  font-size:.62rem;letter-spacing:.35em;text-transform:uppercase;
+  color:var(--gold);opacity:.7;margin-bottom:16px;display:block;
+}
+/* ✦ logo star motif — used as section divider */
+.star-divider{
+  display:flex;align-items:center;gap:16px;margin:48px 0 40px;
+}
+.star-divider::before,.star-divider::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(to right,transparent,rgba(201,160,90,.35),transparent);
+}
+.star-divider-glyph{
+  font-size:1rem;color:var(--gold);opacity:.7;
+  font-family:'Bodoni Moda',serif;
+  animation:starSpin 8s linear infinite;
+  display:inline-block;
+}
+@keyframes starSpin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.section-title{
+  font-family:'Bodoni Moda',serif;
+  font-size:clamp(2rem,5vw,3.5rem);
+  font-weight:400;line-height:1.1;letter-spacing:-.02em;
+}
+.section-sub{
+  font-size:1rem;color:var(--muted);max-width:540px;
+  line-height:1.8;margin-top:12px;
+}
+
+/* ── THEMES (BLOOM / PULSE / GLOW) ── */
+.themes{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:60px}
+.theme-card{
+  padding:48px 32px;position:relative;overflow:hidden;
+  cursor:default;transition:transform .4s;
+}
+.theme-card:hover{transform:translateY(-4px)}
+.theme-card::before{
+  content:'';position:absolute;inset:0;
+  transition:opacity .4s;
+}
+.theme-bloom::before{background:linear-gradient(145deg,rgba(201,123,168,.2),rgba(180,100,140,.08))}
+.theme-pulse::before{background:linear-gradient(145deg,rgba(123,95,201,.2),rgba(100,70,180,.08))}
+.theme-glow::before{background:linear-gradient(145deg,rgba(201,160,90,.2),rgba(180,140,70,.08))}
+.theme-card::after{
+  content:'';position:absolute;inset:0;
+  border:1px solid var(--border);
+  transition:border-color .4s;
+}
+.theme-card:hover::after{border-color:rgba(201,160,90,.4)}
+.theme-month{
+  font-family:'DM Mono',monospace;
+  font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;
+  opacity:.6;margin-bottom:12px;position:relative;z-index:1;
+}
+.theme-name{
+  font-family:'Bodoni Moda',serif;
+  font-size:2.8rem;font-weight:400;letter-spacing:-.02em;
+  position:relative;z-index:1;line-height:1;
+}
+.theme-bloom .theme-name{color:var(--bloom)}
+.theme-pulse .theme-name{color:var(--pulse);filter:brightness(1.4)}
+.theme-glow .theme-name{color:var(--glow)}
+.theme-tagline{
+  font-size:.85rem;color:var(--muted);margin-top:12px;
+  position:relative;z-index:1;font-style:italic;
+  font-family:'Cormorant Garamond',serif;font-size:1rem;
+}
+.theme-colors{display:flex;gap:6px;margin-top:20px;position:relative;z-index:1}
+.color-dot{width:10px;height:10px;border-radius:50%}
+.theme-event{
+  font-family:'DM Mono',monospace;
+  font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--gold);opacity:.7;margin-top:16px;position:relative;z-index:1;
+}
+
+/* ── PASS SECTION ── */
+.pass-section{
+  background:linear-gradient(145deg,rgba(121,68,162,.06),rgba(201,123,168,.04));
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+}
+.pass-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:0}
+.pass-card{
+  background:linear-gradient(145deg,rgba(201,160,90,.08),rgba(201,123,168,.06));
+  border:1px solid var(--border);border-radius:24px;
+  padding:48px 40px;position:relative;overflow:hidden;
+}
+.pass-card::before{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:200px;height:200px;
+  background:radial-gradient(circle,rgba(201,160,90,.12),transparent 70%);
+}
+.pass-card-label{
+  font-family:'DM Mono',monospace;
+  font-size:.7rem;letter-spacing:.4em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:24px;display:block;opacity:.8;
+}
+.pass-card-title{
+  font-family:'Bodoni Moda',serif;
+  font-size:1.8rem;font-weight:400;line-height:1.2;letter-spacing:-.02em;
+  margin-bottom:8px;
+}
+.pass-card-tagline{
+  font-family:'Bodoni Moda',serif;
+  font-size:1rem;font-style:italic;color:var(--bloom);
+  margin-bottom:32px;
+}
+.pass-item{
+  display:flex;align-items:flex-start;gap:16px;
+  padding:16px 0;border-bottom:1px solid rgba(255,255,255,.06);
+}
+.pass-item:last-child{border-bottom:none}
+.pass-icon{font-size:1.1rem;margin-top:2px;flex-shrink:0}
+.pass-item-title{font-size:.85rem;font-weight:500;color:var(--text);margin-bottom:2px}
+.pass-item-desc{font-size:.78rem;color:var(--muted);line-height:1.5}
+.pass-info{position:relative;z-index:1}
+.pass-stats{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px}
+.stat-box{
+  background:rgba(255,255,255,.03);border:1px solid var(--border);
+  border-radius:12px;padding:20px;text-align:center;
+}
+.stat-num{
+  font-family:'Bodoni Moda',serif;
+  font-size:2.2rem;font-weight:400;color:var(--gold);
+  line-height:1;letter-spacing:-.02em;
+}
+.stat-label{font-size:.65rem;color:var(--muted);letter-spacing:.15em;text-transform:uppercase;margin-top:4px}
+
+/* ── HOW IT WORKS ── */
+.pipeline{margin-top:60px;display:flex;flex-direction:column;gap:0}
+.pipeline-step{
+  display:flex;align-items:flex-start;gap:24px;
+  padding:28px 0;border-bottom:1px solid rgba(255,255,255,.05);
+  position:relative;
+}
+.pipeline-step:last-child{border-bottom:none}
+.step-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:3rem;font-weight:300;color:var(--gold);
+  opacity:.25;line-height:1;flex-shrink:0;width:48px;
+}
+.step-content{flex:1;padding-top:4px}
+.step-title{font-size:.95rem;font-weight:500;margin-bottom:4px;letter-spacing:.02em}
+.step-desc{font-size:.82rem;color:var(--muted);line-height:1.6}
+.step-arrow{
+  position:absolute;left:24px;bottom:-14px;
+  font-size:.7rem;color:var(--gold);opacity:.4;
+}
+
+/* ── AMBASSADOR TIERS ── */
+.tiers-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:60px}
+.tier-card{
+  border:1px solid var(--border);border-radius:20px;
+  padding:36px 28px;position:relative;overflow:hidden;
+  transition:all .4s;
+}
+.tier-card:hover{transform:translateY(-4px);border-color:rgba(201,160,90,.4)}
+.tier-card.featured{
+  border-color:var(--gold);
+  background:linear-gradient(145deg,rgba(201,160,90,.08),rgba(201,123,168,.05));
+}
+.tier-card.featured::before{
+  content:'MOST ACTIVE';
+  position:absolute;top:16px;right:16px;
+  font-family:'DM Mono',monospace;
+  font-size:.55rem;letter-spacing:.2em;
+  color:var(--gold);background:rgba(201,160,90,.12);
+  padding:4px 10px;border-radius:100px;border:1px solid var(--border);
+}
+.tier-icon{font-size:2rem;margin-bottom:16px;display:block}
+.tier-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.6rem;font-weight:400;margin-bottom:4px;
+}
+.tier-petal .tier-name{color:var(--bloom)}
+.tier-bloom .tier-name{color:var(--pulse);filter:brightness(1.4)}
+.tier-season .tier-name{color:var(--gold)}
+.tier-level{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;margin-bottom:20px}
+.tier-req{font-size:.8rem;color:var(--muted);line-height:1.8;margin-bottom:20px}
+.tier-perks{list-style:none;display:flex;flex-direction:column;gap:8px}
+.tier-perks li{
+  font-size:.78rem;color:var(--text);
+  display:flex;align-items:flex-start;gap:8px;line-height:1.5;
+}
+.tier-perks li::before{content:'→';color:var(--gold);flex-shrink:0;opacity:.7}
+.tier-target{
+  font-family:'DM Mono',monospace;
+  font-size:.6rem;letter-spacing:.12em;color:var(--gold);
+  opacity:.6;margin-top:20px;padding-top:16px;
+  border-top:1px solid var(--border);
+}
+
+/* ── FORM SECTION ── */
+.form-section{
+  background:linear-gradient(145deg,rgba(121,68,162,.08),rgba(13,6,23,1));
+  border-top:1px solid var(--border);
+}
+.form-wrap{
+  max-width:540px;margin:0 auto;text-align:center;
+}
+.form-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2rem,5vw,3rem);font-weight:400;
+  margin-bottom:8px;
+}
+.form-sub{font-size:.9rem;color:var(--muted);margin-bottom:40px;line-height:1.7}
+.form{display:flex;flex-direction:column;gap:16px;text-align:left}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{
+  font-family:'DM Mono',monospace;
+  font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);opacity:.8;
+}
+.field input{
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--border);border-radius:10px;
+  padding:14px 18px;color:var(--text);font-family:'Outfit',sans-serif;font-size:.9rem;
+  outline:none;transition:border-color .25s;
+  -webkit-appearance:none;
+}
+.field input::placeholder{color:rgba(240,237,232,.25)}
+.field input:focus{border-color:rgba(201,160,90,.5)}
+.form-submit{
+  margin-top:8px;width:100%;
+  font-size:.75rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--bg);background:linear-gradient(135deg,var(--gold-light),var(--gold));
+  padding:18px 36px;border-radius:100px;border:none;cursor:pointer;
+  font-family:'Outfit',sans-serif;
+  box-shadow:0 0 40px rgba(201,160,90,.25);
+  transition:all .3s;
+}
+.form-submit:hover{transform:translateY(-2px);box-shadow:0 8px 50px rgba(201,160,90,.4)}
+.form-submit:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.form-disclaimer{
+  font-size:.7rem;color:var(--muted);text-align:center;margin-top:16px;line-height:1.6;
+}
+.form-success{
+  display:none;text-align:center;padding:40px 20px;
+}
+.form-success-icon{font-size:3rem;margin-bottom:16px}
+.form-success h3{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.8rem;font-weight:400;margin-bottom:8px;
+}
+.form-success p{font-size:.85rem;color:var(--muted);line-height:1.7}
+.pass-code{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  margin:24px auto;padding:20px 28px;max-width:300px;
+  border:1px solid var(--border);border-radius:var(--r);
+  background:linear-gradient(160deg,rgba(201,160,90,.10),rgba(123,95,201,.06));
+}
+.pass-code-label{
+  font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--muted);
+}
+.pass-code-value{
+  font-family:'DM Mono',monospace;font-size:1.7rem;letter-spacing:.14em;
+  color:var(--gold-light);font-weight:500;
+  text-shadow:0 0 24px rgba(201,160,90,.4);
+}
+.pass-code-hint{
+  font-size:.62rem;color:var(--muted);font-style:italic;
+}
+
+/* ── COMMUNITY PROOF ── */
+.proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:60px}
+.proof-card{
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--border);border-radius:16px;
+  padding:28px 24px;
+}
+.proof-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.5rem;font-weight:300;color:var(--gold);line-height:1;margin-bottom:4px;
+}
+.proof-label{font-size:.75rem;color:var(--muted);line-height:1.5}
+
+/* ── FOOTER ── */
+footer{
+  border-top:1px solid var(--border);
+  padding:48px 24px;text-align:center;
+  position:relative;z-index:2;
+}
+.footer-logo{
+  margin-bottom:12px;
+  display:flex;justify-content:center;
+}
+.footer-logo img{
+  height:36px;width:auto;
+}
+.footer-sub{font-size:.72rem;color:var(--muted);letter-spacing:.1em;margin-bottom:24px}
+.footer-links{display:flex;justify-content:center;gap:32px;flex-wrap:wrap}
+.footer-links a{font-size:.72rem;color:var(--muted);text-decoration:none;letter-spacing:.1em;transition:color .2s}
+.footer-links a:hover{color:var(--gold)}
+.footer-copy{font-size:.65rem;color:rgba(240,237,232,.2);margin-top:24px;letter-spacing:.08em}
+.by-3sixty{color:var(--gold);opacity:.5}
+
+/* ── FADE IN ── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  nav{padding:16px 20px}
+  .nav-logo{font-size:1.1rem}
+  .themes{grid-template-columns:1fr}
+  .pass-grid{grid-template-columns:1fr;gap:40px}
+  .tiers-grid{grid-template-columns:1fr}
+  .proof-grid{grid-template-columns:1fr 1fr}
+  .pass-stats{grid-template-columns:1fr 1fr}
+  .section{padding:72px 20px}
+  .tier-card.featured::before{display:none}
+}
+@media(max-width:480px){
+  .proof-grid{grid-template-columns:1fr}
+  .hero{padding:100px 20px 60px}
+}
+</style>
+</head>
+<body>
+
+<!-- Falling petals canvas -->
+<canvas id="petals"></canvas>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo"><img src="season-logo.svg" alt="Season KL" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span style=\'font-family:Georgia,serif;letter-spacing:.12em;font-size:1.2rem;color:#F5EDD6\'>SEASON KL</span>')"></a>
+  <a href="#claim" class="nav-cta">Claim Your Pass</a>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-eyebrow">Kuala Lumpur ✦ Est. 2026</div>
+  <h1 class="hero-title">You've Been<br>Invited to Bloom</h1>
+  <p class="hero-sub">KL's most intentional nightlife experience</p>
+  <div class="hero-divider"></div>
+  <p class="hero-desc">
+    Season is not a club. It is a community. Every Friday and Saturday,
+    the right people gather, connect, and create memories that last.
+    Your first visit starts with a pass.
+  </p>
+  <div class="hero-btns">
+    <a href="#claim" class="btn-primary">🌸 Claim First Visit Pass</a>
+    <a href="#how" class="btn-ghost">How It Works</a>
+  </div>
+  <div class="hero-scroll"><div class="scroll-line"></div></div>
+</section>
+
+<!-- ══ COMMUNITY PROOF ══ -->
+<section class="section" style="padding-top:60px;padding-bottom:60px">
+  <div class="section-inner">
+    <div class="star-divider"><span class="star-divider-glyph">✦</span></div>
+    <p class="reveal" style="text-align:center;font-family:'Bodoni Moda',serif;font-size:1.5rem;font-style:italic;color:var(--muted);letter-spacing:-.01em;">3 Chapters. 3 Months. Every Friday &amp; Saturday.</p>
+    <div class="star-divider" style="margin-top:48px;margin-bottom:0"><span class="star-divider-glyph">✦</span></div>
+  </div>
+</section>
+
+<!-- ══ THEMES ══ -->
+<section class="section" style="padding-top:60px">
+  <div class="section-inner">
+    <span class="section-label reveal">The Season</span>
+    <h2 class="section-title reveal">Three Chapters.<br>One Continuous Story.</h2>
+    <p class="section-sub reveal">July through September 2026. Every month, a new identity. Every chapter, a fuller room.</p>
+    <div class="themes reveal">
+      <div class="theme-card theme-bloom">
+        <div class="theme-month">July 2026</div>
+        <div class="theme-name">🌸 BLOOM</div>
+        <div class="theme-tagline">Connection over everything.</div>
+        <div class="theme-colors">
+          <div class="color-dot" style="background:#C97BA8"></div>
+          <div class="color-dot" style="background:#D4A0B8"></div>
+          <div class="color-dot" style="background:#E8D0DC"></div>
+        </div>
+        <div class="theme-event">Bloom & Connect · Singles Night</div>
+      </div>
+      <div class="theme-card theme-pulse">
+        <div class="theme-month">August 2026</div>
+        <div class="theme-name">🔥 PULSE</div>
+        <div class="theme-tagline">Peak energy. Season KL is alive.</div>
+        <div class="theme-colors">
+          <div class="color-dot" style="background:#7B5FC9"></div>
+          <div class="color-dot" style="background:#C9604A"></div>
+          <div class="color-dot" style="background:#1A1A2E"></div>
+        </div>
+        <div class="theme-event">Pulse Night · Open Format Takeover</div>
+      </div>
+      <div class="theme-card theme-glow">
+        <div class="theme-month">September 2026</div>
+        <div class="theme-name">✨ GLOW</div>
+        <div class="theme-tagline">You've earned your place.</div>
+        <div class="theme-colors">
+          <div class="color-dot" style="background:#C9A05A"></div>
+          <div class="color-dot" style="background:#1A0A2E"></div>
+          <div class="color-dot" style="background:#C9A0B0"></div>
+        </div>
+        <div class="theme-event">Glow Muse · Photo Night</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FIRST VISIT PASS ══ -->
+<section class="section pass-section" id="pass">
+  <div class="section-inner">
+    <div class="pass-grid">
+      <div class="pass-info reveal">
+        <span class="section-label">The Pass</span>
+        <h2 class="section-title">Your First Visit Pass</h2>
+        <p class="section-sub">A trackable experience designed to spread. Every pass is unique. Every pass has a story.</p>
+      </div>
+      <div class="pass-card reveal">
+        <span class="pass-card-label">Season KL · First Visit Pass</span>
+        <div class="pass-card-title">What You Receive</div>
+        <div class="pass-card-tagline">You've been invited to bloom 🌸</div>
+        <div class="pass-item">
+          <div class="pass-icon">🍹</div>
+          <div>
+            <div class="pass-item-title">The Bloom Potion</div>
+            <div class="pass-item-desc">Welcome cocktail with edible flower garnish — yours on arrival.</div>
+          </div>
+        </div>
+        <div class="pass-item">
+          <div class="pass-icon">📸</div>
+          <div>
+            <div class="pass-item-title">Polaroid Moment</div>
+            <div class="pass-item-desc">Printed with branded "My First Season" border. A memory, not a photo.</div>
+          </div>
+        </div>
+        <div class="pass-item">
+          <div class="pass-icon">🪙</div>
+          <div>
+            <div class="pass-item-title">Season Token</div>
+            <div class="pass-item-desc">Collectible acrylic piece. Your icebreaker for the night.</div>
+          </div>
+        </div>
+        <div class="pass-item">
+          <div class="pass-icon">🤝</div>
+          <div>
+            <div class="pass-item-title">Pass It On</div>
+            <div class="pass-item-desc">Show your pass to a stranger — if they join your table for one song, both of you receive a bonus shot.</div>
+          </div>
+        </div>
+        <div class="pass-item">
+          <div class="pass-icon">📲</div>
+          <div>
+            <div class="pass-item-title">Pass Forward</div>
+            <div class="pass-item-desc">At night's end, receive 2 passes to gift friends. Exponential growth, every weekend.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ HOW IT WORKS ══ -->
+<section class="section" id="how">
+  <div class="section-inner">
+    <span class="section-label reveal">The Journey</span>
+    <h2 class="section-title reveal">How It Works</h2>
+    <p class="section-sub reveal">From first follow to Season family. Five steps. No guesswork.</p>
+    <div class="pipeline reveal">
+      <div class="pipeline-step">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <div class="step-title">Claim Your Pass</div>
+          <div class="step-desc">Fill in the form below. Your unique QR code is generated instantly and sent to your WhatsApp.</div>
+        </div>
+        <div class="step-arrow">↓</div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <div class="step-title">Receive Your Invite</div>
+          <div class="step-desc">A personalised Season invite arrives via WhatsApp. Priority entry, complimentary welcome shot included.</div>
+        </div>
+        <div class="step-arrow">↓</div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <div class="step-title">Confirm Your Night</div>
+          <div class="step-desc">Let us know you're coming. An ambassador is assigned to greet you at the door by name.</div>
+        </div>
+        <div class="step-arrow">↓</div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <div class="step-title">Arrive &amp; Experience</div>
+          <div class="step-desc">Show your QR. Collect your Bloom Potion, Polaroid, and Season Token. The night begins.</div>
+        </div>
+        <div class="step-arrow">↓</div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">05</div>
+        <div class="step-content">
+          <div class="step-title">Join the Family</div>
+          <div class="step-desc">After your visit, unlock loyalty perks. Return twice and you're eligible for the Ambassador programme.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ AMBASSADOR TIERS ══ -->
+<section class="section" id="ambassadors" style="background:linear-gradient(145deg,rgba(201,123,168,.04),transparent)">
+  <div class="section-inner">
+    <span class="section-label reveal">The Programme</span>
+    <h2 class="section-title reveal">Become Part of Season</h2>
+    <p class="section-sub reveal">An in-house army of hosts — three tiers, one Season family. Only verified guests count.</p>
+    <div class="tiers-grid">
+      <div class="tier-card tier-petal reveal">
+        <span class="tier-icon">🌸</span>
+        <div class="tier-name">Petal</div>
+        <div class="tier-level">Entry Level</div>
+        <div class="tier-req">Bring 5 guests per active night. 2 organic posts per month.</div>
+        <ul class="tier-perks">
+          <li>20% F&B discount every visit</li>
+          <li>Free entry + Season member card</li>
+          <li>Priority WhatsApp for event invites</li>
+        </ul>
+        <div class="tier-target">Target: 30–50 Petals by August</div>
+      </div>
+      <div class="tier-card tier-bloom featured reveal">
+        <span class="tier-icon">💜</span>
+        <div class="tier-name">Bloom</div>
+        <div class="tier-level">Active Promoter</div>
+        <div class="tier-req">Bring 10+ guests, 3+ nights per month. 4 posts per month across IG, Threads, WhatsApp.</div>
+        <ul class="tier-perks">
+          <li>RM200/month commission</li>
+          <li>RM20 per guest F&B credit</li>
+          <li>Priority table booking</li>
+          <li>VIP table + RM50 bar credit on milestone</li>
+        </ul>
+        <div class="tier-target">Target: 15–20 Blooms by September</div>
+      </div>
+      <div class="tier-card tier-season reveal">
+        <span class="tier-icon">🌹</span>
+        <div class="tier-name">Season</div>
+        <div class="tier-level">Power Host</div>
+        <div class="tier-req">Bring 20+ guests. Host named nights. Run your own sub-ambassador network.</div>
+        <ul class="tier-perks">
+          <li>8% revenue share</li>
+          <li>RM1,000–1,500 monthly retainer</li>
+          <li>Featured on Season's social</li>
+          <li>Automatic upgrade via WhatsApp</li>
+        </ul>
+        <div class="tier-target">Target: 3–5 Season Champions by Q3</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CLAIM FORM ══ -->
+<section class="section form-section" id="claim">
+  <div class="section-inner">
+    <div class="form-wrap">
+      <span class="section-label" style="display:block;text-align:center;margin-bottom:12px">First Visit Pass</span>
+      <h2 class="form-title reveal">Claim Your Place<br>in Season</h2>
+      <p class="form-sub reveal">Fill in your details. Your unique pass and QR code will arrive on WhatsApp within minutes.</p>
+
+      <form class="form reveal" id="passForm">
+        <div class="field">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" placeholder="Your name" required autocomplete="name" />
+        </div>
+        <div class="field">
+          <label for="whatsapp">WhatsApp Number</label>
+          <input type="tel" id="whatsapp" name="whatsapp" placeholder="+60 12 345 6789" required autocomplete="tel" />
+        </div>
+        <div class="field">
+          <label for="instagram">Instagram Handle</label>
+          <input type="text" id="instagram" name="instagram" placeholder="@yourhandle" autocomplete="off" />
+        </div>
+        <div class="field">
+          <label for="source">How did you hear about Season?</label>
+          <input type="text" id="source" name="source" placeholder="KOL, friend, TikTok, IG..." autocomplete="off" />
+        </div>
+        <button type="submit" class="form-submit" id="submitBtn">
+          🌸 Get My First Visit Pass
+        </button>
+        <p class="form-disclaimer">
+          By claiming your pass you agree to receive WhatsApp messages from Season KL regarding your visit.
+          We do not share your details with third parties.
+        </p>
+      </form>
+
+      <div class="form-success" id="formSuccess">
+        <div class="form-success-icon">🌸</div>
+        <h3>You're In, <span id="successName">Season Family</span></h3>
+        <p class="form-sub" style="margin-bottom:24px">Welcome to Season KL. Your first night starts here.</p>
+
+        <div class="pass-code" id="passCode" style="display:none">
+          <span class="pass-code-label">Your First Visit Pass</span>
+          <span class="pass-code-value" id="passCodeValue"></span>
+          <span class="pass-code-hint">Show this at the door · TREC KL</span>
+        </div>
+
+        <div id="passActions" style="display:none;flex-direction:column;gap:12px;width:100%;margin-top:8px">
+          <a id="waPassBtn" href="#" target="_blank" rel="noopener" class="btn-primary" style="justify-content:center;text-decoration:none">
+            📲 Send to my WhatsApp
+          </a>
+          <p style="font-size:.72rem;color:var(--muted);text-align:center;margin:0">
+            Tap above → WhatsApp opens → Hit send → Pass saved to your chat
+          </p>
+        </div>
+
+        <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--border)">
+          <p style="font-size:.78rem;color:var(--muted);line-height:1.8;text-align:left">
+            <strong style="color:var(--text);font-weight:500">Your pass includes:</strong><br>
+            🍹 Bloom Potion welcome cocktail<br>
+            📸 Polaroid "My First Season" moment<br>
+            🪙 Season Token (collectible)<br>
+            🤝 Pass It On challenge with a bonus shot
+          </p>
+          <p style="font-size:.72rem;color:var(--muted);margin-top:12px;text-align:center">
+            Valid any <strong style="color:var(--gold)">Friday or Saturday</strong> · July – September 2026 · TREC KL
+          </p>
+        </div>
+
+        <div id="noPassNote" style="display:none;margin-top:20px">
+          <p style="font-size:.8rem;color:var(--muted);line-height:1.7;text-align:center">
+            Your pass is confirmed — we'll WhatsApp you shortly.<br>
+            <a href="https://wa.me/601797068588?text=Hi%20Season%20KL%20%F0%9F%8C%B8%20I%20just%20signed%20up%20for%20my%20First%20Visit%20Pass%20but%20didn%27t%20receive%20a%20pass%20code.%20Can%20you%20help%3F" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:underline">
+              Tap here to message us on WhatsApp
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-logo"><img src="season-logo.svg" alt="Season KL" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span style=\'font-family:Georgia,serif;letter-spacing:.12em;font-size:1.2rem;color:#F5EDD6\'>SEASON KL</span>')"></div>
+  <div class="footer-sub">Every Friday & Saturday · TREC KL</div>
+  <div class="footer-links">
+    <a href="#pass">First Visit Pass</a>
+    <a href="#how">How It Works</a>
+    <a href="#ambassadors">Ambassadors</a>
+    <a href="https://instagram.com/season_kl_official" target="_blank" rel="noopener">Instagram</a>
+  </div>
+  <div class="footer-copy">
+    © 2026 Season KL · Growth OS by <span class="by-3sixty">3Sixty Marketing × Cybertrooper Asia</span>
+  </div>
+</footer>
+
+<script>
+/* ── FALLING PETALS ── */
+(function(){
+  const canvas = document.getElementById('petals');
+  const ctx = canvas.getContext('2d');
+  let W, H, petals = [];
+
+  function resize(){
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const COLORS = [
+    'rgba(201,123,168,',
+    'rgba(180,100,140,',
+    'rgba(201,160,90,',
+    'rgba(220,180,200,',
+  ];
+
+  function makePetal(){
+    return {
+      x: Math.random() * W,
+      y: -20,
+      size: 4 + Math.random() * 8,
+      speedY: 0.4 + Math.random() * 0.8,
+      speedX: (Math.random() - 0.5) * 0.6,
+      rotation: Math.random() * Math.PI * 2,
+      rotSpeed: (Math.random() - 0.5) * 0.02,
+      alpha: 0.3 + Math.random() * 0.5,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+    };
+  }
+
+  for(let i=0;i<30;i++){
+    const p = makePetal();
+    p.y = Math.random() * H;
+    petals.push(p);
+  }
+
+  function drawPetal(p){
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rotation);
+    ctx.globalAlpha = p.alpha;
+    ctx.fillStyle = p.color + p.alpha + ')';
+    ctx.beginPath();
+    ctx.ellipse(0, 0, p.size * 0.5, p.size, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function loop(){
+    ctx.clearRect(0, 0, W, H);
+    petals.forEach((p, i) => {
+      p.y += p.speedY;
+      p.x += p.speedX + Math.sin(p.y * 0.01) * 0.3;
+      p.rotation += p.rotSpeed;
+      if(p.y > H + 20) petals[i] = makePetal();
+      drawPetal(p);
+    });
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+/* ── SCROLL REVEAL ── */
+(function(){
+  const els = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  els.forEach(el => obs.observe(el));
+})();
+
+/* ── FORM SUBMIT → SUPABASE ── */
+(function(){
+  const SUPABASE_URL  = 'https://nykukkccynnykbmxznhl.supabase.co';
+  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im55a3Vra2NjeW5ueWtibXh6bmhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcwNDk1MzMsImV4cCI6MjA2MjYyNTUzM30.G3nMSgYFCGmRfMW7dXq4nklgcEPWjKuMGcvGjsxnFgA';
+
+  const form       = document.getElementById('passForm');
+  const submitBtn  = document.getElementById('submitBtn');
+  const successDiv = document.getElementById('formSuccess');
+
+  function showSuccess({ name, whatsapp, passId }) {
+    // Personalise heading
+    const firstName = name.split(' ')[0];
+    document.getElementById('successName').textContent = firstName || 'Season Family';
+
+    if (passId) {
+      document.getElementById('passCodeValue').textContent = passId;
+      document.getElementById('passCode').style.display = 'flex';
+
+      // Build wa.me deeplink addressed to the guest's own number
+      const cleaned = (whatsapp || '').replace(/\D/g, '');
+      // Only apply Malaysian prefix logic for numbers that look Malaysian (start with 0 or 60)
+      let num;
+      if (cleaned.startsWith('60'))      num = cleaned;
+      else if (cleaned.startsWith('0'))  num = '60' + cleaned.slice(1);
+      else                               num = cleaned; // international — use as-is
+      const msg = encodeURIComponent(
+        `🌸 My Season KL First Visit Pass\n\nPass Code: ${passId}\n\nShow this at the door on any Friday or Saturday at TREC KL.\n\nWhat I get:\n✦ Bloom Potion welcome cocktail\n✦ Polaroid "My First Season" moment\n✦ Season Token (collectible)\n\nValid: July – September 2026 · TREC KL\n\nSee you at Season 🌸`
+      );
+      const waBtn = document.getElementById('waPassBtn');
+      waBtn.href = `https://wa.me/${num}?text=${msg}`;
+      document.getElementById('passActions').style.display = 'flex';
+    } else {
+      document.getElementById('noPassNote').style.display = 'block';
+    }
+
+    form.style.display = 'none';
+    successDiv.style.display = 'block';
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Processing…';
+
+    const name      = document.getElementById('name').value.trim();
+    const whatsapp  = document.getElementById('whatsapp').value.trim();
+    const instagram = document.getElementById('instagram').value.trim();
+    const source    = document.getElementById('source').value.trim();
+
+    // Generate a client-side pass ID as fallback — server will override with its own
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let localPassId = 'SKL-';
+    for (let i = 0; i < 6; i++) localPassId += chars[Math.floor(Math.random() * chars.length)];
+
+    let passId = null;
+    try {
+      /* 1 — call edge function to issue pass + sync to Notion (CRM + Pass Tracker) */
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/issue-season-pass`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${SUPABASE_ANON}`,
+        },
+        body: JSON.stringify({ name, whatsapp, instagram, source }),
+        signal: AbortSignal.timeout(15000),
+      });
+
+      if(res.ok){
+        try { passId = (await res.json()).pass_id || null; } catch(_) {}
+      }
+
+      /* Fallback: save directly to table with client-generated pass ID */
+      if(!res.ok){
+        passId = localPassId;
+        await fetch(`${SUPABASE_URL}/rest/v1/season_passes`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_ANON,
+            'Authorization': `Bearer ${SUPABASE_ANON}`,
+            'Prefer': 'return=minimal',
+          },
+          body: JSON.stringify({
+            pass_id: passId,
+            guest_name: name,
+            whatsapp,
+            instagram_handle: instagram,
+            lead_source: source || 'Landing Page',
+            redemption_status: 'Issued',
+            issued_at: new Date().toISOString(),
+          }),
+        });
+      }
+
+      showSuccess({ name, whatsapp, passId });
+    } catch(err) {
+      console.error('Pass issue error:', err);
+      showSuccess({ name, whatsapp, passId: null });
+    }
+  });
+})();
+</script>
+</body>
+</html>
