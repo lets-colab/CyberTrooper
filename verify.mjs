@@ -33,7 +33,7 @@ let totalFailures = 0;
 function extractInlineScripts(html) {
   // inline <script> blocks only (those without a src= attribute)
   const scripts = [];
-  const re = /<script\b([^>]*)>([\s\S]*?)<\/script>/gi;
+  const re = /<script\b([^>]*)>([\s\S]*?)<\/script\s*>/gi;
   let m;
   while ((m = re.exec(html)) !== null) {
     if (!/\bsrc\s*=/i.test(m[1])) scripts.push(m[2]);
