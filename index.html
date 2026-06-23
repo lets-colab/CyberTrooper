@@ -438,7 +438,7 @@ body.cursor-hover .cursor-ring {
 .hero-sub {
   font-size: clamp(1rem, 1.7vw, 1.2rem);
   font-weight: 300;
-  color: var(--chrome);
+  color: rgba(242,240,234,0.85);
   max-width: 560px;
   margin-bottom: 2.8rem;
   line-height: 1.75;
@@ -485,7 +485,8 @@ body.cursor-hover .cursor-ring {
 .btn-ghost:hover { border-color: var(--text); transform: translateY(-1px); }
 
 /* ── SECTIONS ── */
-section { padding: var(--section-pad); position: relative; z-index: 1; }
+section { padding: var(--section-pad); position: relative; z-index: 1; background: rgba(4,6,15,0.72); }
+.hero { background: transparent; }
 #scroll-container { position: relative; z-index: 1; }
 .section-inner { max-width: 1100px; margin: 0 auto; position: relative; }
 
@@ -537,7 +538,7 @@ section { padding: var(--section-pad); position: relative; z-index: 1; }
 
 .step-body p {
   font-size: 1rem;
-  color: var(--chrome);
+  color: rgba(242,240,234,0.8);
   max-width: 580px;
   line-height: 1.75;
 }
@@ -563,7 +564,7 @@ section { padding: var(--section-pad); position: relative; z-index: 1; }
 .stat-card p {
   font-size: clamp(0.92rem, 1.5vw, 1.05rem);
   line-height: 1.65;
-  color: var(--chrome);
+  color: rgba(242,240,234,0.8);
 }
 
 @media (max-width: 600px) {
@@ -575,7 +576,7 @@ section { padding: var(--section-pad); position: relative; z-index: 1; }
 
 .tiers-sub {
   font-size: 1rem;
-  color: var(--chrome);
+  color: rgba(242,240,234,0.8);
   max-width: 520px;
   margin-bottom: 3rem;
   margin-top: -1.5rem;
@@ -625,7 +626,7 @@ section { padding: var(--section-pad); position: relative; z-index: 1; }
 
 .tier-desc {
   font-size: 0.95rem;
-  color: var(--chrome);
+  color: rgba(242,240,234,0.8);
   line-height: 1.65;
   flex: 1;
 }
@@ -658,7 +659,7 @@ section { padding: var(--section-pad); position: relative; z-index: 1; }
 
 .contact-sub {
   font-size: 1rem;
-  color: var(--chrome);
+  color: rgba(242,240,234,0.8);
   margin-bottom: 2.5rem;
   margin-top: -1.5rem;
   line-height: 1.75;
@@ -679,7 +680,7 @@ form { display: grid; gap: 1rem; max-width: 640px; }
   font-size: 0.62rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--chrome);
+  color: rgba(0,245,255,0.7);
 }
 
 .field input,
@@ -780,6 +781,7 @@ footer {
   transition: color 0.2s;
 }
 .footer-right a:hover { color: var(--gold); }
+
 
 .footer-copy {
   font-family: 'DM Mono', monospace;
@@ -936,7 +938,7 @@ footer {
 }
 .recruit-text p {
   font-size: clamp(1rem, 1.6vw, 1.15rem);
-  color: var(--chrome);
+  color: rgba(242,240,234,0.8);
   line-height: 1.65;
   max-width: 420px;
 }
@@ -1292,15 +1294,15 @@ footer {
 }
 
 @media (max-width: 480px) {
-  .cta-group { flex-direction: column; }
-  .btn-gold, .btn-ghost { text-align: center; }
+  .cta-group { flex-direction: column; width: 100%; }
+  .btn-gold, .btn-ghost { text-align: center; width: 100%; }
 }
 
 /* ── SECTION SUB ── */
 .section-sub {
   font-size: clamp(0.95rem, 1.5vw, 1.1rem);
   font-weight: 300;
-  color: var(--chrome);
+  color: rgba(242,240,234,0.8);
   max-width: 580px;
   margin-bottom: 2.5rem;
   line-height: 1.75;
@@ -1316,7 +1318,7 @@ footer {
 }
 .tier-features li {
   font-size: 0.92rem;
-  color: var(--chrome);
+  color: rgba(242,240,234,0.8);
   padding-left: 1.1rem;
   position: relative;
   line-height: 1.5;
@@ -1371,7 +1373,7 @@ footer {
 }
 .trooper-block p {
   font-size: 0.9rem;
-  color: var(--chrome);
+  color: rgba(242,240,234,0.8);
   line-height: 1.65;
 }
 
@@ -1453,7 +1455,7 @@ footer {
         <div class="step reveal" style="transition-delay:0.1s">
           <span class="step-num">STEP 2</span>
           <div class="step-body"><h3>DEPLOY</h3>
-          <p>We activate the right Troopers for your brand — matched by location, vibe, and audience. They post in their own voice. No copy-pasting. No disclaimers.</p></div>
+          <p>We activate the right Troopers for your brand — matched by location, vibe, and audience. They post in their own voice. Authentic voice — creators disclose sponsorships naturally, not with ad copy.</p></div>
         </div>
         <div class="step reveal" style="transition-delay:0.2s">
           <span class="step-num">STEP 3</span>
@@ -1484,7 +1486,7 @@ footer {
         </div>
         <div class="stat-card reveal" style="transition-delay:0.16s">
           <div class="stat-number">KL-first</div>
-          <div class="stat-card-label">No competitor has activated this market</div>
+          <div class="stat-card-label">First to focus on authentic local posting over influencer farms</div>
         </div>
         <div class="stat-card reveal" style="transition-delay:0.24s">
           <div class="stat-number">0 ads</div>
@@ -1549,7 +1551,7 @@ footer {
     </div>
     <div class="recruit-right reveal" style="transition-delay:0.15s">
       <div class="recruit-chips">
-        <span class="recruit-chip">40+ Active Troopers</span>
+        <span class="recruit-chip">Growing Trooper Network</span>
         <span class="recruit-chip">Weekly Payouts</span>
         <span class="recruit-chip">KL-Only Network</span>
         <span class="recruit-chip">Applications Every Monday</span>
@@ -1602,13 +1604,13 @@ footer {
         </div>
         <button type="submit" class="btn-gold" style="margin-top:1.5rem;width:100%;">SEND BRIEF →</button>
         <div id="form-success" class="form-success">
-          <p>✓ Brief received — opening WhatsApp to finish sending. We'll reply within 48 hours.</p>
+          <p>✓ Brief received — opening WhatsApp to finish sending. We review every Monday and reply within 48 hours of review.</p>
         </div>
       </form>
       <div class="contact-info reveal">
         <div class="contact-detail">
           <span class="contact-detail-label">Email</span>
-          <span class="contact-detail-value">360cybertroopers@gmail.com</span>
+          <span class="contact-detail-value">360cybertroopers@gmail.com <!-- TODO: replace with branded domain email --></span>
         </div>
         <div class="contact-detail">
           <span class="contact-detail-label">WhatsApp</span>
@@ -1620,7 +1622,7 @@ footer {
         </div>
         <div class="contact-detail">
           <span class="contact-detail-label">Response Time</span>
-          <span class="contact-detail-value">Within 48 hours</span>
+          <span class="contact-detail-value">Reviewed every Monday — reply within 48 hours of review</span>
         </div>
         <div class="trooper-block">
           <h3>Are You a Creator?</h3>
@@ -1648,7 +1650,7 @@ footer {
     </div>
     <div class="alicia-header-info">
       <div class="alicia-name">ALICIA</div>
-      <div class="alicia-role">Your Consultant · CyberTrooper KL</div>
+      <div class="alicia-role">Your Consultant</div>
       <div class="alicia-status">
         <span class="alicia-status-dot"></span>
         Online now
@@ -2019,7 +2021,7 @@ if (!prefersReduced && !isTouchDevice && typeof Lenis !== 'undefined') {
     btn.setAttribute('aria-expanded', String(open));
     if (open) {
       input.focus();
-      if (msgs.children.length === 0) addMsg('alicia', "Hey, welcome 👋 I'm Alicia — your CyberTrooper consultant. Whether you're trying to grow your brand, figure out your next move on Threads, or just not sure where to start — tell me what's going on and let's work through it together.");
+      if (msgs.children.length === 0) addMsg('alicia', "Hey, welcome 👋 I'm Alicia — your consultant. Whether you're trying to grow your brand, figure out your next move on Threads, or just not sure where to start — tell me what's going on and let's work through it together.");
     }
   }
 
@@ -2080,7 +2082,7 @@ if (!prefersReduced && !isTouchDevice && typeof Lenis !== 'undefined') {
       return "Refund terms are covered in the brief agreement. We work monthly so you're never locked in long-term. Submit a brief and we'll go through the details.";
     if (/next step|get started|begin|start now|ready/.test(m))
       return "Hit the Brief Us button at the top of the page, fill in your brand details, and we'll follow up within 48 hours with a proposal tailored to your venue.";
-    return "I'm Alicia, your CyberTrooper consultant 🌸 Ask me about tiers, how it works, joining as a creator, or getting started. Or tap Brief Us to talk to the team directly.";
+    return "I'm Alicia, your consultant 🌸 Ask me about tiers, how it works, joining as a creator, or getting started. Or tap Brief Us to talk to the team directly.";
   }
   function fallbackReply(msg) { return aliciaFallback(msg); }
 

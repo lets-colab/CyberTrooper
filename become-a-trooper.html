@@ -1226,7 +1226,7 @@ footer {
     </div>
     <div class="hero-proof">
       <div class="hero-proof-dot"></div>
-      <span>Applications now open in KL — apply before spots fill</span>
+      <span>Applications open every Monday — KL-based Threads creators only</span>
     </div>
   </div>
   <div class="scroll-hint" aria-hidden="true">
@@ -1252,7 +1252,7 @@ footer {
         <span class="step-num">02</span>
         <div class="step-body">
           <h3>POST</h3>
-          <p>Post on Threads in your own voice. Authentic only — no copy-pasting, no #ad. Sound like yourself.</p>
+          <p>Post on Threads in your own voice. Authentic first — creators disclose sponsorships naturally, not with ad copy. Sound like yourself.</p>
         </div>
       </div>
       <div class="step">
@@ -1446,7 +1446,7 @@ footer {
         <p class="step-title">Your Voice</p>
         <div class="field" id="field-sample">
           <label for="sample-post">Write a sample post about a café or restaurant you love in KL *</label>
-          <p class="field-sub">Write it like you'd actually post it on Threads. This is how we assess your voice.</p>
+          <p class="field-sub">Write like you'd actually post — casual, 50–200 characters, no hashtags. Just your honest take. This is how we assess your voice.</p>
           <textarea id="sample-post" name="sample_post" rows="6" required minlength="50" placeholder="Tell us about a café or spot you genuinely love..."></textarea>
           <span class="field-error">Please write at least 50 characters in your own voice.</span>
           <p class="field-error-msg">Write at least 50 characters about a KL spot you love</p>
@@ -1495,7 +1495,7 @@ footer {
     <h2>You're In The Queue.</h2>
     <div class="success-steps">
       <p class="success-step">→ We review every Monday</p>
-      <p class="success-step">→ You'll hear back within 48 hours</p>
+      <p class="success-step">→ You'll hear back within 48 hours of review</p>
       <p class="success-step">→ If approved, we send your private brief via WhatsApp</p>
     </div>
     <p>Your application has been received and automatically logged. We review every Monday — you'll hear from us within 48 hours.</p>
@@ -1792,6 +1792,7 @@ function validateStep(step) {
 
     if (!fieldValid) {
       wrapper.classList.add('invalid');
+      wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
       valid = false;
     } else {
       wrapper.classList.remove('invalid');
