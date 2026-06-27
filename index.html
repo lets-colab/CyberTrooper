@@ -967,8 +967,8 @@ footer {
   white-space: nowrap;
 }
 @media (max-width: 768px) {
-  .recruit-right { align-items: flex-start; }
-  .recruit-chips { justify-content: flex-start; }
+  .recruit-right { align-items: flex-start; width: 100%; }
+  .recruit-chips { justify-content: flex-start; width: 100%; }
 }
 
 /* ── ALICIA CHAT WIDGET ── */
@@ -1636,11 +1636,6 @@ footer {
           <span class="contact-detail-label">Response Time</span>
           <span class="contact-detail-value">Reviewed every Monday — reply within 48 hours of review</span>
         </div>
-        <div class="trooper-block">
-          <h3>Are You a Creator?</h3>
-          <p>Join KL's first Threads creator network. Rates revealed after approval. Apply in 3 minutes.</p>
-          <a href="become-a-trooper.html" class="btn-primary" style="display:block;text-align:center;">Apply to be a Trooper →</a>
-        </div>
       </div>
     </div>
   </div>
@@ -2080,11 +2075,11 @@ if (!prefersReduced && !isTouchDevice && typeof Lenis !== 'undefined') {
     if (/how many trooper|network size|creator|how big/.test(m))
       return "We have an active and growing network of KL creators across areas like KLCC, Bangsar, Chow Kit and TREC. Exact numbers stay private — we match based on fit, not headcount.";
     if (/how long|timeline|when|result|how fast|quick/.test(m))
-      return "Most brands see measurable foot traffic impact within 2–4 weeks of launch. We send weekly dashboards so you can track it in real time.";
+      return "Campaigns run monthly, and we send you a report at the end of each cycle so you can see exactly what was posted and how it landed. Submit a brief and we'll map out a realistic timeline for your venue.";
     if (/what.*post|content|type of|brief|topic/.test(m))
       return "Creators post authentic Threads content about your venue — honest reviews, atmosphere, events, specials. We brief them but they write in their own voice. No scripts.";
     if (/result|guarantee|roi|return|outcome|prove/.test(m))
-      return "We guarantee consistency and execution — matched creators, weekly reporting, and system adjustments every 7 days. Most F&amp;B brands see measurable foot traffic impact within 2–4 weeks of launch.";
+      return "We focus on consistency and execution — matched creators posting authentically, plus a monthly report so you see exactly what landed. Submit a brief and we'll talk through what success looks like for your venue.";
     if (/contract|lock|commit|cancel|exit|term/.test(m))
       return "We work monthly — no long lock-ins. Details are shared after your brief is reviewed. Submit via the Brief Us form and we'll walk you through everything.";
 
