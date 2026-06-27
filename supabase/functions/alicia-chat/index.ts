@@ -1,6 +1,10 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
-const ANTHROPIC_API_KEY = Deno.env.get('ANTHROPIC_API_KEY') ?? '';
+// ALICIA runs on Groq's free API (OpenAI-compatible). Set GROQ_API_KEY as a
+// Supabase Edge Function secret. GROQ_MODEL is optional (defaults to a current
+// free Llama model) so you can swap models without redeploying.
+const GROQ_API_KEY = Deno.env.get('GROQ_API_KEY') ?? '';
+const GROQ_MODEL = Deno.env.get('GROQ_MODEL') ?? 'llama-3.3-70b-versatile';
 const NOTION_TOKEN = Deno.env.get('NOTION_INTEGRATION_TOKEN') ?? '';
 const NOTION_DB_ID = '26181d3c4aa44d25a13312de3870e73f';
 
@@ -32,7 +36,7 @@ KEY FACTS:
 
 // Notion "Alicia Brain" stays the single source of truth. Instead of pasting rows
 // verbatim (the old bug that caused repetition), we inject the whole brain into
-// Claude's system prompt as a knowledge base and let Claude reason over it.
+// the model's system prompt as a knowledge base and let it reason over it.
 async function fetchNotionKnowledge(): Promise<string> {
   if (!NOTION_TOKEN) return '';
   try {
@@ -65,19 +69,19 @@ async function fetchNotionKnowledge(): Promise<string> {
   }
 }
 
-async function askClaude(message: string, history: {role:string,content:string}[], systemPrompt: string): Promise<string> {
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
+async function askGroq(message: string, history: {role:string,content:string}[], systemPrompt: string): Promise<string> {
+  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: {
-      'x-api-key': ANTHROPIC_API_KEY,
-      'anthropic-version': '2023-06-01',
-      'content-type': 'application/json',
+      'Authorization': `Bearer ${GROQ_API_KEY}`,
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: 'claude-haiku-4-5-20251001',
+      model: GROQ_MODEL,
       max_tokens: 350,
-      system: systemPrompt,
+      temperature: 0.7,
       messages: [
+        { role: 'system', content: systemPrompt },
         ...history.slice(-8),
         { role: 'user', content: message },
       ],
@@ -85,11 +89,11 @@ async function askClaude(message: string, history: {role:string,content:string}[
   });
   if (!res.ok) {
     const body = await res.text();
-    console.error(`Claude API ${res.status}: ${body}`);
-    throw new Error(`Claude API ${res.status}`);
+    console.error(`Groq API ${res.status}: ${body}`);
+    throw new Error(`Groq API ${res.status}`);
   }
   const data = await res.json();
-  return data.content?.[0]?.text ?? "Tell me a bit more about your business and I'll point you in the right direction.";
+  return data.choices?.[0]?.message?.content ?? "Tell me a bit more about your business and I'll point you in the right direction.";
 }
 
 Deno.serve(async (req: Request) => {
@@ -103,8 +107,8 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    if (!ANTHROPIC_API_KEY) {
-      console.error('ANTHROPIC_API_KEY is not set');
+    if (!GROQ_API_KEY) {
+      console.error('GROQ_API_KEY is not set');
       return new Response(
         JSON.stringify({ reply: "I'm just getting set up — reach the team directly on the Brief Us form or WhatsApp +60 179 706 8588 and they'll sort you out right away." }),
         { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
@@ -112,7 +116,7 @@ Deno.serve(async (req: Request) => {
     }
 
     const knowledge = await fetchNotionKnowledge();
-    const reply = await askClaude(message, history, ALICIA_SYSTEM + knowledge);
+    const reply = await askGroq(message, history, ALICIA_SYSTEM + knowledge);
     return new Response(JSON.stringify({ reply }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
